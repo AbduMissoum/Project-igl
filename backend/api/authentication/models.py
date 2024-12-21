@@ -1,7 +1,14 @@
 from django.db import models
 # Create your models here.
-from dpi.models import Etablisement
-class CustomUser(models.Model):
+from django.contrib.auth.models import  AbstractUser
+class Etablisement(models.Model):
+    id = models.AutoField(primary_key=True)
+    nom = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.nom
+    
+class CustomUser(AbstractUser):
     ROLE_CHOICES = [
         ('patient', 'Patient'),
         ('doctor', 'Doctor'),
@@ -17,4 +24,7 @@ class CustomUser(models.Model):
 
     def __str__(self):
         return self.username
+
+
+
 
