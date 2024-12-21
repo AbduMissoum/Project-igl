@@ -3,5 +3,6 @@ from .views import PatientList
 
 urlpatterns=[
     path('',PatientList),
+   
     
 ]
