@@ -1,7 +1,6 @@
 from django.db import models
-from dpi.models import Etablisement
 # Create your models here.
-
+from dpi.models import Etablisement
 class CustomUser(models.Model):
     ROLE_CHOICES = [
         ('patient', 'Patient'),
