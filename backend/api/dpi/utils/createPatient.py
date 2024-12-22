@@ -1,7 +1,7 @@
 from dpi.serializers import PatientCreateSerializer,PatientSerializer
 from authentication.models import CustomUser
 from dpi.models import Dpi, Patient
-
+import random,string
 def createPatient(data):
     # Validate the incoming data using the serializer
     serializer = PatientCreateSerializer(data=data)
@@ -10,9 +10,11 @@ def createPatient(data):
         validated_data = serializer.validated_data
 
         # Create the user account
+        password = ''.join(random.choices(string.ascii_letters, k=10))
+
         user = CustomUser.objects.create_user(
             username=f"{validated_data['nom']}{validated_data['NSS']}",
-            password=f"{validated_data['nom']}{validated_data['prenom']}",
+            password=password,
             email=data['email'],
         )
         print("*************************************\n\n*************************")
@@ -39,7 +41,10 @@ def createPatient(data):
         res = PatientSerializer(patient)
         
         print(res.data)
-        return res.data                          
+        return { "username": user.username, 
+                "password": password,
+                "email":user.email,
+                "id":patient.id.id}                          
 
        
     else:

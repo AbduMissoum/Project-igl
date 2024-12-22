@@ -11,12 +11,16 @@ from rest_framework import status
 from django.middleware.csrf import get_token 
 from dpi.serializers import PatientSerializer
 # Create your views here.
+from django.core.mail import send_mail
+from .utils import content
+
 @csrf_exempt
 @api_view(["POST"])
 def logUser(req):
         
     if(req.user.is_authenticated):
             print(req.user.id)
+     
         
             return JsonResponse({"mesage":"User already authenticated","role":req.user.role,"id":req.user.id})
     else : 
