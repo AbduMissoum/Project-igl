@@ -37,12 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< Updated upstream
-     'dpi',
-     'authentication',
-=======
+    'dpi',
+    'authentication',
     'ordonnance.apps.OrdonnanceConfig',
->>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [
