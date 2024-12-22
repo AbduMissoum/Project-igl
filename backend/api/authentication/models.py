@@ -11,8 +11,11 @@ class Etablisement(models.Model):
 class CustomUser(AbstractUser):
     ROLE_CHOICES = [
         ('patient', 'Patient'),
-        ('doctor', 'Doctor'),
-        ('laboratory', 'Laboratory'),
+        ('medecin', 'Medecin'),
+        ('infirmier', 'Infirmier'),
+        ('laborantin', 'Laborantin'),
+        ('radiologue', 'Radiologue'),
+        ('admin', 'Admin'),
     ]
 
     id = models.AutoField(primary_key=True)
