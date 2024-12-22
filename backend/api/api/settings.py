@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
      'dpi',
      'authentication',
+     'qr_codes',
 ]
 
 # settings.py
