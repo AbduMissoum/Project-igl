@@ -37,9 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'dpi',
-     'authentication',
-     'qr_codes',
+  
+    'dpi',
+    'authentication',
+    'ordonnance.apps.OrdonnanceConfig',
+   'qr_codes',
+  
+
 ]
 
 # settings.py
