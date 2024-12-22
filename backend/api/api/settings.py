@@ -40,8 +40,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'dpi',
     'bilan_bio',
-    'consultation',
     'authentication',
+    'ordonnance.apps.OrdonnanceConfig',
+   'qr_codes',
+  
+
+
 ]
 
 # settings.py
