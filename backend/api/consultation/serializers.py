@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Consultation
 from dpi.models import Dpi, Etablisement
-from users.models import Users  
 
 
 class DpiSerializer(serializers.ModelSerializer):
