@@ -1,4 +1,5 @@
 from django.db import models
+
 from dpi.models import Dpi
 from authentication.models import CustomUser, Etablisement
 

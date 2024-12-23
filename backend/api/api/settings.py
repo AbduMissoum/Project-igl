@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'ordonnance.apps.OrdonnanceConfig',
     'consultation',
 
+
   
 ]
 
