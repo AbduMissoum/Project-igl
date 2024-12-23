@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'bilan_bio',
     'authentication',
     'ordonnance.apps.OrdonnanceConfig',
+    'consultation',
   
   
 
