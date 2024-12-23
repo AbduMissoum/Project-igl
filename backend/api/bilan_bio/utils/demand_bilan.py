@@ -81,7 +81,8 @@ def remplissement_bilan(id: int, data):
 def fetch_bilan(id:int,lab_id:int):
     try:
         bilan = BilanBiologique.objects.get(id=id)
-        bilan.laborantient=lab_id
+        laborontient = CustomUser.objects.get(id=lab_id)
+        bilan.laborantient=laborontient
         bilan.save()
         params = ParamValeur.objects.filter(bilan=bilan)
         serializer = ParamValeurSerializer(params, many=True)
