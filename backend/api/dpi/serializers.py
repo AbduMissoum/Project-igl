@@ -36,7 +36,11 @@ class PatientSerializerWithId(serializers.ModelSerializer):
         fields = '__all__'
     medecin_traitant = UserListingField(many=True, read_only=True)
 
-   
+class PatientSerializerWithNSS(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Patient
+        fields = ['NSS','nom','prenom']
    
     
        

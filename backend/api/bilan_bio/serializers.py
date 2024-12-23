@@ -1,7 +1,31 @@
 from rest_framework import serializers
 from .models import ParamValeur
 from rest_framework import serializers
-from .models import ParamValeur
+from .models import ParamValeur,BilanBiologique
+from dpi.serializers import PatientSerializer,DpiSerializer,PatientSerializerWithNSS
+from consultation.models import Consultation
+from authentication.serializers import UserSerializer
+
+class ConsulationListingField(serializers.RelatedField):
+    def to_representation(self, value):
+
+        patient = value.dpi_id.id   
+        patient = PatientSerializerWithNSS(patient)
+        print(patient.data)
+        medecin = UserSerializer(value.medecin)
+        return {
+            "patient": patient.data,
+            "medcin": medecin.data,
+        }
+    class Meta:
+        model = Consultation
+        fields = '__all__'
+
+class BilanBiologiqueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BilanBiologique
+        fields = ['id','consultation']
+    consultation = ConsulationListingField(many=False, read_only=True)
 
 class ParamValeurSerializer(serializers.ModelSerializer):
     class Meta:

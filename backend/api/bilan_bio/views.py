@@ -4,7 +4,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from .utils import demand_bilan
 from rest_framework import status
-from .models import BilanBiologique
+#from .models import BilanBiologique
 
 # Create your views here.
 @api_view(['POST'])
@@ -25,5 +25,20 @@ def remplir_bilan(request:Request,bilan_id:int)->Response:
         return Response({"message":"Bilan Satisfied"},status=status.HTTP_201_CREATED)
     else:
         return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET'])
+def get_bilan(request:Request,id:int)->Response:
+    lab_id = request.user.id
+    result = demand_bilan.fetch_bilan(id,lab_id)
+    if result['status']=='success':
+        return Response(result['message'],status=status.HTTP_200_OK)
+    else:
+        return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
 
-
+@api_view(['GET'])
+def get_demandes(request:Request)->Response:
+    result = demand_bilan.fetch_non_assigned()
+    print(result)
+    if result['status']=='success':
+        return Response(result['message'],status=status.HTTP_200_OK)
+    else:
+        return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST) 

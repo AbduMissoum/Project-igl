@@ -43,10 +43,9 @@ INSTALLED_APPS = [
     'authentication',
     'ordonnance.apps.OrdonnanceConfig',
     'consultation',
-  
-  
 
 
+  
 ]
 
 # settings.py
@@ -90,7 +89,7 @@ AUTH_USER_MODEL = 'authentication.CustomUser'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mediumclone_igl',
+        'NAME': 'mediumclone_igl2',
         'USER': '367579_abdallah',
         'PASSWORD': 'abdallah',
         'HOST': 'mysql-mediumclone.alwaysdata.net',  # Or your MySQL server's IP/hostname
