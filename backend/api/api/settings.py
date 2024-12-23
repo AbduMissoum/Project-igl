@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'authentication',
     'ordonnance.apps.OrdonnanceConfig',
    'qr_codes',
+   'consultation'
   
 
 
