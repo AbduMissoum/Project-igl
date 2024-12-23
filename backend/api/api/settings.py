@@ -37,11 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'dpi',
+    'bilan_bio',
     'authentication',
     'ordonnance.apps.OrdonnanceConfig',
     'consultation',
+
+  
 ]
+
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,7 +88,7 @@ AUTH_USER_MODEL = 'authentication.CustomUser'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mediumclone_igl',
+        'NAME': 'mediumclone_igl2',
         'USER': '367579_abdallah',
         'PASSWORD': 'abdallah',
         'HOST': 'mysql-mediumclone.alwaysdata.net',  # Or your MySQL server's IP/hostname
@@ -132,3 +139,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}

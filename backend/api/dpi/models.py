@@ -16,6 +16,6 @@ class Patient(models.Model):  # Inherits from CustomUser
 
 class Dpi(models.Model):
     id = models.OneToOneField(Patient, on_delete=models.CASCADE, primary_key=True)
-
+    qr_code = models.ImageField(upload_to='qr_codes', null=True, blank=True)
     def __str__(self):
         return f"DPI for Patient: {self.id}"

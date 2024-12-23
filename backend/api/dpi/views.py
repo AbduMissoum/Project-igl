@@ -2,10 +2,11 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from dpi.utils import createPatient as createPatient,searchDpi as search
+from dpi.utils import createPatient as createPatient,searchDpi as search,mailService
 from .serializers import PatientSerializer,PatientSerializerWithId
 import json
 from .models import Patient
+
 @api_view(["POST", "GET"])
 def PatientList(request):
     if request.method == "GET":
@@ -25,6 +26,9 @@ def PatientList(request):
             return Response({"errors": result["errors"]}, status=status.HTTP_400_BAD_REQUEST)
 
         if result:
+         mailService.sendMail(email=result["email"],
+                               username=result["username"],
+                               password=result["password"])
             
             # Return success response if a patient was created
          return Response({"message": "Patient created successfully", "patient_id": result["id"]}, status=status.HTTP_201_CREATED)
