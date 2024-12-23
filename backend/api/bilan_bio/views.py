@@ -37,6 +37,7 @@ def get_bilan(request:Request,id:int)->Response:
 @api_view(['GET'])
 def get_demandes(request:Request)->Response:
     result = demand_bilan.fetch_non_assigned()
+    print(result)
     if result['status']=='success':
         return Response(result['message'],status=status.HTTP_200_OK)
     else:

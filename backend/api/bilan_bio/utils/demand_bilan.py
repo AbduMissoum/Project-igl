@@ -92,7 +92,10 @@ def fetch_bilan(id:int,lab_id:int):
         return {"status": "error", "message": str(e)}
 def fetch_non_assigned():
     try:
+        
+      
         bilans = BilanBiologique.objects.filter(satisfait=False,laborantient=None)
+        print(bilans)
         serializer = BilanBiologiqueSerializer(bilans,many=True)
         return {"status":"success","message":serializer.data}
     except Exception as e:

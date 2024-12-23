@@ -9,6 +9,7 @@ class BilanBiologique(models.Model):
     consultation = models.ForeignKey(Consultation, on_delete=models.CASCADE)
     laborantient = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='biological_tests',null=True,blank=True)
     satisfait = models.BooleanField(default=False)
+    date = models.DateField(auto_now_add=False,default=None)
 
     def __str__(self):
         return f"Bilan Biologique {self.id} - {'Satisfied' if self.satisfait else 'Unsatisfied'}"
