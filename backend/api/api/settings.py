@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'dpi',
     'authentication',
     'ordonnance.apps.OrdonnanceConfig',
-   'qr_codes',
+  
   
 
 ]

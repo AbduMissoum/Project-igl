@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Consultation
 from dpi.models import Dpi, Etablisement
-
+from authentication.models import CustomUser 
 
 class DpiSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,7 +17,7 @@ class EtablisementSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Users
+        model = CustomUser
         fields = ['id', 'username', 'email', 'role']  # Include relevant fields
 
 
