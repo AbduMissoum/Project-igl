@@ -26,9 +26,10 @@ def remplir_bilan(request:Request,bilan_id:int)->Response:
     else:
         return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
 @api_view(['GET'])
-def get_bilan(request:Request,id:int)->Response:
-    lab_id = request.user.id
-    result = demand_bilan.fetch_bilan(id,lab_id)
+def get_bilan(request:Request,bilan_id:int)->Response:
+    lab_id = request.query_params.get("lab_id")
+    # print(f"Lab_id : {lab_id}",end="\n")
+    result = demand_bilan.fetch_bilan(bilan_id,lab_id)
     if result['status']=='success':
         return Response(result['message'],status=status.HTTP_200_OK)
     else:
@@ -37,7 +38,7 @@ def get_bilan(request:Request,id:int)->Response:
 @api_view(['GET'])
 def get_demandes(request:Request)->Response:
     result = demand_bilan.fetch_non_assigned()
-    print(result)
+    # print(result)
     if result['status']=='success':
         return Response(result['message'],status=status.HTTP_200_OK)
     else:
