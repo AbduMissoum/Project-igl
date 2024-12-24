@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Administratif</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-clair to-blanc min-h-screen">
+    <!-- Header -->
+    <!-- <header class="py-4 px-8 flex flex-col lg:flex-row items-center justify-between"> -->
+        <header class="py-4 px-8 flex flex-col lg:flex-row items-center justify-between  w-full bg-clair ">
+        <!-- Partie gauche : Logo -->
+        <div class="flex-shrink-0">
+            <img src="assets/images/logo.png" alt="Logo" class="w-10 h-10 rounded-full">
+        </div>
+    
+        <!-- Partie droite : Navbar -->
+        <nav class="flex flex-col lg:flex-row lg:space-x-10 space-y-4 lg:space-y-0 w-full lg:w-auto ml-4 items-center">
+            <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">DPI</a>
+            <a href="#" class="text-2xl text-fonce font-semibold hover:underline">Contact US</a>
+        </nav>
+    
+        <!-- Bouton LogOut -->
+        <div class="flex-shrink-0 text-lg font-bold text-fonce mt-4 lg:mt-0">
+            <button type="submit" class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold  focus:ring focus:ring-fonce">
+                LogOut
+            </button>
+        </div>
+    </header>
+  
+  
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto  px-4  lg:px-8">
+        <!-- Intro Section -->
+        <section class="flex flex-col items-center justify-center min-h-screen mb-10 -py-3 px-4">
+            <!-- Titre centré -->
+            <h1 class="text-4xl font-bold text-fonce mb-20 text-center">
+                Bienvenue dans votre espace administratif !
+            </h1>
+        
+            <!-- Section texte et image en colonne -->
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <!-- Section texte -->
+                <div class="text-center lg:text-left max-w-xl">
+                    <p class="text-fonce mb-10">
+                        La gestion des informations médicales est une pierre angulaire d'un système de santé moderne et efficace.
+                        Grâce à la digitalisation, chaque patient bénéficie d'un suivi précis et structuré, permettant une meilleure
+                        coordination entre les équipes médicales et administratives.
+                    </p>
+                    <p class="text-fonce">
+                        Cette page vous permet de créer un Dossier Patient Informatisé (DPI), une solution sécurisée pour centraliser
+                        les informations essentielles : identité, coordonnées, et données administratives. En saisissant ces informations,
+                        vous contribuez à offrir des soins de qualité, tout en améliorant la communication et la continuité des services de santé.
+                    </p>
+                </div>
+        
+                <!-- Section image -->
+                <div class="flex justify-center items-center w-full lg:w-auto mt-6 lg:mt-0 lg:ml-12">
+                    <div class="w-60 h-60 lg:w-80 lg:h-80">
+                        <img src="assets/images/admin.gif" alt="Administratif" class="w-full h-full object-contain rounded-[40px]">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+        
+
+        <!-- Form Section -->
+        <section class=" shadow-md rounded-lg px-40 pb-8 ">
+            <h2 class="text-4xl font-bold text-center text-fonce mb-6">Créer votre Dossier !</h2>
+            <form class="space-y-6">
+                <!-- Ligne 1 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="nom" class="block text-fonce mb-2 font-medium">Nom</label>
+                        <input type="text" id="nom" class="bg-clair w-full p-3 rounded-[40px]">
+                    </div>
+                    <div>
+                        <label for="prenom" class="block text-fonce mb-2 font-medium">Prénom</label>
+                        <input type="text" id="prenom" class="bg-clair w-full p-3 rounded-[40px]">
+                    </div>
+                </div>
+        
+                <!-- Ligne 2 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="date-naissance" class="block text-fonce mb-2 font-medium">Date de naissance</label>
+                        <input type="date" id="date-naissance" class="bg-clair w-full p-3 rounded-[40px]">
+                    </div>
+                    <div>
+                        <label for="nss" class="block text-fonce mb-2 font-medium">NSS</label>
+                        <input type="text" id="nss" class="bg-clair w-full p-3 rounded-[40px]">
+                    </div>
+                </div>
+        
+                <!-- Ligne 3 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="adresse" class="block text-fonce mb-2 font-medium">Adresse</label>
+                        <input type="text" id="adresse" class="bg-clair w-full p-3 rounded-[40px]">
+                    </div>
+                    <div>
+                        <label for="telephone" class="block text-fonce mb-2 font-medium">Téléphone</label>
+                        <input type="text" id="telephone" class="bg-clair w-full p-3 rounded-[40px]">
+                    </div>
+                </div>
+        
+                <!-- Ligne 4 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="mutuelle" class="block text-fonce mb-2 font-medium">Mutuelle</label>
+                        <input type="text" id="mutuelle" class="bg-clair w-full p-3 rounded-[40px]">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-fonce mb-2 font-medium">E-Mail</label>
+                        <input type="email" id="email" class="bg-clair w-full p-3 rounded-[40px]">
+                    </div>
+                </div>
+        
+                <!-- Bouton -->
+                <div class="text-center">
+                    <button type="submit" class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold hover:bg-clair focus:ring focus:ring-fonce">
+                        Valider
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
