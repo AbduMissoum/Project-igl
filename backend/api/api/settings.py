@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'authentication',
     'ordonnance.apps.OrdonnanceConfig',
     'consultation',
+    'bilan_radio',
 
 
   
@@ -146,3 +148,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
+MEDIA_URL = '/media/'  # URL prefix for accessing media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory on the server where files will be stored

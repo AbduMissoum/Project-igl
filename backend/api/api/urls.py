@@ -23,4 +23,5 @@ urlpatterns = [
     path('auth/',include('authentication.urls')),
     path('',include('ordonnance.urls')),
     path('bilan-bio/',include('bilan_bio.urls')),
+    path('bilan-radio/',include('bilan_radio.urls')),
 ]
