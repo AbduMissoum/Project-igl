@@ -1,0 +1,30 @@
+
+
+<body>
+
+<div class="table-container">
+    <h1>Les Radios Demandées</h1>
+  
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Médecin</th>
+          <th>Patient</th>
+          <th>Type</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let radio of radios" (click)="redirectToDetails(radio.date.getTime())"> 
+            <td>{{ radio.medecin }}</td>
+          <td>{{ radio.patient }}</td>
+          <td>{{ radio.type }}</td>
+          <td>{{ radio.date | date:'shortDate' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+
+  

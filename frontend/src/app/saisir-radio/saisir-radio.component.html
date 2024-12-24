@@ -1,0 +1,39 @@
+<body>
+<div class="resultats-container">
+    <h1>Saisie des Examens Radiologiques</h1>
+  
+    <div class="form-container">
+      <div class="texte-section">
+        <label for="compte-rendu">Rediger le compte rendu:</label>
+        <textarea id="compte-rendu" placeholder="Écrire le compte rendu ici..."  [(ngModel)]="compteRendu"
+        required ></textarea>
+
+        <small class="error-message" *ngIf="isInvalid">
+          Le compte rendu ne peut pas être vide.
+        </small>
+      </div>
+
+      <img src="assets/Rectangle 84.png " alt="Image de référence" class="image-example">
+
+      <div class="image-section">
+        <div class="upload-section" 
+             (click)="triggerFileInput()"
+             (dragover)="onDragOver($event)" 
+             (dragleave)="onDragLeave($event)" 
+             (drop)="onFileDrop($event)">
+          <p>Glissez votre fichier ici ou cliquez pour uploader</p>
+          <img src="assets/telechargement-dans-le-cloud.png " alt="Image de référence" class="image-exampleb">
+
+          <input type="file" (change)="onFileSelect($event)" hidden #fileInput>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Boutons -->
+    <div class="button-container">
+      <button class="btn retour" (click)="onRetour()">Retour</button>
+      <button class="btn envoyer" (click)="onEnvoyer()">Envoyer</button>
+    </div>
+  </div>
+</body>
+  

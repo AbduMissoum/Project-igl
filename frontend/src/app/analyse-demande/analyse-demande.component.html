@@ -1,0 +1,27 @@
+
+
+<body>
+
+    <div class="table-container">
+        <h1>Les analyses Demandées</h1>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Médecin</th>
+              <th>Patient</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let analyse of analyses" (click)="redirectToDetails(analyse.date.getTime())"> 
+                <td>{{ analyse.medecin }}</td>
+              <td>{{ analyse.patient }}</td>
+              <td>{{ analyse.date | date:'shortDate' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    
+    </body>
+    
