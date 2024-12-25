@@ -1,0 +1,34 @@
+from rest_framework import serializers
+from .models import BilanRadiologique,ExamenImagerieMedicale
+from consultation.models import Consultation
+from dpi.serializers import PatientSerializerWithNSS
+from authentication.serializers import UserSerializer
+class ConsulationListingField(serializers.RelatedField):
+    def to_representation(self, value):
+
+        patient = value.dpi_id.id   
+        patient = PatientSerializerWithNSS(patient)
+        print(patient.data)
+        medecin = UserSerializer(value.medecin)
+        return {
+            "patient": patient.data,
+            "medcin": medecin.data,
+        }
+    class Meta:
+        model = Consultation
+        fields = '__all__'
+
+class BilanRadiologiqueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BilanRadiologique
+        fields = ['id','consultation']
+    consultation = ConsulationListingField(many=False,read_only=True)
+class BilanBiologiqueSerializerAll(serializers.ModelSerializer):
+    class Meta:
+        model = BilanRadiologique
+        fields = '__all__'
+class ExamenImagerieMedicaleSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = ExamenImagerieMedicale
+        fields = ['id','examen_image']
+        #Remember the formdata for the frontend team
