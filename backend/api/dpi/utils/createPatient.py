@@ -18,8 +18,7 @@ def createPatient(data):
             password=password,
             email=data['email'],
         )
-        print("*************************************\n\n*************************")
-        print(user)
+      
         # Save the Patient instance
         patientwithoutId = serializer.validated_data
         patient = Patient.objects.create(
@@ -43,10 +42,8 @@ def createPatient(data):
         dpi = DpiSerializer(data=res.data)
         if dpi.is_valid():
             dpi.save()
-            print("hhhhhhh")
         else: return {"errors": dpi.errors}
         
-        print(res.data)
         return { "username": user.username, 
                 "password": password,
                 "email":user.email,

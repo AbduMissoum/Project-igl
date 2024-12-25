@@ -49,6 +49,7 @@ def remplissement_bilan(bilan_id:int,data):
     try:
         bilan = BilanRadiologique.objects.get(id=bilan_id)
         compte_rendu = data.get('compte_rendu')
+        bilan.satisfait = True
         if compte_rendu:
             bilan.compte_rendu = compte_rendu
             bilan.save()
