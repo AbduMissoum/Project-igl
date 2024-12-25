@@ -21,11 +21,16 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
+<<<<<<< HEAD
              {
               "glob": "**/*",
               "input": "src/assets",
               "output": "/assets"
              }
+=======
+                "src/assets",
+                "src/favicon.ico"
+>>>>>>> origin/Mohamed
             ],
             "styles": [
               "src/styles.css"

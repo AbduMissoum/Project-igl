@@ -1,0 +1,64 @@
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Jaldi:wght@400&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<div class="page-soins-container">
+    <img src="assets/Rectangle-83.png"/>
+
+    <div >
+        <h1 class="text-section">Saisir les soins prodigués.</h1>
+        <h1 class="text-sectionb">Cette page vous permet de renseigner les soins administrés aux patients.<br>Entrez le Numéro de Sécurité Sociale (NSS) du patient, décrivez les soins<br>réalisés, et indiquez la date et l'heure de l'intervention.<br>Ces informations seront ajoutées au Dossier Patient Informatisé (DPI) et<br>contribueront à un suivi précis des soins prodigués.</h1>
+    
+    </div>
+
+
+
+
+    <form #soinsForm="ngForm" (ngSubmit)="onSubmit(soinsForm.value)">
+      <div class="form-group">
+        <label for="nss">NSS du Patient</label><br>
+        <input id="nss" name="nss" type="text" class="form-control" ngModel required  pattern="^[0-9]+$" placeholder="Entrez le NSS"
+        />
+      </div>
+
+
+      <small 
+      class="text-danger error-message" 
+      *ngIf="soinsForm.controls['nss']?.errors?.['required'] && soinsForm.controls['nss']?.touched">
+      Le NSS est requis.
+    </small>
+    <small 
+      class="text-danger error-message" 
+      *ngIf="soinsForm.controls['nss']?.errors?.['pattern'] && soinsForm.controls['nss']?.touched">
+      Le NSS doit contenir uniquement des chiffres.
+    </small>
+
+
+  
+      <div class="form-group">
+        <label for="date">Date</label><br>
+        <input id="date" name="date" type="date" class="form-control" required />
+      </div>
+  
+      <div class="form-group">
+        <label for="heure">Heure</label><br>
+        <input id="heure" name="heure" type="time" class="form-control" required pattern="^[0-9]+$" placeholder="Entrez le NSS"/>
+      </div>
+      
+  
+      <div class="soinclass"><br>
+        <label for="soins">Soins</label><br>
+        <textarea id="soins" name="soins" class="form-control" required placeholder="Ecrire les soins distribués"></textarea>
+      </div>
+  
+      <div class="image-section">
+       
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+  
+    
+  </div>
+</body> 
