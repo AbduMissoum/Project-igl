@@ -1,0 +1,9 @@
+<div class="p-4 bg-yellow-100 rounded-[40px] shadow-md">
+    <h2 class="text-lg font-bold text-yellow-800">{{ title }}</h2>
+    <ul class="mt-2">
+      <li class="text-yellow-600" *ngFor="let image of images">
+        {{ image.name }} - <span class="italic">{{ image.date }}</span>
+      </li>
+    </ul>
+  </div>
+  

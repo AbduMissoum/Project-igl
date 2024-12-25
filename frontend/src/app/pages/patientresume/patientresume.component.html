@@ -89,23 +89,27 @@
         </button>
         <button
           class="text-fonce px-6 py-3 mx-5 rounded-[40px] font-bold hover:bg-clair focus:ring focus:ring-fonce focus:bg-clair"
-          (click)="changeSection('biologique')"
+          (click)="changeSection('bilanBiologique')"
         >
           BILAN BIOLOGIQUE
         </button>
         <button
           class="text-fonce px-6 py-3 mx-5 rounded-[40px] font-bold hover:bg-clair focus:ring focus:ring-fonce focus:bg-clair"
-          (click)="changeSection('radiologique')"
+          (click)="changeSection('bilanRadiologique')"
         >
           BILAN RADIOLOGIQUE
         </button>
       </div>
       
       <!-- Inclusion du composant enfant -->
-      <app-consultation-section
-        [title]="currentSection.title"
-        [content]="currentSection.content"
-      ></app-consultation-section>
+      <div class="mt-6">
+        <ng-container [ngSwitch]="currentSection">
+          <app-resume *ngSwitchCase="'resume'"></app-resume>
+          <app-ordonance *ngSwitchCase="'ordonnance'"></app-ordonance>
+          <app-bilanbio *ngSwitchCase="'bilanBiologique'"></app-bilanbio>
+          <app-bilanradio *ngSwitchCase="'bilanRadiologique'"></app-bilanradio>
+        </ng-container>
+      </div>
       
   </main>
 
