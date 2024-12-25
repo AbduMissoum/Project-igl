@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+<body class="m-0 p-0 bg-white">
+    <!-- Section centrale avec fond clair -->
+    <div class="flex justify-center items-center w-full h-screen bg-clair">
+        <div class="flex w-full max-w-4xl bg-white rounded-[40px] shadow-lg">
+            <!-- Image à gauche -->
+            <img class="w-1/2 h-full object-cover rounded-l-lg" src="assets/images/Login.gif" alt="rectangle">
+
+            <!-- Contenu à droite -->
+            <div class="flex flex-col items-center justify-center w-1/2 p-3">
+                <div class="flex flex-col items-center justify-center">
+                    <a class="text-center rounded-full ">
+                        <img src="assets/images/Logo.jpeg" alt="logo" class="w-20 h-24 object-contain">
+                    </a>
+                    <h1 class="text-fonce font-bold text-2xl">WELCOME BACK</h1>
+                    
+                </div>
+                <input type="text" id="username" placeholder="Username" class="mt-4 border-none border-b border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500">
+                <input type="password" id="password" placeholder="Password" class="mt-4 border-none border-b border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500">
+                <button type="submit" class="bg-fonce text-white px-6 py-3 mt-4 rounded-[40px] font-semibold focus:ring focus:ring-fonce">
+                    LogIn
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
