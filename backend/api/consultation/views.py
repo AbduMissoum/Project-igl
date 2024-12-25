@@ -7,7 +7,8 @@ from .utils import (
     get_consultation_by_id, update_consultation,
     delete_consultation, get_consultations_by_date,
     create_consultations_by_date, get_consultations_by_dpi,
-    create_consultations_by_dpi
+    create_consultations_by_dpi,create_consultation_by_medecin,
+    get_consultations_by_medecin
 )
 
 @api_view(['GET', 'POST'])
@@ -54,3 +55,12 @@ def consultation_by_dpi(request, pk):
     elif request.method == 'POST':
         data = JSONParser().parse(request)
         return create_consultations_by_dpi(pk, data)
+
+@api_view(['GET', 'POST'])
+def consultation_by_medecin(request, medecin_id):
+    if request.method == 'GET':
+        return get_consultations_by_medecin(medecin_id)
+
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        return create_consultation_by_medecin(medecin_id, data)
