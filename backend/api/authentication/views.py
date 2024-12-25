@@ -16,6 +16,7 @@ from .utils import content
 
 @csrf_exempt
 @api_view(["POST"])
+
 def logUser(req):
         
     if(req.user.is_authenticated):
