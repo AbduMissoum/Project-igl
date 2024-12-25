@@ -22,6 +22,7 @@ urlpatterns = [
     path('patient/',include('dpi.urls')),
     path('auth/',include('authentication.urls')),
     path('',include('ordonnance.urls')),
+    path('',include('consultation.urls')),
     path('bilan-bio/',include('bilan_bio.urls')),
     path('bilan-radio/',include('bilan_radio.urls')),
 ]
