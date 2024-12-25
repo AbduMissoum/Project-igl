@@ -1,31 +1,14 @@
 from rest_framework import serializers
 from .models import Consultation
-from dpi.models import Dpi, Etablisement
-from authentication.models import CustomUser 
-
-class DpiSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Dpi
-        fields = '__all__'
-
-
-class EtablisementSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Etablisement
-        fields = '__all__'
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ['id', 'username', 'email', 'role']  # Include relevant fields
+from dpi.models import Dpi
+from authentication.models import CustomUser,Etablisement 
 
 
 class ConsultationSerializer(serializers.ModelSerializer):
-    dpi = DpiSerializer()
-    medecin = UserSerializer()
-    etablisement = EtablisementSerializer()
+    dpi = serializers.PrimaryKeyRelatedField(queryset=Dpi.objects.all())
+    medecin = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+    etablisement = serializers.PrimaryKeyRelatedField(queryset=Etablisement.objects.all())
 
     class Meta:
         model = Consultation
-        fields = ['id', 'dpi', 'resume', 'la_date', 'medecin', 'etablisement']
+        fields = '__all__'
