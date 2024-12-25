@@ -24,4 +24,5 @@ urlpatterns = [
     path('',include('ordonnance.urls')),
     path('bilan-bio/',include('bilan_bio.urls')),
     path('bilan-radio/',include('bilan_radio.urls')),
+    path('soins/',include('les_soins.urls')),
 ]

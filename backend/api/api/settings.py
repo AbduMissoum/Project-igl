@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'ordonnance.apps.OrdonnanceConfig',
     'consultation',
     'bilan_radio',
-
+'les_soins',
 
   
 ]
