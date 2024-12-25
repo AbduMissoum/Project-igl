@@ -7,25 +7,32 @@
     <title>Document</title>
 </head>
 <body class="m-0 p-0 bg-white">
-    <!-- Section centrale avec fond clair -->
+    
     <div class="flex justify-center items-center w-full h-screen bg-clair">
         <div class="flex w-full max-w-4xl bg-white rounded-[40px] shadow-lg">
-            <!-- Image à gauche -->
-            <img class="w-1/2 h-full object-cover rounded-l-lg" src="assets/images/Login.gif" alt="rectangle">
+            
+            <img class="w-1/2 h-full object-cover rounded-l-[40px]" src="assets/images/Login.gif" alt="rectangle">
 
-            <!-- Contenu à droite -->
-            <div class="flex flex-col items-center justify-center w-1/2 p-3">
-                <div class="flex flex-col items-center justify-center">
+           
+            <div class="flex flex-col py-3 items-center justify-center w-1/2 ">
+                <div class="flex flex-col  --mt-6 items-center justify-center">
                     <a class="text-center rounded-full ">
-                        <img src="assets/images/Logo.jpeg" alt="logo" class="w-20 h-24 object-contain">
+                        <img src="assets/images/logo.png" alt="logo" class="w-20 h-24 mt-1 object-contain">
                     </a>
-                    <h1 class="text-fonce font-bold text-2xl">WELCOME BACK</h1>
+                    <h1 class="text-fonce --mt-4 font-bold text-2xl"> Bienvenue !</h1>
                     
                 </div>
-                <input type="text" id="username" placeholder="Username" class="mt-4 border-none border-b border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500">
-                <input type="password" id="password" placeholder="Password" class="mt-4 border-none border-b border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500">
+                <!-- <input type="text" id="username" placeholder="Username" class="mt-4 focus:ring focus:ring-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500"> -->
+                <input
+                type="text"
+                id="username"
+                placeholder="Username"
+                class="mt-4 ring-2 ring-fonce focus:ring-fonce focus:ring-2 p-5 focus:border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500"
+              >
+              
+                <input type="password" id="password" placeholder="Password" class="mt-4 p-5  ring-2 ring-fonce border-none border-b border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500">
                 <button type="submit" class="bg-fonce text-white px-6 py-3 mt-4 rounded-[40px] font-semibold focus:ring focus:ring-fonce">
-                    LogIn
+                    Connecter
                 </button>
             </div>
         </div>

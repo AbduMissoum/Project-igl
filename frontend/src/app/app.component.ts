@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { LoginComponent } from "./pages/login/login.component";
+
+// import { PatientresumeComponent } from "./pages/patientresume/patientresume.component";
+import { ContactComponent } from './pages/contact/contact.component';
 
 @Component({
   selector: 'app-root',
-  imports: [ LoginComponent],
+  imports: [  ContactComponent],
   templateUrl: './app.component.html',  
 })
 export class AppComponent {
