@@ -1,9 +1,12 @@
-<div class="p-4 bg-yellow-100 rounded-[40px] shadow-md">
-    <h2 class="text-lg font-bold text-yellow-800">{{ title }}</h2>
-    <ul class="mt-2">
-      <li class="text-yellow-600" *ngFor="let image of images">
-        {{ image.name }} - <span class="italic">{{ image.date }}</span>
-      </li>
-    </ul>
+<!-- Section principale -->
+<section class="mt-6 bg-white p-6 rounded-[40px] shadow-md">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-lg font-bold text-fonce">{{ title }}</h2>
+    <button 
+      type="button" 
+      
+      class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold focus:ring focus:ring-fonce">
+      Demander Radio
+    </button>
   </div>
-  
+</section>
