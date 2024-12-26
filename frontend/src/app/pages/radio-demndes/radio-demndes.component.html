@@ -1,0 +1,56 @@
+<body class="bg-gradient-to-b from-[#D3E7E8] to-white min-h-[300vh] m-0">
+  <header class="py-4 px-8 flex flex-col lg:flex-row items-center justify-between  w-full bg-clair ">
+    <!-- Partie gauche : Logo -->
+    <div class="flex-shrink-0">
+        <img src="assets/images/logo.png" alt="Logo" class="w-10 h-10 rounded-full">
+    </div>
+
+    <!-- Partie droite : Navbar -->
+    <nav class="flex flex-col lg:flex-row lg:space-x-10 space-y-4 lg:space-y-0 w-full lg:w-auto ml-4 items-center">
+        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">DPI</a>
+        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">Consultations</a>
+        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">Soins</a>
+        <a href="#" class="text-2xl text-fonce font-semibold hover:underline">Contact US</a>
+    </nav>
+
+    <!-- Bouton LogOut -->
+    <div class="flex-shrink-0 text-lg font-bold text-fonce mt-4 lg:mt-0">
+        <button type="submit" class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold  focus:ring focus:ring-fonce">
+            LogOut
+        </button>
+    </div>
+</header>
+
+<div class="text-center mt-12 justify-center items-center">
+  <h1 class="text-4xl font-bold text-fonce">Les Radios Demandées</h1>
+</div>
+
+  <div class="table-container relative mt-12">
+    <table class="w-[1163px]  mx-auto mt-20 table-auto border-collapse rounded-[40px] shadow-lg">
+      <thead class="bg-[#D3E7E8]">
+        <tr>
+          <th class="font-bold p-6 text-left text-[#5DA5B9] rounded-tl-[40px]">Médecin</th>
+          <th class="font-bold p-6 text-left text-[#5DA5B9]">Patient</th>
+          <th class="font-bold p-6 text-left text-[#5DA5B9]">Type</th>
+          <th class="font-bold p-6 text-left text-[#5DA5B9] rounded-tr-[40px]">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let radio of radios" (click)="redirectToDetails(radio.date.getTime())" class="cursor-pointer hover:bg-blue-100 transition-all duration-300 ease-in-out transform hover:scale-105">
+            <td class="p-6 text-left bg-[#D3E7E8] text-[#5DA5B9]">{{ radio.medecin }}</td>
+            <td class="p-6 text-left bg-[#D3E7E8] text-[#5DA5B9]">{{ radio.patient }}</td>
+            <td class="p-6 text-left bg-[#D3E7E8] text-[#5DA5B9]">{{ radio.type }}</td>
+            <td class="p-6 text-left bg-[#D3E7E8] text-[#5DA5B9]">{{ radio.date | date:'shortDate' }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="rounded-bl-[40px]"></td>
+          <td></td>
+          <td class="rounded-br-[40px]"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</body>

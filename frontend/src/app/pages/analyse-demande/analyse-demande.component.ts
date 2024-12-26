@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-analyse-demande',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './analyse-demande.component.html',
-  styleUrl: './analyse-demande.component.css'
+  styleUrls: ['./analyse-demande.component.css']
 })
 export class AnalyseDemandeComponent {
   analyses = [
