@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+     "drf_spectacular",
+   'drf_yasg',
     'rest_framework',
     'dpi',
     'bilan_bio',
@@ -48,9 +50,12 @@ INSTALLED_APPS = [
 'les_soins',
 
   
+
 ]
 
-# settings.py
+
+
+# mailing service
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
@@ -65,6 +70,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'api.urls'
 
+
+
+SWAGGER_SETTINGS = {
+   'DEFAULT_INFO': 'import.path.to.urls.api_info',
+}
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -132,6 +142,13 @@ USE_I18N = True
 
 USE_TZ = True
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Soins API',
+    'DESCRIPTION': 'API documentation for managing soins data.',
+    'VERSION': '1.0.0',
+    # This is typically not needed unless you have custom info.
+    'DEFAULT_INFO': 'drf_spectacular.openapi.Info',  # Use the default info
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -143,6 +160,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',

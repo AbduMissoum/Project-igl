@@ -1,12 +1,23 @@
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.decorators import api_view,permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from .models import Soins
-from .serializers import SoinsSerializer,SoinsSerializerDetail,SoinsWithPatientIdSerializer,SoinsWithInfirmierSerializer
+from .serializers import SoinsSerializer, SoinsSerializerDetail, SoinsWithPatientIdSerializer, SoinsWithInfirmierSerializer
 from rest_framework.response import Response
 from dpi.models import Patient
 from rest_framework.permissions import IsAuthenticated
-# Create your views here.
+from drf_spectacular.utils import extend_schema, OpenApiResponse
+from drf_yasg.utils import swagger_auto_schema
+
+# Success response example
+
+from drf_yasg import openapi  # Correct import
+from .docstrings.docGetSoinList import get_soin_list_schema
+from .docstrings.docPostSoin import post_soin_schema
+from .docstrings.DocCrudSoin import get_soin_detail_schema, patch_soin_schema, delete_soin_schema
+from .docstrings.docSoinsBy import soins_list_by_patient_id_schema,soins_list_by_infirmier_schema
+@get_soin_list_schema()
+@post_soin_schema()    
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def soins_list(request):
@@ -32,7 +43,9 @@ def soins_list(request):
 
 
 
-
+@get_soin_detail_schema()
+@patch_soin_schema()
+@delete_soin_schema()
 @api_view(['GET', 'PATCH', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def soins_detail(request, pk):
@@ -55,7 +68,7 @@ def soins_detail(request, pk):
            serializer = SoinsSerializer(Soins.objects.get(pk=pk), data=request.data, partial=True)
            if serializer.is_valid():
                serializer.save()
-               return Response(serializer.data)         
+               return Response({"soin":serializer.data, "message": "Soins updated successfully"}, status=status.HTTP_200_OK)         
      except Exception as e:
         print(e)
         return Response( {"error": "An unexpected error occurred. Please try again later."}, status=status.HTTP_400_BAD_REQUEST)
@@ -74,6 +87,9 @@ def soins_detail(request, pk):
         return Response( {"error": "An unexpected error occurred. Please try again later."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     
+
+@soins_list_by_patient_id_schema()  
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def soins_list_by_patient_id(request,patient_id):
@@ -85,6 +101,10 @@ def soins_list_by_patient_id(request,patient_id):
     print(e)
     return Response( {"error": "An unexpected error occurred. Please try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+
+@soins_list_by_infirmier_schema()
 @api_view(['GET'])  
 @permission_classes([IsAuthenticated])
 def soins_with_infirmier(request):
