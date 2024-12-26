@@ -91,7 +91,7 @@ AUTH_USER_MODEL = 'authentication.CustomUser'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mediumclone_igl3',
+        'NAME': 'mediumclone_igl4',
         'USER': '367579_abdallah',
         'PASSWORD': 'abdallah',
         'HOST': 'mysql-mediumclone.alwaysdata.net',  # Or your MySQL server's IP/hostname
