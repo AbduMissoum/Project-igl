@@ -3,10 +3,22 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from dpi.utils import createPatient as createPatient,searchDpi as search,mailService
-from .serializers import PatientSerializer,PatientSerializerWithId
+from .serializers import PatientSerializer,PatientSerializerWithId,MedcinListSerializer
 import json
 from .models import Patient
+from authentication.models import CustomUser
+from .docstrings.docPatient import patient_detail_schema,patient_list_by_nss_schema,create_patient_schema,medecin_list_schema
 
+
+
+
+
+
+
+
+
+@create_patient_schema()
+@patient_list_by_nss_schema() 
 @api_view(["POST", "GET"])
 def PatientList(request):
     if request.method == "GET":
@@ -31,13 +43,16 @@ def PatientList(request):
                                password=result["password"])
             
             # Return success response if a patient was created
-         return Response({"message": "Patient created successfully", "patient_id": result["id"]}, status=status.HTTP_201_CREATED)
+         return Response({"message": "Patient created successfully", "patient": result["patient"]}, status=status.HTTP_201_CREATED)
 
         # If creation failed for unknown reasons
       
+  
         return Response({"error": "An unexpected error occurred"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_view(["GET","PATCH","DELETE"])
+
+@patient_detail_schema()
+@api_view(["GET","DELETE"])
 
 
 def PatientDetail(request, id):
@@ -59,3 +74,13 @@ def PatientDetail(request, id):
         print(e)
         # Return a 500 response for any unexpected errors
         return Response({"error": f"{e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@medecin_list_schema()
+@api_view(["GET"])      
+def MedcinList(request): 
+   try: 
+    medcinList = CustomUser.objects.filter(role="medecin").values("id","username","email")
+    res =  MedcinListSerializer(medcinList,many=True)
+    return Response(res.data)
+   except Exception as e:
+    return Response({"error": f"{e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

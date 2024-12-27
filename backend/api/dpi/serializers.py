@@ -10,6 +10,10 @@ from django.core.files import File
 import base64
 
 from django.utils import timezone as data
+class MedcinListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id','username','email']
 class PatientCreateSerializer(serializers.ModelSerializer):
    
     class Meta:
@@ -27,7 +31,7 @@ class UserListingField(serializers.RelatedField):
         }
     class Meta:
         model = CustomUser
-        fields = ['username']
+        fields = ['username' ,'email']
     
 class PatientSerializerWithId(serializers.ModelSerializer):
     

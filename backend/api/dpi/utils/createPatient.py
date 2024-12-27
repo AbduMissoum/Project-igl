@@ -36,7 +36,6 @@ def createPatient(data):
         patient.medecin_traitant.set(patientwithoutId["medecin_traitant"])                               
         patient.save() 
         #creating dpi
-  
         #serializing 
         res = PatientSerializer(patient)
         dpi = DpiSerializer(data=res.data)
@@ -47,7 +46,7 @@ def createPatient(data):
         return { "username": user.username, 
                 "password": password,
                 "email":user.email,
-                "id":patient.id.id}                          
+                "patient":res.data}                          
 
        
     else:
