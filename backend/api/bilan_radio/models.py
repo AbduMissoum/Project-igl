@@ -11,6 +11,7 @@ class BilanRadiologique(models.Model):
     consultation = models.ForeignKey(Consultation, on_delete=models.CASCADE)  # Foreign key to Consultation
     radiologe = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True,blank=True) # Foreign key to radiologue
     satisfait = models.BooleanField(default=False)  # Boolean field with default value False
+    date = models.DateField(auto_now_add=False,default=None)
     def __str__(self):
         return f"BilanRadiologique {self.id}: {self.type}"
     

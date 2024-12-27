@@ -3,6 +3,7 @@ from consultation.models import Consultation
 from django.db import transaction
 from authentication.models import CustomUser
 from bilan_radio.Serializers import BilanRadiologiqueSerializer,ExamenImagerieMedicaleSerializer
+from datetime import datetime
 def faire_demande(id:int,type:str):
     try:
         with transaction.atomic():
@@ -17,6 +18,7 @@ def faire_demande(id:int,type:str):
                     compte_rendu = None,
                     consultation=consultation, 
                     radiologe = None,
+                    date = datetime.now()
                 )
                 examen = ExamenImagerieMedicale.objects.create(
                     examen_image = None,
@@ -38,9 +40,10 @@ def fetch_bilan(id:int,rad_id:int):
         return {"status": "error", "message": f"BilanBiologique with ID {id} not found"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
-def fetch_non_assigned():
+def fetch_non_assigned(id:int):
     try:
-        bilans = BilanRadiologique.objects.filter(satisfait=False,radiologe=None)
+        radiologue=CustomUser.objects.get(id=id)
+        bilans = BilanRadiologique.objects.filter(satisfait=False,radiologe=None,consultation__etablisement=radiologue.etablisement)
         serializer = BilanRadiologiqueSerializer(bilans,many=True)
         return {"status":"success","message":serializer.data}
     except Exception as e:

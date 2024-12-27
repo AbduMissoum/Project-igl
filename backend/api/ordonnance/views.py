@@ -5,7 +5,7 @@ from .serializers import MedicamentSerializer, OrdonnanceSerializer, TraitementS
 from .utils import (
     get_all_objects, get_object_or_404, create_object, update_object, delete_object
 )
-
+from rest_framework.parsers import JSONParser
 
 @api_view(['GET', 'POST'])
 def medicament_list(request):
