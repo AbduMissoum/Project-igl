@@ -3,6 +3,7 @@ from .models import Consultation
 from dpi.models import Dpi
 from .serializers import ConsultationSerializer
 from rest_framework.parsers import JSONParser
+from authentication.models import CustomUser
 
 
 def get_all_consultations():
@@ -84,4 +85,35 @@ def create_consultations_by_dpi(pk, data):
     if serializer.is_valid():
         serializer.save()
         return JsonResponse(serializer.data, status=201, safe=False)
+    return JsonResponse(serializer.errors, status=400)
+
+def get_consultations_by_medecin(medecin_id):
+    """
+    Récupère toutes les consultations associées à un médecin.
+    """
+    try:
+        medecin = CustomUser.objects.get(pk=medecin_id)
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'Médecin introuvable'}, status=404)
+
+    consultations = Consultation.objects.filter(medecin=medecin)
+    serializer = ConsultationSerializer(consultations, many=True)
+    return JsonResponse(serializer.data, safe=False, status=200)
+
+
+def create_consultation_by_medecin(medecin_id, data):
+    """
+    Crée une consultation associée à un médecin spécifique.
+    """
+    try:
+        medecin = CustomUser.objects.get(pk=medecin_id)
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'Médecin introuvable'}, status=404)
+
+    data['medecin'] = medecin_id  # Ajoute le médecin aux données
+    serializer = ConsultationSerializer(data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
