@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rechercher Patient</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-clair to-white text-gray-800">
+
+  <!-- Header -->
+  <header class="py-4 px-8 flex flex-col lg:flex-row items-center justify-between  w-full bg-clair ">
+    <!-- Partie gauche : Logo -->
+    <div class="flex-shrink-0">
+        <img src="assets/images/logo.png" alt="Logo" class="w-10 h-10 rounded-full">
+    </div>
+
+    <!-- Partie droite : Navbar -->
+    <nav class="flex flex-col lg:flex-row lg:space-x-10 space-y-4 lg:space-y-0 w-full lg:w-auto ml-4 items-center">
+        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">DPI</a>
+        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">Consultations</a>
+        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">Soins</a>
+        <a href="#" class="text-2xl text-fonce font-semibold hover:underline">Contact US</a>
+    </nav>
+
+    <!-- Bouton LogOut -->
+    <div class="flex-shrink-0 text-lg font-bold text-fonce mt-4 lg:mt-0">
+        <button type="submit" class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold  focus:ring focus:ring-fonce">
+            LogOut
+        </button>
+    </div>
+</header>
+<section class="flex flex-col items-center justify-center h-[80vh] px-4 -mt-40">
+  <h1 class="text-4xl font-bold text-fonce mb-10 text-center">
+      Rechercher un patient
+  </h1>
+
+  <div class="flex flex-col lg:flex-row items-center gap-12">
+      <div class="w-full max-w-2xl mx-auto text-center text-fonce lg:text-left max-w-xl">
+          <p class="text-center">
+            Accédez rapidement aux informations d’un patient grâce à son Numéro de Sécurité Sociale (NSS) ou à son Code QR unique.
+          </p>
+          <ul class="list-disc pl-6">
+            <li> Rechercher par NSS : Entrez le numéro pour accéder au dossier correspondant. </li>
+            <li>  Rechercher par Code QR : Scannez le code QR pour un accès instantané.. </li>
+          </ul>
+          <p class="text-center">
+            Cette page vous offre une solution rapide et intuitive pour retrouver les dossiers médicaux avec précision et efficacité.
+          </p>
+      </div>
+  </div>
+</section>
+<section>
+  <h2 class="text-4xl font-bold text-fonce mb-10 mt-8 text-center">
+    Entrez le numéro de sécurité social du patient:
+  </h2>
+  <form class="flex flex-col items-center space-y-6">
+    <!-- Champ de saisie -->
+    <input
+      type="text"
+      placeholder="Numéro de sécurité sociale"
+      class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-fonce focus:border-fonce"
+    />
+
+    <!-- Boutons -->
+    <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 w-full max-w-md">
+      <!-- Bouton Rechercher -->
+      <button
+        type="submit"
+        class="bg-fonce text-white px-6 py-3 rounded-lg font-semibold hover:bg-fonce/90 focus:ring focus:ring-fonce w-full sm:w-auto">
+        Rechercher
+      </button>
+
+      <!-- Bouton Rechercher par Code QR -->
+      <button
+        type="button"
+        class="bg-fonce text-white px-6 py-3 rounded-lg font-semibold hover:bg-fonce/90 focus:ring focus:ring-fonce w-full sm:w-auto">
+        Rechercher par Code QR
+      </button>
+    </div>
+  </form>
+</section>
+<br> <br> <br>
+
+
+</body></html>
