@@ -10,10 +10,8 @@
     
     <div class="flex justify-center items-center w-full h-screen ">
         <div class="flex w-full max-w-4xl bg-white rounded-[40px] shadow-lg">
-            
             <img class="w-1/2 h-full object-cover rounded-l-[40px]" src="assets/images/Login.gif" alt="rectangle">
-
-           
+            
             <div class="flex flex-col py-3 items-center justify-center w-1/2 ">
                 <div class="flex flex-col  --mt-6 items-center justify-center">
                     <a class="text-center rounded-full ">
@@ -31,7 +29,7 @@
               >
               
                 <input type="password" id="password" placeholder="Password" class="mt-4 p-5  ring-2 ring-fonce border-none border-b border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500">
-                <button type="submit" class="bg-fonce text-white px-6 py-3 mt-4 rounded-[40px] font-semibold focus:ring focus:ring-fonce">
+                <button (click)="connecter()" routerLink="/patient" type="submit" class="bg-fonce text-white px-6 py-3 mt-4 rounded-[40px] font-semibold focus:ring focus:ring-fonce">
                     Connecter
                 </button>
             </div>

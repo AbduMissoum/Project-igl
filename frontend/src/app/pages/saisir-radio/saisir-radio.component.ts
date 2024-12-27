@@ -1,77 +1,39 @@
 import { Component , ViewChild , ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-saisir-radio',
-  imports: [FormsModule , CommonModule],
+  imports: [FormsModule , CommonModule , RouterLink , RouterLinkActive],
   templateUrl: './saisir-radio.component.html',
   styleUrl: './saisir-radio.component.css'
 })
 export class SaisirRadioComponent {
-  file: File | null = null;
-@ViewChild('fileInput', { static: false })
-fileInput!: ElementRef<HTMLInputElement>;
-compteRendu: string = ''; 
-isInvalid: boolean = false;
+  // Tableau initial vide
+  rows: Array<{ analysis: string; result: string; unit: string; reference: string }> = [];
 
+  // Indique si le graphe est généré
+  graphGenerated = false;
+  generatedGraph: string = '';
 
+ 
+ 
 
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-    const uploadSection = event.target as HTMLElement;
-    uploadSection.classList.add('dragover');
-  }
-
-  onDragLeave(event: DragEvent) {
-    const uploadSection = event.target as HTMLElement;
-    uploadSection.classList.remove('dragover');
-  }
-
-  onFileDrop(event: DragEvent) {
-    event.preventDefault();
-    const uploadSection = event.target as HTMLElement;
-    uploadSection.classList.remove('dragover');
-    if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-      this.file = event.dataTransfer.files[0];
-      console.log('File dropped:', this.file);
+  // Générer un graphe
+  generateGraph() {
+    // Vérifier que des données existent
+    if (this.rows.length === 0) {
+      alert('Veuillez ajouter des données avant de générer le graphe.');
+      return;
     }
+
+    // Simulation de génération de graphe (à remplacer par votre propre logique)
+    this.graphGenerated = true;
+    this.generatedGraph = 'assets/images/generated-graph.png'; // Chemin de l'image générée
   }
-  triggerFileInput(): void {
-    this.fileInput.nativeElement.click(); 
-  }
-
-  onFileSelect(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.file = input.files[0];
-      console.log('File selected:', this.file);
-    }
-    
-  }
-
-  onRetour() {
-    console.log('Retour');
-  }
-
-  onEnvoyer() {
-
-
-    if (!this.compteRendu.trim()) {
-      this.isInvalid = true; 
-    } else {
-      this.isInvalid = false; 
-      console.log('Compte rendu envoyé:', this.compteRendu);
-    }
-    if (this.file) {
-      console.log('File to upload:', this.file);
-    } else {
-      console.log('No file selected.');
-    }
-    console.log('Compte rendu envoyé.');
-  }
-
 }
+
 
 
 
