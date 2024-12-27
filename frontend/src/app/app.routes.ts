@@ -29,14 +29,12 @@ export const routes: Routes = [
       path: 'admin',
       component: AdminPageComponent, 
          },
-         {
+     {
             path: 'analysedemande',
             component: AnalyseDemandeComponent, 
           },
-         {
-                path: 'admin',
-                component: AdminPageComponent, 
-       },
+       
+          
        {
         path: 'medecin',
         component: MedecinComponent, 

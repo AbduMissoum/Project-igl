@@ -4,7 +4,7 @@ import { OrdonanceComponent } from '../ordonance/ordonance.component';
 import { BilanbioComponent } from '../bilanbio/bilanbio.component';
 import { BilanradioComponent } from '../bilanradio/bilanradio.component';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+
 
 
 @Component({
@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,  
   templateUrl: './patientresume.component.html',
   styleUrls: ['./patientresume.component.css'],
-  imports: [RouterLink, ResumeComponent,OrdonanceComponent,BilanbioComponent,BilanradioComponent , CommonModule ] ,
+  imports: [ ResumeComponent,OrdonanceComponent,BilanbioComponent,BilanradioComponent , CommonModule ] ,
 })
 export class PatientresumeComponent {
 

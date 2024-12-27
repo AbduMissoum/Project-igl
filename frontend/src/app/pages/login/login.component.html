@@ -6,7 +6,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Document</title>
 </head>
-<body class="bg-gradient-to-b from-clair to-blanc min-h-screen">
+<body class="bg-gradient-to-b from-clair to-blanc min-h-screen" >
     
     <div class="flex justify-center items-center w-full h-screen ">
         <div class="flex w-full max-w-4xl bg-white rounded-[40px] shadow-lg">
@@ -29,7 +29,7 @@
               >
               
                 <input type="password" id="password" placeholder="Password" class="mt-4 p-5  ring-2 ring-fonce border-none border-b border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500">
-                <button (click)="connecter()" routerLink="/patient" type="submit" class="bg-fonce text-white px-6 py-3 mt-4 rounded-[40px] font-semibold focus:ring focus:ring-fonce">
+                <button (click)="onLogin()" routerLink="/patient" type="submit" class="bg-fonce text-white px-6 py-3 mt-4 rounded-[40px] font-semibold focus:ring focus:ring-fonce">
                     Connecter
                 </button>
             </div>

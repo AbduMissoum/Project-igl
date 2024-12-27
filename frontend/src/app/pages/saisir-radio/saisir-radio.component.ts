@@ -5,7 +5,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-saisir-radio',
-  imports: [FormsModule , CommonModule , RouterLink , RouterLinkActive],
+  imports: [FormsModule , CommonModule ],
   templateUrl: './saisir-radio.component.html',
   styleUrl: './saisir-radio.component.css'
 })
