@@ -1,13 +1,16 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework.request import Request
 from rest_framework.response import Response
 from .utils import demand_bilan
 from rest_framework import status
-#from .models import BilanBiologique
+from rest_framework.permissions import IsAuthenticated
+from api.permissions import IsMedecin,HasBilanAssignment,IsLaborantin
+from .models import BilanBiologique
 
 # Create your views here.
 @api_view(['POST'])
+@permission_classes([IsMedecin()])
 def demander_bilan(request:Request)->Response:
     test_names = request.data.get("tests", [])  # List of test names
     consultation_id = request.data.get("consultation_id")
@@ -19,15 +22,21 @@ def demander_bilan(request:Request)->Response:
     else:
         return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
 @api_view(['PUT'])
+@permission_classes([HasBilanAssignment])
 def remplir_bilan(request:Request,bilan_id:int)->Response:
+    bilan = BilanBiologique.objects.get(id=bilan_id)
+    permission = HasBilanAssignment()
+    if not permission.has_object_permission(request,None,bilan):
+        return Response({"message":"You don't have permissions to fill this bilan"},status=status.HTTP_403_FORBIDDEN)
     result = demand_bilan.remplissement_bilan(bilan_id,request.data)
     if result['status']=='success':
         return Response({"message":"Bilan Satisfied"},status=status.HTTP_201_CREATED)
     else:
         return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
 @api_view(['GET'])
+@permission_classes([IsLaborantin()])
 def get_bilan(request:Request,bilan_id:int)->Response:
-    lab_id = request.query_params.get("lab_id")
+    lab_id = request.user.id
     # print(f"Lab_id : {lab_id}",end="\n")
     result = demand_bilan.fetch_bilan(bilan_id,lab_id)
     if result['status']=='success':
@@ -36,8 +45,10 @@ def get_bilan(request:Request,bilan_id:int)->Response:
         return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@permission_classes([IsLaborantin()])
 def get_demandes(request:Request)->Response:
-    result = demand_bilan.fetch_non_assigned()
+    id = request.user.id
+    result = demand_bilan.fetch_non_assigned(id)
     # print(result)
     if result['status']=='success':
         return Response(result['message'],status=status.HTTP_200_OK)

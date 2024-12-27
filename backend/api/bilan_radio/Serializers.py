@@ -3,15 +3,17 @@ from .models import BilanRadiologique,ExamenImagerieMedicale
 from consultation.models import Consultation
 from dpi.serializers import PatientSerializerWithNSS
 from authentication.serializers import UserSerializer
+from dpi.models import Patient
 class ConsulationListingField(serializers.RelatedField):
     def to_representation(self, value):
 
-        patient = value.dpi_id.id   
-        patient = PatientSerializerWithNSS(patient)
-        print(patient.data)
+        patient = value.dpi.id 
+        # print (patient)  
+        patient_serializer = PatientSerializerWithNSS(patient)
+        # print(patient_serializer.data)
         medecin = UserSerializer(value.medecin)
         return {
-            "patient": patient.data,
+            "patient": patient_serializer.data,
             "medcin": medecin.data,
         }
     class Meta:

@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     'ordonnance.apps.OrdonnanceConfig',
     'consultation',
     'bilan_radio',
-'les_soins',
-
+    'les_soins',
+    'rest_framework.authtoken',
   
 
 ]
@@ -162,9 +162,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ]
+        'rest_framework.authentication.TokenAuthentication',  # Token-based auth
+        'rest_framework.authentication.SessionAuthentication',  # Session-based auth
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # Default permission
+    ],
 }
 MEDIA_URL = '/media/'  # URL prefix for accessing media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory on the server where files will be stored
