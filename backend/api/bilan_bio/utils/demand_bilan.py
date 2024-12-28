@@ -53,18 +53,18 @@ def remplissement_bilan(id: int, data):
 
         # Update each ParamValeur instance
         for param_data in param_valeurs_data:
-            param_id = param_data.get('id')
+            param_name = param_data.get('parametre')
             try:
                 # Find the corresponding ParamValeur instance
-                param = param_valeurs.get(id=param_id)
+                param = param_valeurs.get(parametre=param_name)
                 # Serialize and update the ParamValeur instance
                 serializer = ParamValeurSerializer(param, data=param_data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
                 else:
-                    return {"status": "error", "message": f"Invalid data for ParamValeur {param_id}"}
+                    return {"status": "error", "message": f"Invalid data for ParamValeur {param_name}"}
             except ParamValeur.DoesNotExist:
-                return {"status": "error", "message": f"ParamValeur with id {param_id} not found"}
+                return {"status": "error", "message": f"ParamValeur with id {param_name} not found"}
 
         # Update the satisfait fields  
             # bilan_biologique.laborantient = laborantient

@@ -7,8 +7,11 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from api.permissions import IsMedecin,HasBilanAssignment,IsLaborantin
 from .models import BilanBiologique
-
+from .serializers import RemplirBilanRequestSerializer
+from drf_yasg import openapi
+from .docs import remplir_bilan_schema,voir_bilan_schema,notifications_schema,demande_schema
 # Create your views here.
+@demande_schema.demand_bio_schema()
 @api_view(['POST'])
 @permission_classes([IsMedecin()])
 def demander_bilan(request:Request)->Response:
@@ -21,18 +24,24 @@ def demander_bilan(request:Request)->Response:
         return Response({"message":"Demand successfuly created"},status=status.HTTP_201_CREATED)
     else:
         return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
-@api_view(['PUT'])
+
 @permission_classes([HasBilanAssignment])
+@remplir_bilan_schema.remplir_schema()
+@api_view(['PUT'])
 def remplir_bilan(request:Request,bilan_id:int)->Response:
     bilan = BilanBiologique.objects.get(id=bilan_id)
     permission = HasBilanAssignment()
     if not permission.has_object_permission(request,None,bilan):
         return Response({"message":"You don't have permissions to fill this bilan"},status=status.HTTP_403_FORBIDDEN)
-    result = demand_bilan.remplissement_bilan(bilan_id,request.data)
+    serializer = RemplirBilanRequestSerializer(data=request.data)
+    if serializer.is_valid():
+        param_valeurs_data = serializer.validated_data
+        result = demand_bilan.remplissement_bilan(bilan_id, param_valeurs_data)
     if result['status']=='success':
         return Response({"message":"Bilan Satisfied"},status=status.HTTP_201_CREATED)
     else:
         return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
+@voir_bilan_schema.voir_bilan_schema()
 @api_view(['GET'])
 @permission_classes([IsLaborantin()])
 def get_bilan(request:Request,bilan_id:int)->Response:
@@ -43,7 +52,7 @@ def get_bilan(request:Request,bilan_id:int)->Response:
         return Response(result['message'],status=status.HTTP_200_OK)
     else:
         return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
-
+@notifications_schema.notificaions_schema()
 @api_view(['GET'])
 @permission_classes([IsLaborantin()])
 def get_demandes(request:Request)->Response:
