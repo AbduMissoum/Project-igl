@@ -14,8 +14,13 @@ from dpi.serializers import PatientSerializer
 from django.core.mail import send_mail
 from .utils import content
 
+#docs 
+from .docstrings.docAuth import login_schema,logout_schema
+
 @csrf_exempt
+@login_schema()
 @api_view(["POST"])
+
 def logUser(req):
         
     if(req.user.is_authenticated):
@@ -43,6 +48,7 @@ def logUser(req):
       except KeyError as e: 
         return JsonResponse({"message":f"key is missing {e}"},status=status.HTTP_400_BAD_REQUEST)
 @csrf_exempt
+@logout_schema()
 @api_view(["POST"])
 def logoutUser(req):
         

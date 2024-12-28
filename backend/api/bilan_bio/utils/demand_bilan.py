@@ -3,6 +3,7 @@ from consultation.models import Consultation
 from bilan_bio.models import BilanBiologique,ParamValeur
 from authentication.models import CustomUser
 from bilan_bio.serializers import ParamValeurSerializer,BilanBiologiqueSerializer
+from datetime import datetime
 def faire_demande(test_names:list,id:int):
     try:
         with transaction.atomic():
@@ -17,6 +18,7 @@ def faire_demande(test_names:list,id:int):
                     consultation=consultation,
                     laborantient=None,  
                     satisfait=False,
+                    date = datetime.now()
                 )
                 for test_name in test_names:
                     ParamValeur.objects.create(
@@ -91,11 +93,10 @@ def fetch_bilan(id:int,lab_id:int):
         return {"status": "error", "message": f"BilanBiologique with ID {id} not found"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
-def fetch_non_assigned():
+def fetch_non_assigned(id:int):
     try:
-        
-      
-        bilans = BilanBiologique.objects.filter(satisfait=False,laborantient=None)
+        laborantin = CustomUser.objects.get(id=id)  
+        bilans = BilanBiologique.objects.filter(satisfait=False,laborantient=None,consultation__etablisement=laborantin.etablisement)
         print(bilans)
         serializer = BilanBiologiqueSerializer(bilans,many=True)
         return {"status":"success","message":serializer.data}

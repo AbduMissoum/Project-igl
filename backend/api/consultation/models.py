@@ -12,3 +12,5 @@ class Consultation(models.Model):
 
     def __str__(self):
         return f"Consultation {self.id}" 
+
+

@@ -4,6 +4,8 @@ from dpi.models import Dpi
 from .serializers import ConsultationSerializer
 from rest_framework.parsers import JSONParser
 from authentication.models import CustomUser
+from rest_framework.response import Response
+from datetime import datetime
 
 
 def get_all_consultations():
@@ -42,25 +44,25 @@ def delete_consultation(consultation):
     return JsonResponse({'message': 'Consultation deleted successfully'}, status=204)
 
 
-def get_consultations_by_date(consultation_date=None):
-    if consultation_date:
-        consultations = Consultation.objects.filter(la_date=consultation_date)
-    else:
-        consultations = Consultation.objects.all()
+def validate_date(date):
+    """
+    Valide le format de la date (YYYY-MM-DD).
+    """
+    try:
+        datetime.strptime(date, '%Y-%m-%d')
+        return None  # Aucun problème
+    except ValueError:
+        return {'error': 'Invalid date format. Use YYYY-MM-DD.'}
+
+def get_consultations_by_date(date):
+    """
+    Récupère les consultations pour une date donnée.
+    """
+    consultations = Consultation.objects.filter(la_date=date)
+    if not consultations.exists():
+        return {'message': 'No consultations found for this date'}, 404
     serializer = ConsultationSerializer(consultations, many=True)
-    return JsonResponse(serializer.data, safe=False)
-
-
-def create_consultations_by_date(data):
-    if isinstance(data, list):
-        serializer = ConsultationSerializer(data=data, many=True)
-    else:
-        serializer = ConsultationSerializer(data=data)
-
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse(serializer.data, status=201, safe=False)
-    return JsonResponse(serializer.errors, status=400)
+    return serializer.data, 200
 
 
 def get_consultations_by_dpi(pk):
@@ -117,3 +119,5 @@ def create_consultation_by_medecin(medecin_id, data):
         serializer.save()
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
+
+

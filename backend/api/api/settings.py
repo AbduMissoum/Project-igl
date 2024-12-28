@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,18 +38,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+     "drf_spectacular",
+    'drf_yasg',
     'rest_framework',
     'dpi',
     'bilan_bio',
     'authentication',
     'ordonnance.apps.OrdonnanceConfig',
     'consultation',
-
-
+    'bilan_radio',
+    'les_soins',
+    'rest_framework.authtoken',
   
+
 ]
 
-# settings.py
+
+
+# mailing service
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
@@ -63,6 +70,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'api.urls'
 
+
+
+SWAGGER_SETTINGS = {
+   'DEFAULT_INFO': 'import.path.to.urls.api_info',
+}
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -89,7 +101,7 @@ AUTH_USER_MODEL = 'authentication.CustomUser'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mediumclone_igl2',
+        'NAME': 'mediumclone_igl4',
         'USER': '367579_abdallah',
         'PASSWORD': 'abdallah',
         'HOST': 'mysql-mediumclone.alwaysdata.net',  # Or your MySQL server's IP/hostname
@@ -130,6 +142,16 @@ USE_I18N = True
 
 USE_TZ = True
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Soins API',
+    'DESCRIPTION': 'API documentation for managing soins data.',
+    'VERSION': '1.0.0',
+    'TITLE': 'Ordonnance API',
+    'DESCRIPTION': 'API documentation for managing Ordonnance data',
+    'VERSION': '1.0.0',
+    # This is typically not needed unless you have custom info.
+    'DEFAULT_INFO': 'drf_spectacular.openapi.Info',  # Use the default info
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -141,8 +163,14 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ]
+        'rest_framework.authentication.TokenAuthentication',  # Token-based auth
+        'rest_framework.authentication.SessionAuthentication',  # Session-based auth
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # Default permission
+    ],
 }
+MEDIA_URL = '/media/'  # URL prefix for accessing media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory on the server where files will be stored

@@ -11,4 +11,4 @@ class ConsultationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Consultation
-        fields = '__all__'
+        fields = ['id','dpi','medecin','etablisement','la_date','resume']
