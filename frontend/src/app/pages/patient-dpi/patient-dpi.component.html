@@ -11,8 +11,8 @@
   
   <main class="container mx-auto mb-16  mt-12 px-4">
     <!-- Title -->
-    <section class="text-center mb-10">
-      <h1 class="text-4xl font-bold text-fonce mb-4">
+    <section class="text-center mb-12 mx-32">
+      <h1 class="text-3xl font-bold text-fonce mb-4">
         Consultez vos informations médicales en toute simplicité !
       </h1>
       <p class="text-lg text-gray-600">
@@ -42,17 +42,18 @@
           <img src="assets/images/DPI.png" alt="Patient Illustration" class="w-80 h-80">
         </div>
       </div>
-
+     
       <!-- QR Code -->
-      <div class="flex justify-center items-center  mt-20">
-        <div class="bg-white rounded-lg p-4 shadow-md">
-          <p class="text-lg font-semibold text-center text-fonce">Code QR</p>
-          <div class="w-20 h-20 bg-gray-200 flex items-center justify-center rounded-md">
-            
-            [QR Code]
+     
+       
+          
+          <div class=" w-10 h-10 bg-clair ml-80 mt-12 mb-20  flex items-center justify-center rounded-md">
+          <qrcode [qrdata]="nss" class="w-full h-full" [errorCorrectionLevel]="'M'"></qrcode>
+           
+           
           </div>
-        </div>
-      </div>
+    
+    
     </section>
   </main>
 
