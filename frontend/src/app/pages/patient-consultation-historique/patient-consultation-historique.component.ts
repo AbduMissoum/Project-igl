@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 
 interface Historique {
@@ -10,7 +11,7 @@ interface Historique {
 }
 @Component({
   selector: 'app-patient-consultation-historique',
-  imports: [ CommonModule],
+  imports: [ CommonModule , RouterLink ],
   templateUrl: './patient-consultation-historique.component.html',
   styleUrl: './patient-consultation-historique.component.css'
 })

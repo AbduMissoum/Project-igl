@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     // Initialisation ou récupération depuis le backend
-    this.userRole = 'Infirmier'; // Valeur par défaut pour les tests
+    this.userRole = 'Patient'; // Valeur par défaut pour les tests
   }
   
 

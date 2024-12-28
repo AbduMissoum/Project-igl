@@ -3,67 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patient DPI</title>
+  <title>Dossier Patient Informatisé (DPI)</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-gradient-to-b from-clair to-white text-gray-800">
 
-  <!-- Header -->
-  <header class="py-4 px-8 flex flex-col lg:flex-row items-center justify-between  w-full bg-clair ">
-    <!-- Partie gauche : Logo -->
-    <div class="flex-shrink-0">
-        <img src="assets/images/logo.png" alt="Logo" class="w-10 h-10 rounded-full">
-    </div>
-
-    <!-- Partie droite : Navbar -->
-    <nav class="flex flex-col lg:flex-row lg:space-x-10 space-y-4 lg:space-y-0 w-full lg:w-auto ml-4 items-center">
-        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">DPI</a>
-        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">Consultations</a>
-        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">Soins</a>
-        <a href="#" class="text-2xl text-fonce font-semibold hover:underline">Contact US</a>
-    </nav>
-
-    <!-- Bouton LogOut -->
-    <div class="flex-shrink-0 text-lg font-bold text-fonce mt-4 lg:mt-0">
-        <button type="submit" class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold  focus:ring focus:ring-fonce">
-            LogOut
-        </button>
-    </div>
-</header>
-<section class="flex flex-col items-center justify-center h-[80vh] px-4 -mt-40">
-  <h1 class="text-4xl font-bold text-fonce mb-10 text-center">
-      Consultez vos informations médicales en toute sécurité
-  </h1>
-
-  <div class="flex flex-col lg:flex-row items-center gap-12">
-    <div class="w-full max-w-3xl mx-auto text-center text-fonce lg:text-left">
-      <p class="text-center max-w-3xl mx-auto leading-relaxed">
-        Bienvenue sur votre espace personnel dédié à la consultation de votre Dossier Patient Informatisé (DPI). Ici, vous avez un accès sécurisé à vos données médicales essentielles : antécédents, traitements, ordonnances, et résultats d'examens.
+  
+  <main class="container mx-auto mb-16  mt-12 px-4">
+    <!-- Title -->
+    <section class="text-center mb-10">
+      <h1 class="text-4xl font-bold text-fonce mb-4">
+        Consultez vos informations médicales en toute simplicité !
+      </h1>
+      <p class="text-lg text-gray-600">
+        Bienvenue sur votre espace personnel dédié à la consultation de votre Dossier Patient Informatisé (DPI). 
+        Ici, vous avez un accès sécurisé à vos données médicales essentielles : antécédents, traitements, ordonnances, et résultats d'examens. 
         Ce portail vous permet de suivre votre historique de santé et de mieux comprendre les soins qui vous sont prodigués. Toutes vos informations sont protégées et accessibles à tout moment pour garantir transparence et continuité dans votre parcours de santé.
       </p>
-    </div>
-  </div>
+    </section>
 
-</section>
-<section>
-  <div class="p-8 rounded-lg max-w-4xl mx-auto -mt-40 leading-relaxed">
-    <div class="bg-clair p-6 rounded-lg shadow-lg">
-      <h2 class="text-black text-lg font-semibold mb-10">Informations Personnelles</h2>
+    <!-- Personal Information -->
+    <section class="bg-clair rounded-[40px] shadow-lg p-8 w-full max-w-4xl mx-auto">
+      <h2 class="text-2xl font-bold text-fonce mb-6">Information Personnel</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Information Details -->
+        <div class="space-y-4">
+          <p class="text-lg font-semibold text-fonce">Nom : <span class="text-gray-700">[Nom]</span></p>
+          <p class="text-lg font-semibold text-fonce">Prénom : <span class="text-gray-700">[Prénom]</span></p>
+          <p class="text-lg font-semibold text-fonce">Date de naissance : <span class="text-gray-700">[Date]</span></p>
+          <p class="text-lg font-semibold text-fonce">Téléphone : <span class="text-gray-700">[Téléphone]</span></p>
+          <p class="text-lg font-semibold text-fonce">Adresse : <span class="text-gray-700">[Adresse]</span></p>
+          <p class="text-lg font-semibold text-fonce">Mutuelle : <span class="text-gray-700">[Mutuelle]</span></p>
+          <p class="text-lg font-semibold text-fonce">E-mail : <span class="text-gray-700">[Email]</span></p>
+          <p class="text-lg font-semibold text-fonce">NSS : <span class="text-gray-700">[NSS]</span></p>
+        </div>
+        <!-- Illustration -->
+        <div class="flex items-center justify-center">
+          <img src="assets/images/DPI.png" alt="Patient Illustration" class="w-80 h-80">
+        </div>
+      </div>
 
-      <p class="text-black font-bold mb-8"><span>Nom:</span> <span class="text-fonce">Doe</span></p>
-      <p class="text-black font-bold mb-8"><span>Prénom:</span> <span class="text-fonce">John</span></p>
-      <p class="text-black font-bold mb-8"><span>Date et Lieu de naissance:</span> <span class="text-fonce">01/01/1990 à Toronto</span></p>
-      <p class="text-black font-bold mb-8"><span>Adresse:</span> <span class="text-fonce">123 rue Exemple, 75000 Paris</span></p>
-      <p class="text-black font-bold mb-8"><span>Mutuelle:</span> <span class="text-fonce">Mutuelle Santé+</span></p>
-      <p class="text-black font-bold mb-8"><span>E-mail:</span> <span class="text-fonce">mail</span></p>
-      <p class="text-black font-bold mb-8"><span>NSS:</span> <span class="text-fonce">123 45 678 901 2</span></p>
-    </div>
-</div>
+      <!-- QR Code -->
+      <div class="flex justify-center items-center  mt-20">
+        <div class="bg-white rounded-lg p-4 shadow-md">
+          <p class="text-lg font-semibold text-center text-fonce">Code QR</p>
+          <div class="w-20 h-20 bg-gray-200 flex items-center justify-center rounded-md">
+            
+            [QR Code]
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-
-
-
-</section>
-
-
-</body></html>
+</body>
+</html>

@@ -5,7 +5,6 @@
       <div class="flex-shrink-0">
         <img src="assets/images/logo.png" alt="Logo" class="w-16 h-16 rounded-full">
       </div>
-  
       <!-- Partie droite : Navbar -->
       <nav class="flex flex-col lg:flex-row lg:space-x-10 space-y-4 lg:space-y-0 w-full lg:w-auto ml-4 items-center">
         <!-- Contenu spécifique selon le rôle -->
@@ -15,20 +14,21 @@
         </ng-container>
             <ng-container *ngIf="userRole === 'Patient'">
             <a routerLink="/patient" class="text-2xl text-fonce font-semibold hover:underline">DPI</a>
-            <a routerLink="/patient" class="text-2xl text-fonce font-semibold hover:underline">Consultation</a>
-            <a routerLink="/patient" class="text-2xl text-fonce font-semibold hover:underline">Soins</a>
+            <a routerLink="/patientconsultation" class="text-2xl text-fonce font-semibold hover:underline">Consultation</a>
+            <a routerLink="/patientsoin" class="text-2xl text-fonce font-semibold hover:underline">Soins</a>
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
           </ng-container>
           <ng-container *ngIf="userRole === 'Medecin'">
-            <a routerLink="/medecin" class="text-2xl text-fonce font-semibold hover:underline">Rechercher</a>
-            <a routerLink="/medecin" class="text-2xl text-fonce font-semibold hover:underline">Consultation</a>
+            <a routerLink="/rechercher" class="text-2xl text-fonce  font-semibold hover:underline">Rechercher</a>
+            <a routerLink="/historiqueconsultation" class="text-2xl text-fonce font-semibold hover:underline">Consultation</a>
+            <a routerLink="/patientsoin" class="text-2xl text-fonce font-semibold hover:underline">Soins</a>
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
           </ng-container>
           <ng-container *ngIf="userRole === 'Infirmier'">
             <a routerLink="/saisirsoin" class="text-2xl text-fonce font-semibold hover:underline">Soins</a>
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
           </ng-container>
-          <ng-container *ngIf="userRole === 'laborantin'">
+          <ng-container *ngIf="userRole === 'Laborantin'">
             <a routerLink="/saisiranalyse" class="text-2xl text-fonce font-semibold hover:underline">Notifications</a>
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
           </ng-container>

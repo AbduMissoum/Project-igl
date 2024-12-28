@@ -1,70 +1,67 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Medecin consultation historique</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="min-h-screen bg-gradient-to-b from-clair to-white text-gray-800">
-
-  <!-- Header -->
-  <header class="py-4 px-8 flex flex-col lg:flex-row items-center justify-between  w-full bg-clair ">
-    <!-- Partie gauche : Logo -->
-    <div class="flex-shrink-0">
-        <img src="assets/images/logo.png" alt="Logo" class="w-10 h-10 rounded-full">
-    </div>
-
-    <!-- Partie droite : Navbar -->
-    <nav class="flex flex-col lg:flex-row lg:space-x-10 space-y-4 lg:space-y-0 w-full lg:w-auto ml-4 items-center">
-        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">DPI</a>
-        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">Consultations</a>
-        <a href="#" class=" text-2xl text-fonce font-semibold hover:underline">Soins</a>
-        <a href="#" class="text-2xl text-fonce font-semibold hover:underline">Contact US</a>
-    </nav>
-
-    <!-- Bouton LogOut -->
-    <div class="flex-shrink-0 text-lg font-bold text-fonce mt-4 lg:mt-0">
-        <button type="submit" class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold  focus:ring focus:ring-fonce">
-            LogOut
-        </button>
-    </div>
-</header>
-<section class="flex flex-col items-center justify-center h-[80vh] px-4 -mt-40">
+<div class="w-full max-w-5xl rounded-[40px] shadow-md p-8 ml-28 mt-6">
   <h1 class="text-4xl font-bold text-fonce mb-8 text-center">
-      <br> <br><br><br><br> Historique de vos consultations médicales <br> <br>
+    Historique de vos consultations médicales
   </h1>
 
-  <table class="table bg-clair w-[800px] mx-auto rounded-lg shadow-lg">
-    <thead class="bg-fonce text-white">
-      <tr>
-        <th class="py-2 px-4">Médecin</th>
-        <th class="py-2 px-4">Établissement</th>
-        <th class="py-2 px-4">Date</th>
-        <th class="py-2 px-4">Heure</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of historiques" class="hover:bg-gray-100">
-        <td class="py-2 px-4 text-center">{{ item.medecin }}</td>
-        <td class="py-2 px-4 text-center">{{ item.etablissement }}</td>
-        <td class="py-2 px-4 text-center">{{ item.date | date:'shortDate' }}</td>
-        <td class="py-2 px-4 text-center">{{ item.heure }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="overflow-hidden rounded-[40px] border border-fonce shadow-lg">
+    <table class="table-auto w-full text-left">
+      <!-- En-tête du tableau -->
+      <thead class="bg-fonce text-white">
+        <tr>
+          <th class="py-4 px-6 rounded-tl-[40px]">Médecin</th>
+          <th class="py-4 px-6">Établissement</th>
+          <th class="py-4 px-6">Date</th>
+          <th class="py-4 px-6">Heure</th>
+          <th class="py-4 px-6 rounded-tr-[40px] ">Details</th>
+        </tr>
+      </thead>
+      <!-- Corps du tableau -->
+      <tbody>
+        <tr *ngFor="let item of historiques" class="group bg-clair hover:bg-white transition-all duration-200 cursor-pointer">
+          <td class="py-4 px-6">{{ item.medecin }}</td>
+          <td class="py-4 px-6">{{ item.etablissement }}</td>
+          <td class="py-4 px-6">{{ item.date | date: 'shortDate' }}</td>
+          <td class="py-4 px-6">{{ item.heure }}</td>
+          <td class="py-4 px-6">
+            <!-- Bouton qui redirige vers la page de consultation -->
+            <a
+            routerLink="/medecin" class=" text-fonce font-semibold hover:underline">
+              Voir détails
+          </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <!-- Bouton Ajouter -->
   <div class="w-[800px] mx-auto flex justify-end mt-4">
-    <button class="bg-clair text-fonce px-6 py-3 rounded-[40px] font-semibold shadow-md hover:bg-gray-200">
+    <button class="bg-clair text-fonce px-6 py-3 rounded-[40px] font-semibold shadow-md hover:bg-gray-200" (click)="openModal()">
       Ajouter
     </button>
   </div>
 
+  <!-- Modal Formulaire -->
+  <div *ngIf="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white p-8 rounded-[40px] w-[400px]">
+      <h2 class="text-2xl font-bold text-fonce mb-6">Ajouter une consultation</h2>
 
-</section>
+      <label for="medecin" class="block text-sm text-fonce font-semibold mb-2">Médecin</label>
+      <input [(ngModel)]="newConsultation.medecin" type="text" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" placeholder="Nom du médecin" required>
 
+      <label for="etablissement" class="block text-sm text-fonce  font-semibold mb-2">Établissement</label>
+      <input [(ngModel)]="newConsultation.etablissement" type="text" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" placeholder="Établissement" required>
 
-</body></html>
+      <label for="date" class="block text-sm text-fonce font-semibold mb-2">Date</label>
+      <input [(ngModel)]="newConsultation.date" type="date" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" required>
 
+      <label for="heure" class="block text-sm text-fonce font-semibold mb-2">Heure</label>
+      <input [(ngModel)]="newConsultation.heure" type="time" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" required>
 
+      <div class="flex justify-between">
+        <button class="bg-gray-200 text-fonce px-6 py-3 rounded-[40px] font-semibold" (click)="closeModal()">Annuler</button>
+        <button class="bg-clair text-fonce px-6 py-3 rounded-[40px] font-semibold" (click)="addConsultation()">Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>

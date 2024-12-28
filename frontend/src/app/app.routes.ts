@@ -10,6 +10,11 @@ import { MedecinComponent } from './pages/medecin/medecin.component';
 import { PatientresumeComponent } from './pages/patientresume/patientresume.component';
 import { RadioDemndesComponent } from './pages/radio-demndes/radio-demndes.component';
 import { SaisirAnalyseComponent } from './pages/saisir-analyse/saisir-analyse.component';
+import { RechercherPatientComponent } from './pages/rechercher-patient/rechercher-patient.component';
+import { PatientConsultationHistoriqueComponent } from './pages/patient-consultation-historique/patient-consultation-historique.component';
+import { MedecinHistoriqueConsultationComponent } from './pages/medecin-historique-consultation/medecin-historique-consultation.component';
+import { PatientDPIComponent } from './pages/patient-dpi/patient-dpi.component';
+import { PatientSoinComponent } from './pages/patient-soin/patient-soin.component';
 
 export const routes: Routes = [ 
     {
@@ -41,7 +46,7 @@ export const routes: Routes = [
       },
       {
         path: 'patient',
-        component: PatientresumeComponent, 
+        component: PatientDPIComponent, 
       },
       {
         path: 'radiodemande',
@@ -56,9 +61,33 @@ export const routes: Routes = [
         component: SaisirRadioComponent, 
       },
       {
+      path: 'rechercher',
+      component: RechercherPatientComponent, 
+     },
+      {
         path: 'saisirsoin',
         component: SaisirSoinComponent, 
       },
+      {
+        path: 'historiqueconsultation',
+        component: MedecinHistoriqueConsultationComponent, 
+      },
+      {
+        path: 'patientconsultation',
+        component: PatientConsultationHistoriqueComponent, 
+      },
+       {
+        path: 'patientsoin',
+        component: PatientSoinComponent, 
+      },
+      {
+        path: 'patientcons',
+        component: PatientresumeComponent, 
+      },
+      
+
+      
+
 
       ];
 
