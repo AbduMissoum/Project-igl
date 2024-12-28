@@ -34,4 +34,4 @@ class ExamenImagerieMedicaleSerializer(serializers.ModelSerializer):
         model = ExamenImagerieMedicale
         fields = ['id','examen_image']
         #Remember the formdata for the frontend team
-        
+

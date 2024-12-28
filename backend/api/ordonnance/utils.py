@@ -1,6 +1,8 @@
 from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from django.core.exceptions import ObjectDoesNotExist
+from .models import Ordonnance
+from django.shortcuts import get_object_or_404
 
 
 def get_all_objects(model, serializer_class):
@@ -42,3 +44,12 @@ def delete_object(instance):
     """Supprime un objet existant."""
     instance.delete()
     return JsonResponse({'message': 'Deleted successfully'}, status=204)
+
+def valider_ordonnance_util(pk):
+    """Valide une ordonnance en fonction de son ID."""
+    ordonnance = get_object_or_404(Ordonnance, pk=pk, error_message="Ordonnance introuvable")
+    if ordonnance.valide:
+        raise ValueError("Ordonnance is already validated")
+    ordonnance.valide = True
+    ordonnance.save()
+    return ordonnance
