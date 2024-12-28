@@ -4,8 +4,10 @@ from dpi.models import Dpi
 from .serializers import ConsultationSerializer
 from rest_framework.parsers import JSONParser
 from authentication.models import CustomUser
+
 from rest_framework.response import Response
 from datetime import datetime
+
 
 
 def get_all_consultations():
@@ -119,5 +121,4 @@ def create_consultation_by_medecin(medecin_id, data):
         serializer.save()
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
-
 

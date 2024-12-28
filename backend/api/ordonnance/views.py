@@ -7,11 +7,13 @@ from .serializers import MedicamentSerializer, OrdonnanceSerializer, TraitementS
 from .utils import (
     get_all_objects, get_object_or_404, create_object, update_object, delete_object, valider_ordonnance_util
 )
+
 from .docstrings import(ordonnance_list_schema,create_ordonnance_schema,ordonnance_detail_schema,valider_ordonnance_schema,update_ordonnance_schema,sup_ordonnance_schema,get_ordonnance_traitements_schema,post_ordonnance_traitements_schema,delete_traitement_schema,put_traitement_schema,traitement_detail_schema,post_traitement_schema,traitement_list_schema,post_medicament_schema,put_medicament_schema,delete_medicament_schema,medicament_detail_schema,medicament_list_schema)
 from rest_framework.parsers import JSONParser
 
 @medicament_list_schema()
 @post_medicament_schema()
+
 @api_view(['GET', 'POST'])
 def medicament_list(request):
     if request.method == 'GET':

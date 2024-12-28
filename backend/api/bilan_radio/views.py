@@ -9,7 +9,11 @@ from rest_framework.parsers import MultiPartParser,FormParser
 from rest_framework.permissions import IsAuthenticated
 from api.permissions import IsRadiologue,HasBilanAssignment,IsMedecin
 from .models import BilanRadiologique
+
+from .docs import remplir_radio,get_demande_schema,voir_bilan_schema,demande_schema_radio
 # Create your views here.
+@demande_schema_radio.demande_schema()
+
 @api_view(['POST'])
 @permission_classes([IsMedecin()])
 def demander_bilan_radiologique(request:Request)->Response:  
@@ -22,6 +26,9 @@ def demander_bilan_radiologique(request:Request)->Response:
         return Response({"message":"Demand successfuly created"},status=status.HTTP_201_CREATED)
     else:
         return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
+
+@voir_bilan_schema.get_bilan_schema()
+
 @api_view(['GET'])
 @permission_classes([IsRadiologue()])
 def get_bilan_radiologique(request:Request,bilan_id:int)->Response:
@@ -33,6 +40,9 @@ def get_bilan_radiologique(request:Request,bilan_id:int)->Response:
         return Response({"message":result['message']},status=status.HTTP_200_OK)
     else:
         return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
+
+@get_demande_schema.get_demandes_schema()
+
 @api_view(['GET'])
 @permission_classes([IsRadiologue()])
 def get_demandes(request:Request)->Response:
@@ -44,9 +54,13 @@ def get_demandes(request:Request)->Response:
 class RemplirAPIView(APIView):
     parser_classes = [MultiPartParser,FormParser]
     permission_classes = [IsAuthenticated,HasBilanAssignment]
+
+    @remplir_radio.bilan_radio_update_schema()
     def patch(self,request:Request,bilan_id:int,format=None)->Response:
         self.check_object_permissions(self.request,BilanRadiologique.objects.get(id=bilan_id))
         # print(request.data)
+
+
         result = bilan_rad.remplissement_bilan(bilan_id,request.data)
         if result['status']=='success':
             return Response({"message":result['message']},status=status.HTTP_200_OK)

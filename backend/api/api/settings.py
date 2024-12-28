@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     "drf_spectacular",
+
+    'drf_spectacular',
+
     'drf_yasg',
     'rest_framework',
     'dpi',
@@ -146,9 +148,7 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Soins API',
     'DESCRIPTION': 'API documentation for managing soins data.',
     'VERSION': '1.0.0',
-    'TITLE': 'Ordonnance API',
-    'DESCRIPTION': 'API documentation for managing Ordonnance data',
-    'VERSION': '1.0.0',
+
     # This is typically not needed unless you have custom info.
     'DEFAULT_INFO': 'drf_spectacular.openapi.Info',  # Use the default info
 }

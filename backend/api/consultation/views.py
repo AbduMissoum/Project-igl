@@ -8,7 +8,9 @@ from .utils import (
     get_all_consultations, create_consultation,
     get_consultation_by_id, update_consultation,
     delete_consultation, get_consultations_by_date,
+
     get_consultations_by_dpi,validate_date,
+
     create_consultations_by_dpi,create_consultation_by_medecin,
     get_consultations_by_medecin
 )
@@ -77,7 +79,9 @@ def consultation_by_medecin(request, medecin_id):
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
+
         return create_consultation_by_medecin(medecin_id, data)
+
 
 
 
