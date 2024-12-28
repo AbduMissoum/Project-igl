@@ -40,3 +40,5 @@ class ParamValeurSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+class RemplirBilanRequestSerializer(serializers.Serializer):
+    param_valeurs = ParamValeurSerializer(many=True) 
