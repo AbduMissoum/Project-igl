@@ -27,7 +27,7 @@
       <h2 class="text-2xl font-bold text-fonce mb-6">Information Personnel</h2>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Information Details -->
-        <div class="space-y-4">
+        <div class="space-y-8">
           <p class="text-lg font-semibold text-fonce">Nom : <span class="text-gray-700">[Nom]</span></p>
           <p class="text-lg font-semibold text-fonce">Prénom : <span class="text-gray-700">[Prénom]</span></p>
           <p class="text-lg font-semibold text-fonce">Date de naissance : <span class="text-gray-700">[Date]</span></p>
@@ -39,7 +39,7 @@
         </div>
         <!-- Illustration -->
         <div class="flex items-center justify-center">
-          <img src="assets/images/DPI.png" alt="Patient Illustration" class="w-80 h-80">
+          <img src="assets/images/DPI.png" alt="Patient Illustration" class="w-100 h-120">
         </div>
       </div>
      
@@ -47,7 +47,7 @@
      
        
           
-          <div class=" w-10 h-10 bg-clair ml-80 mt-12 mb-20  flex items-center justify-center rounded-md">
+          <div class=" w-10 h-10 bg-clair mx-80 mt-12 mb-20  flex items-center justify-center rounded-md">
           <qrcode [qrdata]="nss" class="w-full h-full" [errorCorrectionLevel]="'M'"></qrcode>
            
            

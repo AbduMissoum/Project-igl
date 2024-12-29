@@ -1,12 +1,12 @@
 
 <ng-container *ngIf="showHeader">
-    <header class="py-4 px-8 flex flex-col lg:flex-row items-center mb-0 justify-between w-full bg-clair">
+    <header class="py-4 px-8 flex flex-col lg:flex-row items-center mb-0 justify-between w-full bg-clair ">
       <!-- Partie gauche : Logo -->
       <div class="flex-shrink-0">
         <img src="assets/images/logo.png" alt="Logo" class="w-16 h-16 rounded-full">
       </div>
       <!-- Partie droite : Navbar -->
-      <nav class="flex flex-col lg:flex-row lg:space-x-10 space-y-4 lg:space-y-0 w-full lg:w-auto ml-4 items-center">
+      <nav class="flex flex-col lg:flex-row lg:space-x-10 space-y-4 lg:space-y-0 w-full lg:w-auto ml-4 items-center ">
         <!-- Contenu spécifique selon le rôle -->
         <ng-container *ngIf="userRole === 'admin'">
           <a routerLink="/admin" class="text-2xl text-fonce font-semibold hover:underline">DPI</a>
@@ -18,8 +18,8 @@
             <a routerLink="/patientsoin" class="text-2xl text-fonce font-semibold hover:underline">Soins</a>
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
           </ng-container>
-          <ng-container *ngIf="userRole === 'Medecin'">
-            <a routerLink="/rechercher" class="text-2xl text-fonce  font-semibold hover:underline">Rechercher</a>
+          <ng-container *ngIf="userRole === 'medecin'">
+            <a routerLink="/rechercher" class="text-2xl  text-fonce  font-semibold hover:underline">Rechercher</a>
             <a routerLink="/historiqueconsultation" class="text-2xl text-fonce font-semibold hover:underline">Consultation</a>
             <a routerLink="/patientsoin" class="text-2xl text-fonce font-semibold hover:underline">Soins</a>
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
@@ -29,7 +29,7 @@
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
           </ng-container>
           <ng-container *ngIf="userRole === 'Laborantin'">
-            <a routerLink="/saisiranalyse" class="text-2xl text-fonce font-semibold hover:underline">Notifications</a>
+            <a routerLink="/analysedemande" class="text-2xl text-fonce font-semibold hover:underline">Notifications</a>
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
           </ng-container>
           <ng-container *ngIf="userRole === 'Radiologue'">
@@ -40,7 +40,7 @@
   
       <!-- Bouton LogOut -->
       <div class="flex-shrink-0 text-lg font-bold text-fonce mt-4 lg:mt-0">
-        <button routerLink="/login" type="submit" class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold focus:ring focus:ring-fonce">
+        <button  (click)="onLogout()"   type="submit" class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold focus:ring focus:ring-fonce">
           LogOut
         </button>
       </div>

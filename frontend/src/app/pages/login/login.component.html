@@ -1,39 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Document</title>
-</head>
-<body class="bg-gradient-to-b from-clair to-blanc min-h-screen" >
-    
-    <div class="flex justify-center items-center w-full h-screen ">
-        <div class="flex w-full max-w-4xl bg-white rounded-[40px] shadow-lg">
-            <img class="w-1/2 h-full object-cover rounded-l-[40px]" src="assets/images/Login.gif" alt="rectangle">
-            
-            <div class="flex flex-col py-3 items-center justify-center w-1/2 ">
-                <div class="flex flex-col  --mt-6 items-center justify-center">
-                    <a class="text-center rounded-full ">
-                        <img src="assets/images/logo.png" alt="logo" class="w-20 h-24 mt-1 object-contain">
-                    </a>
-                    <h1 class="text-fonce --mt-4 font-bold text-2xl"> Bienvenue !</h1>
-                    
-                </div>
-                <!-- <input type="text" id="username" placeholder="Username" class="mt-4 focus:ring focus:ring-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500"> -->
-                <input
-                type="text"
-                id="username"
-                placeholder="Username"
-                class="mt-4 ring-2 ring-fonce focus:ring-fonce focus:ring-2 p-5 focus:border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500"
-              >
-              
-                <input type="password" id="password" placeholder="Password" class="mt-4 p-5  ring-2 ring-fonce border-none border-b border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500">
-                <button (click)="onLogin()" routerLink="/patient" type="submit" class="bg-fonce text-white px-6 py-3 mt-4 rounded-[40px] font-semibold focus:ring focus:ring-fonce">
-                    Connecter
-                </button>
-            </div>
+<div class="flex justify-center items-center w-full h-screen">
+    <div class="flex w-full max-w-4xl bg-white rounded-[40px] shadow-lg">
+      <img
+        class="w-1/2 h-full object-cover rounded-l-[40px]"
+        src="assets/images/Login.gif"
+        alt="rectangle"
+      />
+      <div class="flex flex-col py-3 items-center justify-center w-1/2">
+        <div class="flex flex-col items-center justify-center">
+          <a class="text-center rounded-full">
+            <img
+              src="assets/images/logo.png"
+              alt="logo"
+              class="w-20 h-24 mt-1 object-contain"
+            />
+          </a>
+          <h1 class="text-fonce font-bold text-2xl"> Bienvenue !</h1>
         </div>
+  
+        <input
+          type="text"
+          id="username"
+          [(ngModel)]="username"
+          placeholder="Username"
+          class="mt-4 ring-2 ring-fonce focus:ring-fonce focus:ring-2 p-5 focus:border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500"
+        />
+  
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          placeholder="Password"
+          class="mt-4 p-5 ring-2 ring-fonce border-none border-b border-fonce w-48 h-8 text-fonce rounded-[40px] transition duration-500"
+        />
+  
+        <button
+          (click)="onLogin()"
+          type="submit"
+          class="bg-fonce text-white px-6 py-3 mt-4 rounded-[40px] font-semibold focus:ring focus:ring-fonce"
+        >
+          Connecter
+        </button>
+      </div>
     </div>
-</body>
-</html>
+  </div>
+  

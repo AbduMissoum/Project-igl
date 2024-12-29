@@ -1,55 +1,71 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { PatientService } from '../../services/patient.service';
-import { Ipatient } from '../../model/interface/patient';
-import { Router, RouterLink } from '@angular/router';
-import { routes } from '../../app.routes';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/authservice.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink , ],
-  standalone: true,
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  imports :[FormsModule , CommonModule  ],
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  userRole: string = ''; // Propriété de la classe
+  username: string = ''; // Champs liés au formulaire
+  password: string = '';
 
   constructor(private router: Router, private authService: AuthService) {}
 
+  ngOnInit(): void {}
+
   onLogin(): void {
-    this.authService.setRole(this.userRole); // Utilisez la valeur définie dans `userRole`
-
-    // Redirigez selon le rôle
-    switch (this.userRole) {
-      case 'admin':
-        this.router.navigate(['/admin']);
-        break;
-      case 'Patient':
-        this.router.navigate(['/patient']);
-        break;
-      case 'Medecin':
-        this.router.navigate(['/medecin']);
-        break;
-      case 'Infirmier':
-        this.router.navigate(['/saisirsoin']);
-        break;
-      case 'Laborantin':
-        this.router.navigate(['/saisiranalyse']);
-        break;
-      case 'Radiologue':
-        this.router.navigate(['/saisirradio']);
-        break;
-      default:
-        console.error('Rôle utilisateur inconnu');
-        break;
+    if (!this.username || !this.password) {
+      console.error('Le nom d’utilisateur et le mot de passe sont requis.');
+      return;
     }
-  }
 
-  ngOnInit(): void {
-    // Initialisation ou récupération depuis le backend
-    this.userRole = 'Patient'; // Valeur par défaut pour les tests
-  }
-  
+    this.authService.login(this.username, this.password).subscribe({
+      next: (response) => {
+        console.log('Connexion réussie:', response);
 
+        // Définir le rôle utilisateur
+        const role = response.role;
+        this.authService.setRole(role); // Appeler setRole pour sauvegarder le rôle
+
+        // Redirection en fonction du rôle
+        switch (role) {
+          case 'admin':
+            this.router.navigate(['/admin']);
+            break;
+          case 'Patient':
+            this.router.navigate(['/patient']);
+            break;
+          case 'medecin':
+            this.router.navigate(['/medecin']);
+            break;
+          case 'Infirmier':
+            this.router.navigate(['/saisirsoin']);
+            break;
+          case 'Laborantin':
+            this.router.navigate(['/saisiranalyse']);
+            break;
+          case 'Radiologue':
+            this.router.navigate(['/saisirradio']);
+            break;
+          default:
+            console.error('Rôle utilisateur inconnu');
+            break;
+        }
+      },
+      error: (err) => {
+        if (err.status === 400 || err.status === 404) {
+          console.error('Erreur de connexion:', err.error.message);
+          alert(err.error.message);
+        } else {
+          console.error('Erreur inconnue:', err);
+        }
+      },
+    });
+  }
 }
