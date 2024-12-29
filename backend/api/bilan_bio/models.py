@@ -20,6 +20,7 @@ class ParamValeur(models.Model):
     valeur = models.FloatField()
     unite = models.CharField(max_length=255)
     parametre = models.CharField(max_length=255)
+    valeur_reference = models.CharField(max_length=255)
     bilan = models.ForeignKey(BilanBiologique, on_delete=models.CASCADE)
 
     def __str__(self):

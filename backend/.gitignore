@@ -12,8 +12,6 @@ db.sqlite3
 *.log
 
 # Media / static files
-media/
-staticfiles/
 
 # IDE / Editor-specific
 .vscode/
@@ -35,3 +33,4 @@ coverage.xml
 # Others
 *.env
 *.DS_Store
+schema.yml

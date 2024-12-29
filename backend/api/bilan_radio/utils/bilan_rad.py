@@ -2,7 +2,7 @@ from bilan_radio.models import BilanRadiologique,ExamenImagerieMedicale
 from consultation.models import Consultation
 from django.db import transaction
 from authentication.models import CustomUser
-from bilan_radio.Serializers import BilanRadiologiqueSerializer,ExamenImagerieMedicaleSerializer
+from bilan_radio.Serializers import BilanRadiologiqueSerializer,ExamenImagerieMedicaleSerializer,ExamenImagerieMedicaleRetrieveSerializer
 from datetime import datetime
 def faire_demande(id:int,type:str):
     try:
@@ -32,9 +32,13 @@ def faire_demande(id:int,type:str):
 def fetch_bilan(id:int,rad_id:int):
     try:
         bilan = BilanRadiologique.objects.get(id=id)
-        radiologe = CustomUser.objects.get(id=rad_id)
-        bilan.radiologe=radiologe
-        bilan.save()
+        user = CustomUser.objects.get(id=rad_id)
+        if user.role == 'radiologue':
+            if bilan.radiologe == None or bilan.radiologe == user:
+                bilan.radiologe=user
+                bilan.save()
+            else:
+                raise PermissionError("You do not have permission to see this bilan")
         return {"status": "success", "message": "Bilan radiologique fetched successfuly"}
     except BilanRadiologique.DoesNotExist:
         return {"status": "error", "message": f"BilanBiologique with ID {id} not found"}
@@ -67,5 +71,24 @@ def remplissement_bilan(bilan_id:int,data):
         return {"status":"error","message":f"Bilan radiologique with ID {bilan_id} does not exist"}
     except ExamenImagerieMedicale.DoesNotExist:
         return{"status":"error","message":f"Examen for bilan ID {bilan_id} does not exist"}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+def check_bilan(user_id:int,consultation_id:int):
+    try:
+        consultation = Consultation.objects.get(id=consultation_id)
+        bilan = BilanRadiologique.objects.get(consultation=consultation)
+        user = CustomUser.objects.get(id=user_id)
+        if user.role == 'medecin' and user!=consultation.medecin:
+            raise PermissionError("You do not have permission to see this bilan")
+        elif user.role == 'patient' and consultation.dpi.id.id !=user:
+            raise PermissionError("You do not have permission to see this bilan")
+        # Fetch related ExamenImagerieMedicale
+        examen = ExamenImagerieMedicale.objects.get(bilan=bilan)
+        serializer = ExamenImagerieMedicaleRetrieveSerializer(examen)
+        return {"status":"success","message":serializer.data}
+    except Consultation.DoesNotExist:
+        return {"status":"error","message":"Consultation not found"}
+    except BilanRadiologique.DoesNotExist:
+        return {"status":"error","message":"Bilan for given consultation does not exist"}
     except Exception as e:
         return {"status":"error","message":str(e)}
