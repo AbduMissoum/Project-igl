@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'bilan_radio',
     'les_soins',
     'rest_framework.authtoken',
+    'corsheaders',
   
 
 ]
@@ -59,6 +60,8 @@ INSTALLED_APPS = [
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Ajoute ceci en haut de la liste
+  
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -171,3 +174,7 @@ REST_FRAMEWORK = {
 }
 MEDIA_URL = '/media/'  # URL prefix for accessing media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory on the server where files will be stored
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',  # Ajoute l'URL de ton frontend Angular ici
+]
