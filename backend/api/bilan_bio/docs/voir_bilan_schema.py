@@ -52,7 +52,7 @@ def voir_bilan_schema():
                                         'valeur': openapi.Schema(
                                             type=openapi.TYPE_STRING,
                                             description="Value of the parameter.",
-                                            example="5.6 mmol/L"
+                                            example="5.6"
                                         ),
                                         'unite': openapi.Schema(
                                             type=openapi.TYPE_STRING,
