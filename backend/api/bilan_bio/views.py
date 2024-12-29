@@ -5,11 +5,11 @@ from rest_framework.response import Response
 from .utils import demand_bilan
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from api.permissions import IsMedecin,HasBilanAssignment,IsLaborantin
+from api.permissions import IsMedecin,HasBilanAssignment,IsLaborantin,IsPatient
 from .models import BilanBiologique
 from .serializers import RemplirBilanRequestSerializer
 from drf_yasg import openapi
-from .docs import remplir_bilan_schema,voir_bilan_schema,notifications_schema,demande_schema
+from .docs import remplir_bilan_schema,voir_bilan_schema,notifications_schema,demande_schema,get_bilan_consultation
 # Create your views here.
 @demande_schema.demand_bio_schema()
 @api_view(['POST'])
@@ -62,4 +62,14 @@ def get_demandes(request:Request)->Response:
     if result['status']=='success':
         return Response(result['message'],status=status.HTTP_200_OK)
     else:
-        return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST) 
+        return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
+@get_bilan_consultation.bilan_details() 
+@api_view(['GET'])
+@permission_classes([IsMedecin() | IsPatient()])
+def get_bilan_by_consultation_id(request:Request,consultation_id:int)->Response:
+    user_id = request.user.id
+    result = demand_bilan.check_bilan(consultation_id,user_id)
+    if result['status']=='success':
+        return Response(result['message'],status=status.HTTP_200_OK)
+    else:
+        return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
