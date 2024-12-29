@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'drf_spectacular',
+
     'drf_yasg',
     'rest_framework',
     'dpi',
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     'bilan_radio',
     'les_soins',
     'rest_framework.authtoken',
+    'corsheaders',
   
 
 ]
@@ -59,6 +62,8 @@ INSTALLED_APPS = [
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Ajoute ceci en haut de la liste
+  
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -146,6 +151,7 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Soins API',
     'DESCRIPTION': 'API documentation for managing soins data.',
     'VERSION': '1.0.0',
+
     # This is typically not needed unless you have custom info.
     'DEFAULT_INFO': 'drf_spectacular.openapi.Info',  # Use the default info
 }
@@ -171,3 +177,7 @@ REST_FRAMEWORK = {
 }
 MEDIA_URL = '/media/'  # URL prefix for accessing media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory on the server where files will be stored
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',  # Ajoute l'URL de ton frontend Angular ici
+]

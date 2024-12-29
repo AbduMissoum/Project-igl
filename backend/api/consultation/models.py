@@ -10,5 +10,8 @@ class Consultation(models.Model):
     medecin = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="consultations")
     etablisement = models.ForeignKey(Etablisement, on_delete=models.CASCADE)
 
+
     def __str__(self):
         return f"Consultation {self.id}" 
+
+

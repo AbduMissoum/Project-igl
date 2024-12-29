@@ -1,0 +1,73 @@
+<body class="bg-gradient-to-b from-[#D3E7E8] to-white min-h-[300vh] m-0">
+  
+
+  <div class="p-5  font-sans">
+    <!-- Flexbox pour le titre et le bouton -->
+    <div class="flex justify-between px-130 items-center mt-12">
+      <!-- Titre aligné à gauche -->
+      <h1 class="text-4xl font-bold text-fonce">Les Bilan biologique</h1>
+
+      <!-- Bouton aligné à droite -->
+      <button id="buttona" class="bg-fonce   text-white font-semibold rounded-[40px] text-lg px-8 py-3 hover:bg-[#4b9ca3] focus:outline-none">
+        Générer Graphique
+      </button>
+    </div>
+
+    <!-- Conteneur principal avec Flexbox pour tableau et graphique -->
+    <div class="flex flex-col lg:flex-row justify-between gap-8 mt-8">
+      <!-- Section du tableau -->
+      <div class="w-full lg:w-2/3 flex-grow mt-8 max-w-screen-md mx-auto">
+        <div class="table-container">
+          <table class="table-auto w-full border-separate border-spacing-0">
+            <thead class="bg-[#D3E7E8]">
+              <tr>
+                <th class="text-[#5DA5B9] font-bold p-4 text-left rounded-tl-[40px]">Analyse</th>
+                <th class="text-[#5DA5B9] font-bold p-4 text-left">Résultats</th>
+                <th class="text-[#5DA5B9] font-bold p-4 text-left">Unité</th>
+                <th class="text-[#5DA5B9] font-bold p-4 text-left rounded-tr-[40px]">Valeur de Référence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let analyse of analyses" class="hover:bg-blue-100 transition-all duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+                <td class="p-4 text-left bg-[#D3E7E8]">{{ analyse.nom }}</td>
+                <td class="p-4 text-left bg-[#D3E7E8]">
+                  <input type="text" [(ngModel)]="analyse.resultat" placeholder="Résultat" class="bg-[#D3E7E8] w-full p-2 rounded-[5px] border border-[#5DA5B9]" />
+                </td>
+                <td class="p-4 text-left bg-[#D3E7E8]">
+                  <input type="text" [(ngModel)]="analyse.unite" placeholder="Unité" class="bg-[#D3E7E8] w-full p-2 rounded-[5px] border border-[#5DA5B9]" />
+                </td>
+                <td class="p-4 text-left bg-[#D3E7E8]">
+                  <input type="text" [(ngModel)]="analyse.valRef" placeholder="Valeur de Référence" class="bg-[#D3E7E8] w-full p-2 rounded-[5px] border border-[#5DA5B9]" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section du graphique -->
+      <div class="w-full lg:w-1/3 flex-shrink-0 mt-8">
+        <img src="assets/Rectangle 85.png" alt="Graphique Exemple" class="h-80 w-100 mt-40 ml-10" />
+        <div class="graph-container w-full h-[415px] bg-[#D3E7E8] rounded-[40px] p-5 border-dashed border-2 border-[#ccc] flex justify-center items-center">
+          <p class="text-[#6c757d]">Graphique généré apparaîtra ici</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Boutons -->
+    <div class="button-group flex justify-end items-center gap-4 mt-8">
+      <button
+        id="buttonb"
+        class="bg-[#5DA5B9] text-white font-semibold rounded-[20px] text-lg px-8 py-3 hover:bg-[#4b9ca3]"
+      >
+        Envoyer
+      </button>
+      <button
+        id="buttonc"
+        class="bg-[#5DA5B9] text-white font-semibold rounded-[20px] text-lg px-8 py-3 hover:bg-[#4b9ca3]"
+      >
+        Retour
+      </button>
+    </div>
+  </div>
+</body>

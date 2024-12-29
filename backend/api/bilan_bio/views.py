@@ -7,9 +7,15 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from api.permissions import IsMedecin,HasBilanAssignment,IsLaborantin,IsPatient
 from .models import BilanBiologique
+
 from .serializers import RemplirBilanRequestSerializer
 from drf_yasg import openapi
+
 from .docs import remplir_bilan_schema,voir_bilan_schema,notifications_schema,demande_schema,get_bilan_consultation
+
+
+
+
 # Create your views here.
 @demande_schema.demand_bio_schema()
 @api_view(['POST'])
@@ -34,10 +40,12 @@ def remplir_bilan(request:Request,bilan_id:int)->Response:
     permission = HasBilanAssignment()
     if not permission.has_object_permission(request,None,bilan):
         return Response({"message":"You don't have permissions to fill this bilan"},status=status.HTTP_403_FORBIDDEN)
+
     serializer = RemplirBilanRequestSerializer(data=request.data)
     if serializer.is_valid():
         param_valeurs_data = serializer.validated_data
         result = demand_bilan.remplissement_bilan(bilan_id, param_valeurs_data)
+
     if result['status']=='success':
         return Response({"message":"Bilan Satisfied"},status=status.HTTP_201_CREATED)
     else:

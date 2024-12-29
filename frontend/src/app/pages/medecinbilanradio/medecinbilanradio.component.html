@@ -1,0 +1,69 @@
+<!-- Section principale -->
+<section class="mt-6 bg-white p-6 rounded-[40px] shadow-md">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-bold text-fonce">{{ title }}</h2>
+      <button 
+        type="button" 
+        (click)="openPopup()" 
+        class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold focus:ring focus:ring-fonce">
+        Demander Radio
+      </button>
+    </div>
+  </section>
+  
+  <!-- Pop-up -->
+  <div *ngIf="isPopupVisible" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <div class="bg-white p-8 rounded-[40px] shadow-xl w-full max-w-md">
+      <h3 class="text-xl font-bold text-fonce mb-6">Demander un Radio</h3>
+      
+      <!-- Formulaire -->
+      <form (ngSubmit)="submitRequest()" class="space-y-6">
+        <div>
+          <label for="radioName" class="block text-sm font-semibold text-gray-700 mb-1">Type du Radio</label>
+          <input 
+            type="text" 
+            id="radioName" 
+            [(ngModel)]="radioName" 
+            name="radioName" 
+            class="w-full p-3 border border-fonce rounded-[40px] focus:outline-none focus:ring-2 focus:ring-fonce" 
+            placeholder="Nom du Radio">
+        </div>
+        
+        <div>
+          <label for="radiologistName" class="block text-sm font-semibold text-gray-700 mb-1">Nom du Radiologue</label>
+          <input 
+            type="text" 
+            id="radiologistName" 
+            [(ngModel)]="radiologistName" 
+            name="radiologistName" 
+            class="w-full p-3 border border-fonce rounded-[40px] focus:outline-none focus:ring-2 focus:ring-fonce" 
+            placeholder="Nom du Radiologue">
+        </div>
+        
+        <!-- Boutons d'action -->
+        <div class="flex justify-end space-x-4">
+          <button 
+            type="button" 
+            (click)="closePopup()" 
+            class="px-6 py-2 text-gray-700 bg-gray-200 rounded-[40px] hover:bg-gray-300">
+            Annuler
+          </button>
+          <button 
+            type="submit" 
+            class="px-6 py-2 bg-fonce text-white rounded-[40px] hover:bg-opacity-90">
+            Envoyer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+    <!-- <div class="p-4 bg-clair rounded-[40px] shadow-md">
+    <ul class="mt-2">
+      <li class="text-fonce" *ngFor="let image of images">
+        {{ image.name }} - <span class="italic">{{ image.date }}</span>
+      </li>
+    </ul>
+  </div> -->
+
+  

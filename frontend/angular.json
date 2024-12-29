@@ -21,10 +21,16 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+<<<<<<< HEAD
+             {
+              "glob": "**/*",
+              "input": "src/assets",
+              "output": "/assets"
+             }
+=======
+                "src/assets",
+                "src/favicon.ico"
+>>>>>>> origin/Mohamed
             ],
             "styles": [
               "src/styles.css"
@@ -79,10 +85,11 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+             {
+              "glob": "**/*",
+              "input": "src/assets",
+              "output": "/assets"
+             }
             ],
             "styles": [
               "src/styles.css"

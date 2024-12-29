@@ -1,0 +1,66 @@
+<div class="min-h-screen bg-gradient-to-b from-clair to-white flex flex-col items-center px-6 pb-8">
+ 
+
+  <!-- Content -->
+  <main class="w-full max-w-5xl  rounded-lg shadow-md p-8 mt-6">
+    <div class="flex justify-between items-center mb-4">
+    <h1 class="text-4xl font-bold text-fonce">Le bilan biologique</h1>
+    </div>
+    <div class="flex justify-end items-center mr-20 mb-4">
+      
+      <button class="bg-fonce text-white px-4 py-2 rounded-lg hover:bg-opacity-90">
+        Generer graphe
+      </button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Tableau -->
+      <div class="overflow-hidden rounded-lg border border-gray-300">
+        <table class="w-full border-collapse text-left">
+          <thead>
+            <tr class="bg-clair">
+              <th class="px-4 py-2 text-fonce font-semibold border-b">Analyse</th>
+              <th class="px-4 py-2 text-fonce font-semibold border-b">Résultat</th>
+              <th class="px-4 py-2 text-fonce font-semibold border-b">Unité</th>
+              <th class="px-4 py-2 text-fonce font-semibold border-b">Val de référence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Ajoutez les lignes dynamiquement avec Angular -->
+            <tr>
+              <td class="px-4 py-2 text-fonce border-b">Analyse 1</td>
+              <td class="px-4 py-2 text-fonce border-b">Résultat 1</td>
+              <td class="px-4 py-2 text-fonce border-b">Unité 1</td>
+              <td class="px-4 py-2 text-fonce border-b">Référence 1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Image -->
+      <div class="flex items-center justify-center">
+        <img 
+          src="assets/Rectangle 85.png" 
+          alt="Illustration scientifique" 
+          class="w-full max-w-xs rounded-lg shadow-md"
+        />
+      </div>
+    </div>
+
+    <!-- Zone pour le graphe -->
+    <div class="mt-8">
+      <div class="bg-clair rounded-lg p-6 text-center text-fonce shadow-inner">
+        Le Graphe
+      </div>
+    </div>
+
+    <!-- Boutons -->
+    <div class="mt-6 flex space-x-4 justify-center">
+      <button class="bg-fonce text-white px-6 py-2 rounded-lg hover:bg-opacity-90">
+        Envoyer
+      </button>
+      <button class="bg-gray-400 text-white px-6 py-2 rounded-lg hover:bg-opacity-90">
+        Retour
+      </button>
+    </div>
+  </main>
+</div>

@@ -112,59 +112,61 @@ def create_patient_schema():
       }
   )
 def patient_list_by_nss_schema():
-  """
-  Returns the OpenAPI schema for retrieving a list of patients by NSS.
-  """
-  patient_schema = openapi.Schema(
-      type=openapi.TYPE_OBJECT,
-      properties={
-          'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=5),
-          'nom': openapi.Schema(type=openapi.TYPE_STRING, example='NIDAl'),
-          'prenom': openapi.Schema(type=openapi.TYPE_STRING, example='Johnn'),
-          'tel': openapi.Schema(type=openapi.TYPE_STRING, example='1234l567890'),
-      }
-  )
+    """
+    Returns the OpenAPI schema for retrieving a list of patients by NSS.
+    NSS must be provided in the query parameters, e.g., patient?NSS=1234567k8904
+    """
+    patient_schema = openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=5),
+            'nom': openapi.Schema(type=openapi.TYPE_STRING, example='NIDAl'),
+            'prenom': openapi.Schema(type=openapi.TYPE_STRING, example='Johnn'),
+            'tel': openapi.Schema(type=openapi.TYPE_STRING, example='1234l567890'),
+        }
+    )
 
-  return swagger_auto_schema(
-      method='GET',
-      operation_description="Retrieve a list of patients by NSS",
-      query_parameters=[
-          openapi.Parameter(
-              'NSS',
-              openapi.IN_QUERY,
-              description='Patient NSS',
-              type=openapi.TYPE_STRING,
-              required=True,
-          )
-      ],
-      responses={
-          200: openapi.Response(
-              description="Successfully retrieved list of patients",
-              schema=openapi.Schema(
-                  type=openapi.TYPE_ARRAY,
-                  items=patient_schema,
-              ),
-          ),
-          400: openapi.Response(
-              description="Bad Request",
-              schema=openapi.Schema(
-                  type=openapi.TYPE_OBJECT,
-                  properties={
-                      'error': openapi.Schema(type=openapi.TYPE_STRING, example='NSS missing'),
-                  }
-              ),
-          ),
-          500: openapi.Response(
-              description="Internal Server Error",
-              schema=openapi.Schema(
-                  type=openapi.TYPE_OBJECT,
-                  properties={
-                      'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.'),
-                  }
-              ),
-          ),
-      }
-  )
+    return swagger_auto_schema(
+        method='GET',
+        operation_description="Retrieve a list of patients by NSS. NSS must be in query parameters, e.g., patient?NSS=1234567k8904",
+        query_parameters=[
+            openapi.Parameter(
+                'NSS',
+                openapi.IN_QUERY,
+                description='Patient NSS',
+                type=openapi.TYPE_STRING,
+                required=True,
+            )
+        ],
+        responses={
+            200: openapi.Response(
+                description="Successfully retrieved list of patients",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=patient_schema,
+                ),
+            ),
+            400: openapi.Response(
+                description="Bad Request",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='NSS missing'),
+                    }
+                ),
+            ),
+            500: openapi.Response(
+                description="Internal Server Error",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.'),
+                    }
+                ),
+            ),
+        }
+    )
+
 def patient_detail_schema():
   """
   Returns the OpenAPI schema for retrieving a patient by ID.

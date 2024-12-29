@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historique des Soins</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-clair to-white text-gray-800">
+
+ 
+  <!-- Main Section -->
+  <main class="container mx-auto mt-12 px-4">
+    <!-- Title -->
+    <section class="text-center mb-10">
+      <h1 class="text-4xl font-bold text-fonce mb-4">Historique des Soins</h1>
+      <p class="text-lg text-fonce">
+        Accédez à l'historique détaillé des soins qui vous ont été prodigués au cours de votre hospitalisation. 
+        Chaque soin comprend :
+      </p>
+      <ul class="text-fonce text-left list-disc list-inside mt-4 max-w-2xl mx-auto">
+        <li>La nature des soins (médicaments administrés, pansements, injections, etc.).</li>
+        <li>Les observations faites par le personnel soignant.</li>
+        <li>Les dates et horaires des interventions.</li>
+      </ul>
+      <p class="text-lg text-fonce mt-4">
+        Ces informations sont essentielles pour garantir une transparence et un suivi personnalisé de votre état de santé.
+      </p>
+    </section>
+
+    <!-- Table -->
+    <section class="bg-clair rounded-[40px] shadow-lg p-8 w-full max-w-4xl mx-auto">
+      <div class="overflow-hidden rounded-[40px] border border-fonce">
+        <table class="table-auto w-full text-left">
+          <thead class="bg-fonce text-white">
+            <tr>
+              <th class="py-4 px-6">Infirmier</th>
+              <th class="py-4 px-6">Établissement</th>
+              <th class="py-4 px-6">Date</th>
+              <th class="py-4 px-6">Heure</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Soins data -->
+            <ng-container *ngFor="let soin of soins">
+              <tr
+                class="group bg-clair hover:bg-white transition-all duration-200 cursor-pointer"
+                (mouseenter)="hovered = soin"
+                (mouseleave)="hovered = null"
+              >
+                <td class="py-4 px-6">{{ soin.infirmier }}</td>
+                <td class="py-4 px-6">{{ soin.etablissement }}</td>
+                <td class="py-4 px-6">{{ soin.date | date: 'shortDate' }}</td>
+                <td class="py-4 px-6">{{ soin.heure }}</td>
+              </tr>
+              <!-- Ligne des détails -->
+              <tr *ngIf="hovered === soin">
+                <td colspan="4" class="py-4 px-6 text-fonce bg-white">
+                  <span>{{ soin.details }}</span>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

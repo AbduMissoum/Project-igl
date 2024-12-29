@@ -1,0 +1,69 @@
+<div class="min-h-screen bg-gradient-to-b from-clair to-white flex flex-col items-center px-6 pb-8">
+  <!-- Header -->
+  
+
+  <!-- Content -->
+  <main class="w-full max-w-5xl  rounded-lg shadow-md p-8 mt-6">
+    <h1 class="text-center text-3xl font-bold text-fonce mb-4">Saisir les soins prodigués</h1>
+    <p class="text-center text-fonce mb-6">
+      Cette page vous permet de renseigner les soins administrés aux patients. 
+      Entrez le Numéro de Sécurité Sociale (NSS) du patient, décrivez les soins réalisés, 
+      et indiquez la date et l'heure de l'intervention. Ces informations seront ajoutées 
+      au Dossier Patient Informatisé (DPI) et contribueront à un suivi précis des soins prodigués.
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Form -->
+      <form class="space-y-4">
+        <div>
+          <label for="nss" class="block text-fonce font-semibold">NSS du Patient</label>
+          <input 
+            type="text" 
+            id="nss" 
+            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fonce focus:outline-none"
+            placeholder="123456789012345" 
+          />
+        </div>
+        <div>
+          <label for="date" class="block text-fonce font-semibold">Date</label>
+          <input 
+            type="date" 
+            id="date" 
+            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fonce focus:outline-none"
+          />
+        </div>
+        <div>
+          <label for="time" class="block text-fonce font-semibold">Heure</label>
+          <input 
+            type="time" 
+            id="time" 
+            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fonce focus:outline-none"
+          />
+        </div>
+        <div>
+          <label for="soins" class="block text-fonce font-semibold">Soins</label>
+          <textarea 
+            id="soins" 
+            rows="4" 
+            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fonce focus:outline-none"
+            placeholder="Décrivez les soins prodigués..."
+          ></textarea>
+        </div>
+        <button 
+          type="submit" 
+          class="w-40 bg-fonce ml-60 text-white py-2 rounded-lg hover:bg-opacity-90">
+          Envoyer
+        </button>
+      </form>
+
+      <!-- Image -->
+      <div class="flex items-center justify-center">
+        <img 
+          src="assets/Rectangle-83.png" 
+          alt="Illustration des soins" 
+          class="w-full max-w-xs rounded-lg shadow-md"
+        />
+       
+      </div>
+    </div>
+  </main>
+</div>

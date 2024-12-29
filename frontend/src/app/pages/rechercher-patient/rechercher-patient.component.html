@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rechercher Patient</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-clair to-white text-gray-800">
+   <!-- Content -->
+   <main class="w-full  max-w-5xl rounded-[40px] shadow-md p-8 ml-28 mt-6">
+    <h1 class="text-4xl font-bold text-fonce text-center mb-6">Rechercher un patient !</h1>
+    <p class="text-lg text-fonce text-center mb-6">
+      Accédez rapidement aux informations d’un patient grâce à son Numéro de Sécurité Sociale (NSS) ou à son Code QR unique.
+    </p>
+    <ul class="list-disc list-inside text-fonce text-center mb-6">
+      <li>Rechercher par NSS : Entrez le numéro pour accéder au dossier correspondant.</li>
+      <li>Rechercher par Code QR : Scannez le code QR pour un accès instantané.</li>
+    </ul>
+    <p class="text-lg text-fonce text-center mb-8">
+      Cette page vous offre une solution rapide et intuitive pour retrouver les dossiers médicaux avec précision et efficacité.
+    </p>
+
+    <!-- Formulaire de recherche -->
+    <div class="mb-8 mx-32" >
+      <label for="nss" class="block text-lg text-fonce font-semibold mb-2">Entrez le Numéro de sécurité sociale du patient :</label>
+      <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+        <input
+          type="text"
+          type="number"
+          id="nss"
+          placeholder="Numéro de sécurité sociale"
+          class="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fonce"
+        />
+        <button class="bg-clair text-white px-4 py-2">
+          <img src="assets/images/search.png" class="h-6 w-3">
+        </button>
+      </div>
+    </div>
+
+    <!-- Bouton Rechercher par Code QR -->
+    <div class="text-end justify-end items-center mt-20 mr-28">
+      <button class="bg-clair text-fonce px-6 py-3 rounded-[40px] hover:bg-opacity-90 shadow-md">
+        Rechercher par Code QR
+      </button>
+    </div>
+  </main>
+
+
+</body></html>
