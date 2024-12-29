@@ -84,3 +84,34 @@ def MedcinList(request):
     return Response(res.data)
    except Exception as e:
     return Response({"error": f"{e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+@api_view(["GET"])
+def creer_role(req):
+  try:
+    # user =  CustomUser.objects.create_user(username="patient",
+    #                                        email="patient@esi.dz",
+    #                                         password="patient",
+    #                                         role="patient")
+    
+    # user =  CustomUser.objects.create_user(username="admine",
+    #                                        email="admine@esi.dz",
+    #                                         password="admine",
+    #                                         role="admin")
+    # user =  CustomUser.objects.create_user(username="infirmier",
+    #                                        email="infirmier@esi.dz",
+    #                                         password="infirmier",
+    #                                         role="infirmier")
+    # user =  CustomUser.objects.create_user(username="radiologue",
+    #                                        email="radiologue@esi.dz",
+    #                                         password="radiologue",
+    #                                         role="radiologue")
+    # user =  CustomUser.objects.create_user(username="laborantin",
+    #                                        email="laborantin@esi.dz",
+    #                                         password="laborantin",
+    #                                         role="laborantin")
+    # user =  CustomUser.objects.create_user(username="medecin",
+    #                                        email="medecin@esi.dz",
+    #                                         password="medecin",
+    #                                         role="medecin")
+    return Response({"message": "Role created successfully"}, status=status.HTTP_201_CREATED)
+  except Exception as e:
+    return Response({"error": f"{e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
