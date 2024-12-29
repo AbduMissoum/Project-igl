@@ -9,9 +9,7 @@ from rest_framework.parsers import MultiPartParser,FormParser
 from rest_framework.permissions import IsAuthenticated
 from api.permissions import IsRadiologue,HasBilanAssignment,IsMedecin,IsPatient
 from .models import BilanRadiologique
-from .docs import remplir_radio,get_demande_schema,voir_bilan_schema,demande_schema_radio,get_bilan_by_cons_schema
-from .Serializers import ExamenImagerieMedicaleRetrieveSerializer
-from .models import ExamenImagerieMedicale
+from .docs import demande_schema_radio,get_bilan_by_cons_schema,get_demande_schema,remplir_radio,voir_bilan_schema
 # Create your views here.
 @demande_schema_radio.demande_schema()
 @api_view(['POST'])
@@ -54,7 +52,6 @@ class RemplirAPIView(APIView):
     def patch(self,request:Request,bilan_id:int,format=None)->Response:
         self.check_object_permissions(self.request,BilanRadiologique.objects.get(id=bilan_id))
         # print(request.data)
-
         result = bilan_rad.remplissement_bilan(bilan_id,request.data)
         if result['status']=='success':
             return Response({"message":result['message']},status=status.HTTP_200_OK)

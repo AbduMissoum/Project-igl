@@ -28,6 +28,7 @@ def demander_bilan(request:Request)->Response:
 @permission_classes([HasBilanAssignment])
 @remplir_bilan_schema.remplir_schema()
 @api_view(['PUT'])
+@permission_classes([HasBilanAssignment])
 def remplir_bilan(request:Request,bilan_id:int)->Response:
     bilan = BilanBiologique.objects.get(id=bilan_id)
     permission = HasBilanAssignment()
