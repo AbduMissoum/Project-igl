@@ -46,11 +46,7 @@ def remplir_schema():
                 ),
                 description="List of test results for the Bilan Biologique."
             ),
-            'notes': openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Additional notes or observations for the Bilan.",
-                example="Patient shows improvement compared to last test results."
-            )
+            
         },
         required=['bilan_id', 'test_results']
     ),

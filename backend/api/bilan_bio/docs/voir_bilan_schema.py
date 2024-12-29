@@ -49,20 +49,20 @@ def voir_bilan_schema():
                                             description="Name of the parameter.",
                                             example="Glucose Level"
                                         ),
-                                        'value': openapi.Schema(
+                                        'valeur': openapi.Schema(
                                             type=openapi.TYPE_STRING,
                                             description="Value of the parameter.",
-                                            example="5.6 mmol/L"
+                                            example="5.6"
                                         ),
-                                        'unit': openapi.Schema(
+                                        'unite': openapi.Schema(
                                             type=openapi.TYPE_STRING,
                                             description="Unit of the parameter value.",
                                             example="mmol/L"
                                         ),
-                                        'reference_range': openapi.Schema(
+                                        'valeur_reference': openapi.Schema(
                                             type=openapi.TYPE_STRING,
                                             description="Reference range for the parameter value.",
-                                            example="3.5-6.0 mmol/L"
+                                            example="3.5-6.0"
                                         )
                                     }
                                 )
