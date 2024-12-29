@@ -17,7 +17,7 @@ class BilanRadiologique(models.Model):
     
 class ExamenImagerieMedicale(models.Model):
     id = models.AutoField(primary_key=True)  # Primary key
-    examen_image = models.ImageField(upload_to=upload_to,null=True,blank=True)  # Path to the image, not null
+    examen_image = models.ImageField(upload_to=upload_to,null=True,blank=True)  # Path to the image
     bilan = models.ForeignKey(BilanRadiologique, on_delete=models.CASCADE)  # Foreign key to BilanRadiologique
 
     def __str__(self):

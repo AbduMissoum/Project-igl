@@ -7,10 +7,16 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser,FormParser
 from rest_framework.permissions import IsAuthenticated
-from api.permissions import IsRadiologue,HasBilanAssignment,IsMedecin
+from api.permissions import IsRadiologue,HasBilanAssignment,IsMedecin,IsPatient
 from .models import BilanRadiologique
 
-from .docs import remplir_radio,get_demande_schema,voir_bilan_schema,demande_schema_radio
+from .docs import remplir_radio,get_demande_schema,voir_bilan_schema,demande_schema_radio,get_bilan_by_cons_schema
+from .Serializers import ExamenImagerieMedicaleRetrieveSerializer
+from .models import ExamenImagerieMedicale
+
+
+
+
 # Create your views here.
 @demande_schema_radio.demande_schema()
 
@@ -66,3 +72,14 @@ class RemplirAPIView(APIView):
             return Response({"message":result['message']},status=status.HTTP_200_OK)
         else:
             return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
+class ExamenImagerieByConsultationView(APIView):
+    permission_classes = [IsPatient() | IsMedecin()]
+    @get_bilan_by_cons_schema.bilan_detail()
+    def get(self, request:Request, consultation_id:int)->Response:
+        user_id = request.user.id
+        result = bilan_rad.check_bilan(user_id,consultation_id)
+        if result['status']=='success':
+            return Response({"message":result['message']},status=status.HTTP_200_OK)
+        else:
+            return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
+        

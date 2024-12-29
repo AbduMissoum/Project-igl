@@ -68,8 +68,8 @@ def remplissement_bilan(id: int, data):
 
         # Update the satisfait fields  
             # bilan_biologique.laborantient = laborantient
-            bilan_biologique.satisfait = True
-            bilan_biologique.save()
+        bilan_biologique.satisfait = True
+        bilan_biologique.save()
             
 
         # Return success if all operations complete without errors
@@ -83,9 +83,14 @@ def remplissement_bilan(id: int, data):
 def fetch_bilan(id:int,lab_id:int):
     try:
         bilan = BilanBiologique.objects.get(id=id)
-        laborontient = CustomUser.objects.get(id=lab_id)
-        bilan.laborantient=laborontient
-        bilan.save()
+        user = CustomUser.objects.get(id=lab_id)
+        consultation = bilan.consultation
+        if user.role == 'laborantin':
+            if bilan.laborantient == None or bilan.laborantient == user:
+                bilan.laborantient=user
+                bilan.save()
+            else:
+                raise PermissionError("You do not have permission to see this bilan")
         params = ParamValeur.objects.filter(bilan=bilan)
         serializer = ParamValeurSerializer(params, many=True)
         return {"status": "success", "message": serializer.data}
@@ -102,5 +107,21 @@ def fetch_non_assigned(id:int):
         return {"status":"success","message":serializer.data}
     except Exception as e:
         return {"status":"error","message":str(e)}
-
-
+def check_bilan(consultation_id:int,user_id:int):
+    try:
+        consultation = Consultation.objects.get(id=consultation_id)
+        bilan = BilanBiologique.objects.get(consultation=consultation)
+        user = CustomUser.objects.get(id=user_id)
+        if user.role == 'medecin' and user!=consultation.medecin:
+            raise PermissionError("You do not have permission to see this bilan")
+        elif user.role == 'patient' and consultation.dpi.id.id !=user:
+            raise PermissionError("You do not have permission to see this bilan")
+        params = ParamValeur.objects.filter(bilan=bilan)
+        serializer = ParamValeurSerializer(params, many=True)
+        return {"status": "success", "message": serializer.data}
+    except Consultation.DoesNotExist:
+        return {"status": "error", "message": f"Consultation with ID {consultation_id} not found"}
+    except BilanBiologique.DoesNotExist:
+        return {"status":"error","message":"Bilan for this consultation doesn't exist"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}

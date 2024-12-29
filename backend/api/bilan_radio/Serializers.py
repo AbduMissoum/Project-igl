@@ -23,9 +23,9 @@ class ConsulationListingField(serializers.RelatedField):
 class BilanRadiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = BilanRadiologique
-        fields = ['id','consultation']
+        fields = ['id','consultation','date']
     consultation = ConsulationListingField(many=False,read_only=True)
-class BilanBiologiqueSerializerAll(serializers.ModelSerializer):
+class BilanRadiologiqueSerializerAll(serializers.ModelSerializer):
     class Meta:
         model = BilanRadiologique
         fields = '__all__'
@@ -34,4 +34,17 @@ class ExamenImagerieMedicaleSerializer(serializers.ModelSerializer):
         model = ExamenImagerieMedicale
         fields = ['id','examen_image']
         #Remember the formdata for the frontend team
+
+class BilanRadiologiqueSerializerCompteRendu(serializers.ModelSerializer):
+    class Meta:
+        model = BilanRadiologique
+        fields =  ['id','compte_rendu']
+class ExamenImagerieMedicaleRetrieveSerializer(serializers.ModelSerializer):
+    examen_image = serializers.ImageField(use_url=True)  # This ensures the full URL is included
+    bilan = BilanRadiologiqueSerializerCompteRendu()
+    class Meta:
+        model = ExamenImagerieMedicale
+        fields = ['id', 'bilan','examen_image']
+
+        
 

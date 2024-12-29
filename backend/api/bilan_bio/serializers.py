@@ -25,18 +25,19 @@ class ConsulationListingField(serializers.RelatedField):
 class BilanBiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = BilanBiologique
-        fields = ['id','consultation']
+        fields = ['id','consultation','date']
     consultation = ConsulationListingField(many=False, read_only=True)
 
 class ParamValeurSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParamValeur
-        fields = ['id', 'parametre', 'valeur', 'unite']
+        fields = ['id', 'parametre', 'valeur', 'unite','valeur_reference']
 
     def update(self, instance, validated_data):
         # Update the instance with new values from validated_data
         instance.valeur = validated_data.get('valeur', instance.valeur)
         instance.unite = validated_data.get('unite', instance.unite)
+        instance.valeur_reference = validated_data.get('valeur_reference',instance.valeur_reference)
         instance.save()
         return instance
 
