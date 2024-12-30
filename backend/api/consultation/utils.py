@@ -9,6 +9,15 @@ from datetime import datetime
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
+def to_representation(value):
+    return {
+        "id": value["id"],
+        "medecin": value["medecin"]["username"],
+        "dpi": value["dpi"]["id"],
+        "etablisement": value["etablisement"],  # Utilisation correcte des crochets
+        "resume": value["resume"],
+        "la_date": value["la_date"],
+    }
 
 # Récupère toutes les consultations et retourne les données sérialisées
 def get_all_consultations():
@@ -51,7 +60,10 @@ def get_consultation_by_id(pk):
     try:
         consultation = Consultation.objects.get(pk=pk)
         serializer = ConsultationDetailSerializer(consultation)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        print(serializer.data)
+        res = to_representation(serializer.data)
+        
+        return Response(res, status=status.HTTP_200_OK)
     except Consultation.DoesNotExist:
         return Response({'error': 'Consultation not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
