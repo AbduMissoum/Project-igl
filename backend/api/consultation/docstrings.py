@@ -61,11 +61,18 @@ def post_consultation_schema():
         type=openapi.TYPE_OBJECT,
         properties={
             'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=10),  # ID of the created consultation
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=13),  # Medecin (doctor) ID
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),  # DPI ID
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),  # Etablisement ID
+            'medecin': openapi.Schema(  # Medecin (doctor) details
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=13),
+                    'username': openapi.Schema(type=openapi.TYPE_STRING, example='imad14'),
+                    'email': openapi.Schema(type=openapi.TYPE_STRING, example='imad@esi.dz')
+                }
+            ),
+            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),  # Integer input for dpi
+            'etablisement': openapi.Schema(type=openapi.TYPE_STRING, example='esi'),  # Etablisement name
             'resume': openapi.Schema(type=openapi.TYPE_STRING, example=None),  # Optional resume, could be null
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2050-06-25'),  # Date of consultation
+            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-06-01'),  # Date of consultation
         }
     )
 
@@ -83,7 +90,7 @@ def post_consultation_schema():
                 schema=openapi.Schema(
                     type=openapi.TYPE_OBJECT,
                     properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='Invalid data provided.'),
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='Invalid data provided.')
                     }
                 ),
             ),
@@ -92,7 +99,7 @@ def post_consultation_schema():
                 schema=openapi.Schema(
                     type=openapi.TYPE_OBJECT,
                     properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.'),
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.')
                     }
                 ),
             ),
@@ -107,25 +114,20 @@ def consultation_detail_schema():
     consultation_schema = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
-            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=8),
-            'medecin': openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=13),
-                    'username': openapi.Schema(type=openapi.TYPE_STRING, example='username'),
-                    'email': openapi.Schema(type=openapi.TYPE_STRING, example='imad@esi.dz'),
-                }
-            ),
+            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'medecin': openapi.Schema(type=openapi.TYPE_STRING, example='imad14'),  # Medecin as a username
             'dpi': openapi.Schema(
                 type=openapi.TYPE_OBJECT,
                 properties={
-                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),
-                    'qr_code': openapi.Schema(type=openapi.TYPE_STRING, example=None),
+                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=2),
+                    'NSS': openapi.Schema(type=openapi.TYPE_STRING, example='123'),
+                    'nom': openapi.Schema(type=openapi.TYPE_STRING, example='patient'),
+                    'prenom': openapi.Schema(type=openapi.TYPE_STRING, example='dz'),
                 }
             ),
             'etablisement': openapi.Schema(type=openapi.TYPE_STRING, example='esi'),
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example=None),
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-06-25'),
+            'resume': openapi.Schema(type=openapi.TYPE_STRING, example=''),
+            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-29'),
         }
     )
 
@@ -157,6 +159,7 @@ def consultation_detail_schema():
             ),
         }
     )
+
 
 def put_consultation_schema():
     """
@@ -294,13 +297,6 @@ def consultation_by_dpi_get_schema():
                     'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=13),
                     'username': openapi.Schema(type=openapi.TYPE_STRING, example='username'),
                     'email': openapi.Schema(type=openapi.TYPE_STRING, example='imad@esi.dz'),
-                }
-            ),
-            'dpi': openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),
-                    'qr_code': openapi.Schema(type=openapi.TYPE_STRING, example=None),
                 }
             ),
             'etablisement': openapi.Schema(type=openapi.TYPE_STRING, example='esi'),
