@@ -1,49 +1,89 @@
 from django.http import JsonResponse
 from .models import Consultation
 from dpi.models import Dpi
-from .serializers import ConsultationSerializer
+from .serializers import ConsultationSerializer,ConsultationDetailSerializer
 from rest_framework.parsers import JSONParser
-from authentication.models import CustomUser
-
+from authentication.models import CustomUser,Etablisement
 from rest_framework.response import Response
 from datetime import datetime
+from rest_framework import status
+from django.shortcuts import get_object_or_404
 
 
-
+# Récupère toutes les consultations et retourne les données sérialisées
 def get_all_consultations():
     consultations = Consultation.objects.all()
-    serializer = ConsultationSerializer(consultations, many=True)
-    return JsonResponse(serializer.data, safe=False)
+    serializer = ConsultationDetailSerializer(consultations, many=True)
+    return Response(serializer.data)
 
 
-def create_consultation(data):
-    serializer = ConsultationSerializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse(serializer.data, status=201)
-    return JsonResponse(serializer.errors, status=400)
+# Crée une consultation à partir des données reçues
+def create_consultation(user, data):
+    try:
+        # Récupérer l'établissement en fonction du nom
+        etablisement = get_object_or_404(Etablisement, nom=data.get('etablisement'))
+        dpi = get_object_or_404(Dpi, id=data.get('dpi'))
 
+        # Créer l'objet Consultation
+        consultation = Consultation(
+            medecin=user,
+            dpi=dpi,
+            etablisement=etablisement,
+            la_date=data.get('la_date')
+        )
+        consultation.save()
+
+        # Sérialiser et retourner les données
+        serializer = ConsultationSerializer(consultation)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    except Etablisement.DoesNotExist:
+        return Response({"error": "Etablissement not found."}, status=status.HTTP_400_BAD_REQUEST)
+    except Dpi.DoesNotExist:
+        return Response({"error": "Dpi not found."}, status=status.HTTP_400_BAD_REQUEST)
+    except KeyError as e:
+        return Response({"error": f"Missing field: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        print(e)
+        return Response({"error": "An unexpected error occurred. Please try again later."}, status=status.HTTP_400_BAD_REQUEST)
 
 def get_consultation_by_id(pk):
     try:
         consultation = Consultation.objects.get(pk=pk)
-        serializer = ConsultationSerializer(consultation)
-        return JsonResponse(serializer.data, safe=False)
+        serializer = ConsultationDetailSerializer(consultation)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     except Consultation.DoesNotExist:
-        return JsonResponse({'error': 'Consultation not found'}, status=404)
+        return Response({'error': 'Consultation not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(e)
+        return Response({'error': 'An unexpected error occurred. Please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def update_consultation(consultation, data):
-    serializer = ConsultationSerializer(consultation, data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse(serializer.data, status=200)
-    return JsonResponse(serializer.errors, status=400)
+def update_consultation(pk, data):
+    try:
+        consultation = Consultation.objects.get(pk=pk)
+        serializer = ConsultationDetailSerializer(consultation, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Consultation.DoesNotExist:
+        return Response({'error': 'Consultation not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(e)
+        return Response({'error': 'An unexpected error occurred. Please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def delete_consultation(consultation):
-    consultation.delete()
-    return JsonResponse({'message': 'Consultation deleted successfully'}, status=204)
+def delete_consultation(pk):
+    try:
+        consultation = Consultation.objects.get(pk=pk)
+        consultation.delete()
+        return Response({'message': 'Consultation deleted successfully'}, status=status.HTTP_200_OK)
+    except Consultation.DoesNotExist:
+        return Response({'error': 'Consultation not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(e)
+        return Response({'error': 'An unexpected error occurred. Please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def validate_date(date):
@@ -69,56 +109,55 @@ def get_consultations_by_date(date):
 
 def get_consultations_by_dpi(pk):
     try:
+        # Fetch the Dpi object by primary key
         dpi = Dpi.objects.get(pk=pk)
+        
+        # Filter consultations associated with the DPI
         consultations = Consultation.objects.filter(dpi=dpi)
-        serializer = ConsultationSerializer(consultations, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        
+        # Serialize the consultations using ConsultationDetailSerializer
+        serializer = ConsultationDetailSerializer(consultations, many=True)
+        
+        # Return the serialized data as a JSON response
+        return Response(serializer.data, status=status.HTTP_200_OK)
     except Dpi.DoesNotExist:
-        return JsonResponse({'error': 'DPI not found'}, status=404)
+        # Handle case where DPI is not found
+        return Response({'error': 'DPI not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        # Handle any unexpected errors
+        print("Unexpected error:", str(e))
+        return Response({'error': 'An unexpected error occurred. Please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-def create_consultations_by_dpi(pk, data):
-    if isinstance(data, list):
-        for item in data:
-            item['dpi'] = pk
-        serializer = ConsultationSerializer(data=data, many=True)
-    else:
-        data['dpi'] = pk
-        serializer = ConsultationSerializer(data=data)
-
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse(serializer.data, status=201, safe=False)
-    return JsonResponse(serializer.errors, status=400)
-
-def get_consultations_by_medecin(medecin_id):
-    """
-    Récupère toutes les consultations associées à un médecin.
-    """
+def get_consultation_resume_by_id(pk):
     try:
-        medecin = CustomUser.objects.get(pk=medecin_id)
-    except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'Médecin introuvable'}, status=404)
+        consultation = Consultation.objects.get(pk=pk)
+        # Return only the `resume` field
+        return Response({'resume': consultation.resume}, status=status.HTTP_200_OK)
+    except Consultation.DoesNotExist:
+        return Response({'error': 'Consultation not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(e)
+        return Response({'error': 'An unexpected error occurred. Please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    consultations = Consultation.objects.filter(medecin=medecin)
-    serializer = ConsultationSerializer(consultations, many=True)
-    return JsonResponse(serializer.data, safe=False, status=200)
-
-
-def create_consultation_by_medecin(medecin_id, data):
-    """
-    Crée une consultation associée à un médecin spécifique.
-    """
+# Utility function to update the resume of a consultation by ID
+def update_consultation_resume(pk, data):
     try:
-        medecin = CustomUser.objects.get(pk=medecin_id)
-    except CustomUser.DoesNotExist:
-        return JsonResponse({'error': 'Médecin introuvable'}, status=404)
-
-    data['medecin'] = medecin_id  # Ajoute le médecin aux données
-    serializer = ConsultationSerializer(data=data)
-
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse(serializer.data, status=201)
-    return JsonResponse(serializer.errors, status=400)
+        # Ensure 'resume' field exists in the payload
+        if 'resume' not in data:
+            return Response({'error': "'resume' field is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Retrieve the consultation object
+        consultation = Consultation.objects.get(pk=pk)
+        
+        # Update the `resume` field
+        consultation.resume = data['resume']
+        consultation.save()
+        
+        # Return success response
+        return Response({'message': 'Resume updated successfully', 'resume': consultation.resume}, status=status.HTTP_200_OK)
+    except Consultation.DoesNotExist:
+        return Response({'error': 'Consultation not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print("Unexpected error:", e)
+        return Response({'error': 'An unexpected error occurred. Please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
