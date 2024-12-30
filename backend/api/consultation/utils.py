@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from .models import Consultation
 from dpi.models import Dpi
-from .serializers import ConsultationSerializer,ConsultationDetailSerializer
+from .serializers import ConsultationSerializer,ConsultationDetailSerializer,ConsultationDpiSerializer,ConsultationwithDpiSerializer
 from rest_framework.parsers import JSONParser
 from authentication.models import CustomUser,Etablisement
 from rest_framework.response import Response
@@ -18,7 +18,7 @@ def to_representation(value):
         "resume": value["resume"],
         "la_date": value["la_date"],
     }
-
+    
 # Récupère toutes les consultations et retourne les données sérialisées
 def get_all_consultations():
     consultations = Consultation.objects.all()
@@ -43,7 +43,7 @@ def create_consultation(user, data):
         consultation.save()
 
         # Sérialiser et retourner les données
-        serializer = ConsultationSerializer(consultation)
+        serializer = ConsultationwithDpiSerializer(consultation)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     except Etablisement.DoesNotExist:
@@ -128,7 +128,7 @@ def get_consultations_by_dpi(pk):
         consultations = Consultation.objects.filter(dpi=dpi)
         
         # Serialize the consultations using ConsultationDetailSerializer
-        serializer = ConsultationDetailSerializer(consultations, many=True)
+        serializer = ConsultationDpiSerializer(consultations, many=True)
         
         # Return the serialized data as a JSON response
         return Response(serializer.data, status=status.HTTP_200_OK)
