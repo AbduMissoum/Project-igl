@@ -1,9 +1,10 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
+# Schema for GET request
 def consultation_list_schema():
     """
-    Returns the OpenAPI schema for retrieving a list of consultations and creating a new consultation.
+    Returns the OpenAPI schema for retrieving a list of consultations.
     """
     consultation_schema = openapi.Schema(
         type=openapi.TYPE_OBJECT,
@@ -16,7 +17,6 @@ def consultation_list_schema():
             'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
         }
     )
-
     return swagger_auto_schema(
         method='GET',
         operation_description="Retrieve a list of consultations",
@@ -39,33 +39,33 @@ def consultation_list_schema():
             ),
         }
     )
+
+# Schema for POST request
 def post_consultation_schema():
     """
     Returns the OpenAPI schema for creating a new consultation.
     """
-    # Schéma pour la requête
+    # Schema for request body (input parameters)
     request_body = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation details'),
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-01'),
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'etablisement': openapi.Schema(type=openapi.TYPE_STRING, example='esi'),  # String input for etablisement name
+            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),  # Integer input for dpi
+            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-06-01'),  # Date string in 'YYYY-MM-DD'
         },
-        required=['dpi', 'resume', 'la_date', 'medecin', 'etablisement']  # Champs obligatoires
+        required=['etablisement', 'dpi', 'la_date']  # Required fields for the request
     )
 
-    # Schéma pour la réponse
+    # Schema for response body (output)
     response_body = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
-            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=42),  # Inclure l'ID dans la réponse
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation details'),
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-01'),
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=10),  # ID of the created consultation
+            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=13),  # Medecin (doctor) ID
+            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),  # DPI ID
+            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),  # Etablisement ID
+            'resume': openapi.Schema(type=openapi.TYPE_STRING, example=None),  # Optional resume, could be null
+            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2050-06-25'),  # Date of consultation
         }
     )
 
@@ -76,7 +76,7 @@ def post_consultation_schema():
         responses={
             201: openapi.Response(
                 description="Successfully created consultation",
-                schema=response_body,  # Utilisation du schéma avec l'ID
+                schema=response_body,  # Using the response schema with the ID
             ),
             400: openapi.Response(
                 description="Bad Request",
@@ -99,6 +99,7 @@ def post_consultation_schema():
         }
     )
 
+
 def consultation_detail_schema():
     """
     Returns the OpenAPI schema for retrieving, updating, and deleting a consultation by ID.
@@ -106,12 +107,25 @@ def consultation_detail_schema():
     consultation_schema = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
-            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation summary'),
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-01'),
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=8),
+            'medecin': openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=13),
+                    'username': openapi.Schema(type=openapi.TYPE_STRING, example='username'),
+                    'email': openapi.Schema(type=openapi.TYPE_STRING, example='imad@esi.dz'),
+                }
+            ),
+            'dpi': openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),
+                    'qr_code': openapi.Schema(type=openapi.TYPE_STRING, example=None),
+                }
+            ),
+            'etablisement': openapi.Schema(type=openapi.TYPE_STRING, example='esi'),
+            'resume': openapi.Schema(type=openapi.TYPE_STRING, example=None),
+            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-06-25'),
         }
     )
 
@@ -143,6 +157,7 @@ def consultation_detail_schema():
             ),
         }
     )
+
 def put_consultation_schema():
     """
     Returns the OpenAPI schema for updating a consultation by ID.
@@ -150,22 +165,48 @@ def put_consultation_schema():
     request_body = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'medecin': openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=13),  # Medecin ID for update
+                    'username': openapi.Schema(type=openapi.TYPE_STRING, example='username'),
+                    'email': openapi.Schema(type=openapi.TYPE_STRING, example='imad@esi.dz'),
+                }
+            ),
+            'dpi': openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),
+                    'qr_code': openapi.Schema(type=openapi.TYPE_STRING, example=None),
+                }
+            ),
+            'etablisement': openapi.Schema(type=openapi.TYPE_STRING, example='esi'),
             'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Updated consultation summary'),
             'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-05'),
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
         }
     )
     response_body = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
-            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=42),  # Inclure l'ID dans la réponse
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation details'),
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-01'),
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=8),  # Consultation ID
+            'medecin': openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=13),
+                    'username': openapi.Schema(type=openapi.TYPE_STRING, example='username'),
+                    'email': openapi.Schema(type=openapi.TYPE_STRING, example='imad@esi.dz'),
+                }
+            ),
+            'dpi': openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),
+                    'qr_code': openapi.Schema(type=openapi.TYPE_STRING, example=None),
+                }
+            ),
+            'etablisement': openapi.Schema(type=openapi.TYPE_STRING, example='esi'),
+            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Updated consultation summary'),
+            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-05'),
         }
     )
 
@@ -207,6 +248,7 @@ def put_consultation_schema():
             ),
         }
     )
+
 def delete_consultation_schema():
     """
     Returns the OpenAPI schema for deleting a consultation by ID.
@@ -236,218 +278,8 @@ def delete_consultation_schema():
             ),
         }
     )
-def consultation_by_date_get_schema():
-    """
-    Returns the OpenAPI schema for retrieving consultations by date and creating new consultations by date.
-    """
-    consultation_schema = openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation summary'),
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-01'),
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-        }
-    )
 
-    return swagger_auto_schema(
-        method='GET',
-        operation_description="Retrieve consultations by date",
-        responses={
-            200: openapi.Response(
-                description="Successfully retrieved consultations by date",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_ARRAY,
-                    items=consultation_schema,
-                ),
-            ),
-            400: openapi.Response(
-                description="Bad Request",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='Invalid date format.'),
-                    }
-                ),
-            ),
-            500: openapi.Response(
-                description="Internal Server Error",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.'),
-                    }
-                ),
-            ),
-        }
-    )
-def consultation_by_medecin_get_schema():
-    """
-    Returns the OpenAPI schema for retrieving consultations associated with a specific doctor (medecin).
-    """
-    consultation_schema = openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation summary'),
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-01'),
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-        }
-    )
 
-    return swagger_auto_schema(
-        method='GET',
-        operation_description="Retrieve consultations associated with a specific doctor (medecin)",
-        responses={
-            200: openapi.Response(
-                description="Successfully retrieved consultations by doctor",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_ARRAY,
-                    items=consultation_schema,
-                ),
-            ),
-            404: openapi.Response(
-                description="Doctor not found",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='Doctor not found.'),
-                    }
-                ),
-            ),
-            500: openapi.Response(
-                description="Internal Server Error",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.'),
-                    }
-                ),
-            ),
-        }
-    )
-def consultation_by_medecin_post_schema():
-    """
-    Returns the OpenAPI schema for creating consultations associated with a specific doctor (medecin).
-    """
-    request_body = openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation details'),
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-01'),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-        }
-    )
-    response_body = openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=42),  # Inclure l'ID dans la réponse
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation details'),
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-01'),
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-        }
-    )
-
-    return swagger_auto_schema(
-        method='POST',
-        operation_description="Create consultations associated with a specific doctor (medecin)",
-        request_body=request_body,
-        responses={
-            201: openapi.Response(
-                description="Successfully created consultation",
-                schema=response_body,
-            ),
-            400: openapi.Response(
-                description="Bad Request",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='Invalid data provided.'),
-                    }
-                ),
-            ),
-            404: openapi.Response(
-                description="Doctor not found",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='Doctor not found.'),
-                    }
-                ),
-            ),
-            500: openapi.Response(
-                description="Internal Server Error",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.'),
-                    }
-                ),
-            ),
-        }
-    )
-
-def consultation_by_dpi_post_schema():
-    """
-    Returns the OpenAPI schema for creating consultations by DPI ID.
-    """
-    request_body = openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation details'),
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-01'),
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-        }
-    )
-    response_body = openapi.Schema(
-        type=openapi.TYPE_OBJECT,
-        properties={
-            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=42),  # Inclure l'ID dans la réponse
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation details'),
-            'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-01'),
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-        }
-    )
-
-    return swagger_auto_schema(
-        method='POST',
-        operation_description="Create consultations associated with a specific DPI.",
-        request_body=request_body,
-        responses={
-            201: openapi.Response(
-                description="Successfully created consultations for DPI",
-                schema=response_body,
-            ),
-            400: openapi.Response(
-                description="Bad Request",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='Invalid data provided.'),
-                    }
-                ),
-            ),
-            500: openapi.Response(
-                description="Internal Server Error",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.'),
-                    }
-                ),
-            ),
-        }
-    )
 def consultation_by_dpi_get_schema():
     """
     Returns the OpenAPI schema for retrieving consultations by DPI ID.
@@ -456,11 +288,24 @@ def consultation_by_dpi_get_schema():
         type=openapi.TYPE_OBJECT,
         properties={
             'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'dpi': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation summary'),
+            'medecin': openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=13),
+                    'username': openapi.Schema(type=openapi.TYPE_STRING, example='username'),
+                    'email': openapi.Schema(type=openapi.TYPE_STRING, example='imad@esi.dz'),
+                }
+            ),
+            'dpi': openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),
+                    'qr_code': openapi.Schema(type=openapi.TYPE_STRING, example=None),
+                }
+            ),
+            'etablisement': openapi.Schema(type=openapi.TYPE_STRING, example='esi'),
+            'resume': openapi.Schema(type=openapi.TYPE_STRING, example=None),
             'la_date': openapi.Schema(type=openapi.TYPE_STRING, example='2024-12-01'),
-            'medecin': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'etablisement': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
         }
     )
 
@@ -495,3 +340,98 @@ def consultation_by_dpi_get_schema():
             ),
         }
     )
+def consultation_resume_get_schema():
+    """
+    Returns the OpenAPI schema for retrieving consultation resume by ID.
+    """
+    return swagger_auto_schema(
+        method='GET',
+        operation_description="Retrieve the consultation resume by ID",
+        responses={
+            200: openapi.Response(
+                description="Successfully retrieved consultation resume",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation resume text here')
+                    }
+                ),
+            ),
+            404: openapi.Response(
+                description="Consultation not found",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation not found.')
+                    }
+                ),
+            ),
+            500: openapi.Response(
+                description="Internal Server Error",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.')
+                    }
+                ),
+            ),
+        }
+    )
+
+def consultation_resume_post_schema():
+    """
+    Returns the OpenAPI schema for updating consultation resume by ID.
+    """
+    request_body = openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Updated consultation resume text here')
+        },
+        required=['resume']
+    )
+
+    return swagger_auto_schema(
+        method='POST',
+        operation_description="Update the consultation resume by ID",
+        request_body=request_body,
+        responses={
+            200: openapi.Response(
+                description="Successfully updated consultation resume",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'message': openapi.Schema(type=openapi.TYPE_STRING, example='Resume updated successfully'),
+                        'resume': openapi.Schema(type=openapi.TYPE_STRING, example='Updated consultation resume text here')
+                    }
+                ),
+            ),
+            400: openapi.Response(
+                description="Bad Request - missing or invalid data",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='Invalid request format or data')
+                    }
+                ),
+            ),
+            404: openapi.Response(
+                description="Consultation not found",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='Consultation not found.')
+                    }
+                ),
+            ),
+            500: openapi.Response(
+                description="Internal Server Error",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.')
+                    }
+                ),
+            ),
+        }
+    )
+
