@@ -1,61 +1,25 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dossier Patient Informatisé (DPI)</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="min-h-screen bg-gradient-to-b from-clair to-white text-gray-800">
-
+<!-- Patient Information Section -->
+<section class="bg-clair rounded-[40px] shadow-lg p-8 w-full max-w-4xl mx-auto">
+  <h2 class="text-2xl font-bold text-fonce mb-6">Information Personnel</h2>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
   
-  <main class="container mx-auto mb-16  mt-12 px-4">
-    <!-- Title -->
-    <section class="text-center mb-12 mx-32">
-      <h1 class="text-3xl font-bold text-fonce mb-4">
-        Consultez vos informations médicales en toute simplicité !
-      </h1>
-      <p class="text-lg text-gray-600">
-        Bienvenue sur votre espace personnel dédié à la consultation de votre Dossier Patient Informatisé (DPI). 
-        Ici, vous avez un accès sécurisé à vos données médicales essentielles : antécédents, traitements, ordonnances, et résultats d'examens. 
-        Ce portail vous permet de suivre votre historique de santé et de mieux comprendre les soins qui vous sont prodigués. Toutes vos informations sont protégées et accessibles à tout moment pour garantir transparence et continuité dans votre parcours de santé.
-      </p>
-    </section>
+    <div class="space-y-8">
+      <p class="text-lg font-semibold text-fonce">Nom : <span class="text-gray-700">{{ patientData?.nom || 'Non disponible' }}</span></p>
+      <p class="text-lg font-semibold text-fonce">Prénom : <span class="text-gray-700">{{ patientData?.prenom || 'Non disponible' }}</span></p>
+      <p class="text-lg font-semibold text-fonce">Date de naissance : <span class="text-gray-700">{{ patientData?.date_naissance || 'Non disponible' }}</span></p>
+      <p class="text-lg font-semibold text-fonce">Téléphone : <span class="text-gray-700">{{ patientData?.tel || 'Non disponible' }}</span></p>
+      <p class="text-lg font-semibold text-fonce">Adresse : <span class="text-gray-700">{{ patientData?.adress || 'Non disponible' }}</span></p>
+      <p class="text-lg font-semibold text-fonce">Mutuelle : <span class="text-gray-700">{{ patientData?.mutuelle || 'Non disponible' }}</span></p>
+      <p class="text-lg font-semibold text-fonce">E-mail : <span class="text-gray-700">{{ patientData?.email || 'Non disponible' }}</span></p>
+      <p class="text-lg font-semibold text-fonce">NSS : <span class="text-gray-700">{{ patientData?.NSS || 'Non disponible' }}</span></p>
+    </div>
+    <div class="flex items-center justify-center">
+      <img src="assets/images/DPI.png" alt="Patient Illustration" class="w-100 h-120">
+    </div>
+  </div>
 
-    <!-- Personal Information -->
-    <section class="bg-clair rounded-[40px] shadow-lg p-8 w-full max-w-4xl mx-auto">
-      <h2 class="text-2xl font-bold text-fonce mb-6">Information Personnel</h2>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Information Details -->
-        <div class="space-y-8">
-          <p class="text-lg font-semibold text-fonce">Nom : <span class="text-gray-700">[Nom]</span></p>
-          <p class="text-lg font-semibold text-fonce">Prénom : <span class="text-gray-700">[Prénom]</span></p>
-          <p class="text-lg font-semibold text-fonce">Date de naissance : <span class="text-gray-700">[Date]</span></p>
-          <p class="text-lg font-semibold text-fonce">Téléphone : <span class="text-gray-700">[Téléphone]</span></p>
-          <p class="text-lg font-semibold text-fonce">Adresse : <span class="text-gray-700">[Adresse]</span></p>
-          <p class="text-lg font-semibold text-fonce">Mutuelle : <span class="text-gray-700">[Mutuelle]</span></p>
-          <p class="text-lg font-semibold text-fonce">E-mail : <span class="text-gray-700">[Email]</span></p>
-          <p class="text-lg font-semibold text-fonce">NSS : <span class="text-gray-700">[NSS]</span></p>
-        </div>
-        <!-- Illustration -->
-        <div class="flex items-center justify-center">
-          <img src="assets/images/DPI.png" alt="Patient Illustration" class="w-100 h-120">
-        </div>
-      </div>
-     
-      <!-- QR Code -->
-     
-       
-          
-          <div class=" w-10 h-10 bg-clair mx-80 mt-12 mb-20  flex items-center justify-center rounded-md">
-          <qrcode [qrdata]="nss" class="w-full h-full" [errorCorrectionLevel]="'M'"></qrcode>
-           
-           
-          </div>
-    
-    
-    </section>
-  </main>
-
-</body>
-</html>
+  <!-- QR Code -->
+  <div class="w-10 h-10 bg-clair mx-80 mt-12 mb-20 flex items-center justify-center rounded-md">
+    <qrcode [qrdata]="nss" class="w-full h-full" [errorCorrectionLevel]="'M'"></qrcode>
+  </div>
+</section>

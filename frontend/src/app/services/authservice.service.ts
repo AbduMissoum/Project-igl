@@ -15,10 +15,14 @@ export class AuthService {
     const body = { username, password };
     return this.http.post(this.apiUrl, body);
   }
+
   logout(): Observable<any> {
+    // Supprimer le token et le rôle à la déconnexion
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userRole');
     return this.http.post('http://127.0.0.1:8000/auth/logout/', {});
   }
-  
+
   setRole(role: string): void {
     this.role = role;
     localStorage.setItem('userRole', role); // Enregistre le rôle dans localStorage
@@ -30,8 +34,27 @@ export class AuthService {
     }
     return this.role;
   }
+
   clearRole(): void {
     this.role = null;
     localStorage.removeItem('userRole'); // Supprime le rôle de localStorage
+  }
+
+  // Ajouter le token d'authentification
+  setToken(token: string): void {
+    localStorage.setItem('authToken', token); // Sauvegarde le token dans localStorage
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('authToken'); // Récupère le token depuis localStorage
+  }
+
+  // Méthode pour rechercher un patient par NSS
+  getPatientByNSS(nss: string): Observable<any> {
+    return this.http.get(`http://127.0.0.1:8000/patient?NSS=${nss}`, { params: { NSS: nss } });
+  }
+
+  getPatientById(id: number): Observable<any> {
+    return this.http.get<any>(`http://127.0.0.1:8000/patient/${id}`);
   }
 }

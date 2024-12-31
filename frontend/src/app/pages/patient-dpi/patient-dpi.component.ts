@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { QRCodeComponent } from 'angularx-qrcode';
+import { PatientService } from '../../services/patient.service';
+import { AuthService } from '../../services/authservice.service';
+import { SharedService } from '../../services/sharedservice.service';
 
 @Component({
   selector: 'app-patient-dpi',
@@ -9,19 +12,37 @@ import { QRCodeComponent } from 'angularx-qrcode';
   templateUrl: './patient-dpi.component.html',
   styleUrl: './patient-dpi.component.css'
 })
-export class PatientDPIComponent {
+export class PatientDPIComponent implements OnInit {
+  nss : string = 'ghjklkjhg'
+  patientData: any = null; // Stocke les données du patient
+  qrCodeData: string = ''; // Données pour le QR Code
+  patientId: number = 5; // Exemple d'ID de patient
 
-  nss: string = '123456789012345'; // Exemple de NSS
-  qrCodeData: string = ''; // Stockage du QR Code
+  constructor(private patientService: AuthService , private sharedService: SharedService) {}
 
   ngOnInit(): void {
-   
+    this.sharedService.patientId$.subscribe((id: number | null) => {
+      if (id !== null) {
+        this.patientId = id;
+        this.loadPatientData();
+      }
+    });
   }
 
+  loadPatientData(): void {
+    if (!this.patientId) return;
   
-
-  constructor() { }
-
-  
-
+    this.patientService.getPatientById(this.patientId).subscribe({
+      next: (response) => {
+        this.patientData = response;
+        this.qrCodeData = this.patientData?.NSS || '';
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des données du patient :', err);
+        this.patientData = null;
+      }
+    });
 }
+}
+
+
