@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PatientService {
-  private apiUrl = 'http://localhost:8000/patient/'; // URL de l'API Django
+  private apiUrl = '/api/patient/'; // URL de l'API Django
   private patientData: any = null;
   constructor(private http: HttpClient) { }
   

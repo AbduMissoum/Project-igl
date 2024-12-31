@@ -1,10 +1,11 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework.parsers import JSONParser
 from .models import Consultation
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status
 
+from rest_framework.permissions import IsAuthenticated
 
 from .utils import (
     get_all_consultations, create_consultation,
@@ -17,6 +18,7 @@ from .docstrings import (consultation_list_schema,post_consultation_schema,consu
 
 @consultation_list_schema()
 @post_consultation_schema()
+@permission_classes([IsAuthenticated])
 @api_view(['GET', 'POST'])
 def consultation_list(request):
     if request.method == 'GET':
@@ -24,10 +26,10 @@ def consultation_list(request):
         return get_all_consultations()
 
     elif request.method == 'POST':
-        if request.user.is_authenticated:
+           
+            
+        
             return create_consultation(request.user, request.data)
-        else:
-            return Response({"error": "Authentication required."}, status=status.HTTP_401_UNAUTHORIZED)
 
 @put_consultation_schema()
 @delete_consultation_schema()

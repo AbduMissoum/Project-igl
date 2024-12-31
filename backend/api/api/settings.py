@@ -63,7 +63,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # Ajoute ceci en haut de la liste
-  
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -98,9 +97,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api.wsgi.application'
 AUTH_USER_MODEL = 'authentication.CustomUser'
+# settings.py
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
+
 
 
 DATABASES = {
@@ -181,3 +181,32 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory on the server where fi
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',  # Ajoute l'URL de ton frontend Angular ici
 ]
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+]
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:4200',  # Add your frontend's URL here
+    'https://localhost:4200',  # If you use HTTPS in local dev, also add this
+        'http://localhost:4201',  # Add your frontend's URL here
+
+]
+
+# Enable CORS for all domains (for development)
+
+# Or, allow only specific domains
+# CORS_ALLOWED_ORIGINS = [
+#     'http://yourfrontend.com',
+# ]
+
+# Allow all methods (including OPTIONS for preflight)
+
+
+# Allow specific headers, if needed, like CSRF token and others
+
+# Handle preflight request cache time

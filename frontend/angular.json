@@ -10,6 +10,7 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
+      
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
@@ -21,16 +22,12 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-<<<<<<< HEAD
              {
               "glob": "**/*",
               "input": "src/assets",
               "output": "/assets"
              }
-=======
-                "src/assets",
-                "src/favicon.ico"
->>>>>>> origin/Mohamed
+
             ],
             "styles": [
               "src/styles.css"
@@ -63,6 +60,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+         "buildTarget": "backend:build",
+        "proxyConfig": "src/proxy.conf.json"
+      },
           "configurations": {
             "production": {
               "buildTarget": "frontend:build:production"
@@ -99,5 +100,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "a4db976a-72a1-4ded-b178-87674d936bff"
   }
 }

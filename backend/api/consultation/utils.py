@@ -32,7 +32,7 @@ def create_consultation(user, data):
         # Récupérer l'établissement en fonction du nom
         etablisement = get_object_or_404(Etablisement, nom=data.get('etablisement'))
         dpi = get_object_or_404(Dpi, id=data.get('dpi'))
-
+        print(user)
         # Créer l'objet Consultation
         consultation = Consultation(
             medecin=user,

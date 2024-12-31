@@ -1,31 +1,44 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8000/auth/login/';
+  private baseUrl = "http://127.0.0.1:8000"
+  private apiUrl = this.baseUrl+'/auth/login/';
+  private logouturl= this.baseUrl+'/auth/logout/';
   private role: string | null = null;
+  private csrftoken: string | null = null;
 
   constructor(private http: HttpClient) {}
 
+
   login(username: string, password: string): Observable<any> {
+    // Retrieve the CSRF token from localStorage
+   
+
     const body = { username, password };
-    return this.http.post(this.apiUrl, body);
-  }
+  
+    // Send the POST request to the backend with credentials included
+    return this.http.post(this.apiUrl, body, { withCredentials: true, });
+  }  
 
   logout(): Observable<any> {
     // Supprimer le token et le rôle à la déconnexion
     localStorage.removeItem('authToken');
     localStorage.removeItem('userRole');
-    return this.http.post('http://127.0.0.1:8000/auth/logout/', {});
+    return this.http.post(this.logouturl, {withCredentials: true,});
   }
 
   setRole(role: string): void {
     this.role = role;
     localStorage.setItem('userRole', role); // Enregistre le rôle dans localStorage
+  }
+  setCsrfToken(csrftoken: string): void {
+    this.csrftoken = csrftoken;
+    localStorage.setItem('csrftoken', csrftoken); // Enregistre le rôle dans localStorage
   }
 
   getRole(): string | null {
@@ -51,10 +64,10 @@ export class AuthService {
 
   // Méthode pour rechercher un patient par NSS
   getPatientByNSS(nss: string): Observable<any> {
-    return this.http.get(`http://127.0.0.1:8000/patient?NSS=${nss}`, { params: { NSS: nss } });
+    return this.http.get(this.baseUrl+`/patient?NSS=${nss}`, { params: { NSS: nss } });
   }
 
   getPatientById(id: number): Observable<any> {
-    return this.http.get<any>(`http://127.0.0.1:8000/patient/${id}`);
+    return this.http.get<any>(this.baseUrl+`/patient/${id}`);
   }
 }

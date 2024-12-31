@@ -31,6 +31,8 @@ export class LoginComponent implements OnInit {
 
         // Définir le rôle utilisateur
         const role = response.role;
+        const csrftoken = response.csrftoken;
+        this.authService.setCsrfToken(csrftoken); // Appeler setToken pour sauvegarder le token
         this.authService.setRole(role); // Appeler setRole pour sauvegarder le rôle
 
         // Redirection en fonction du rôle

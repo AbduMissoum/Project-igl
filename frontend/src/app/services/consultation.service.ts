@@ -14,12 +14,11 @@ export class ConsultationService {
   // Fonction pour envoyer une nouvelle consultation
  
   createConsultation(etablisement: string, dpi: number, laDate: string): Observable<any> {
-    const csrfToken = this.getCSRFTokenFromCookies();
-
+const csrfToken = document.cookie.split("=")[1];    
     if (!csrfToken) {
       throw new Error('CSRF Token manquant');
     }
-
+    
     // Ajouter le csrftoken dans les en-têtes de la requête
     const headers = new HttpHeaders({
       'X-CSRFToken': csrfToken // Ajouter le CSRF token dans l'en-tête
@@ -30,19 +29,9 @@ export class ConsultationService {
       dpi: dpi,
       la_date: laDate,
     };
-    return this.http.post('http://localhost:8000/consultations/', body);
+    return this.http.post('/api/consultations/', body, { headers ,withCredentials: true });
   }
-  private getCSRFTokenFromCookies(): string {
-    const name = 'csrftoken=';
-    const cookies = document.cookie.split(';');
-    console.log(cookies);
-    for (let i = 0; i < cookies.length; i++) {
-      let c = cookies[i].trim();
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return ''; // Retourner une chaîne vide si le token CSRF n'est pas trouvé
-  }
+  
+ 
 }
 
