@@ -196,6 +196,10 @@ CSRF_TRUSTED_ORIGINS = [
         'http://localhost:4201',  # Add your frontend's URL here
 
 ]
+# settings.py
+SESSION_COOKIE_AGE = 7 * 24 * 60 * 60  # 1 week in seconds
+# settings.py
+CSRF_COOKIE_AGE = 7 * 24 * 60 * 60  # 1 week in seconds
 
 # Enable CORS for all domains (for development)
 
