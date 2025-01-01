@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component , OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {  RouterLink } from '@angular/router';
+
+import {  RouterLink , Router } from '@angular/router';
 import { SharedService } from '../../services/sharedservice.service';
 import { ConsultationService } from '../../services/consultation.service';
 
 
 interface Historique {
+  id : number;
   medecin: string;
   etablissement: string;
   date: Date;
@@ -20,64 +22,42 @@ interface Historique {
   templateUrl: './medecin-historique-consultation.component.html',
   styleUrls: ['./medecin-historique-consultation.component.css']
 })
-// export class MedecinHistoriqueConsultationComponent {
-//   historiques: Historique[] = [
-//     { medecin: 'Dr. Dupont', etablissement: 'Clinique Saint-Martin', date: new Date('2024-12-20'), heure: '10:30' },
-//     { medecin: 'Dr. Lefevre', etablissement: 'Hôpital Central', date: new Date('2024-12-22'), heure: '14:00' },
-//     { medecin: 'Dr. Bernard', etablissement: 'Centre Médical Nord', date: new Date('2024-12-23'), heure: '09:15' },
-//     { medecin: 'Dr. Martin', etablissement: 'Polyclinique Sud', date: new Date('2024-12-24'), heure: '16:45' }
-//   ];
-
-//   // Variable pour gérer l'ouverture/fermeture du modal
-//   isModalOpen: boolean = false;
-
-//   // Modèle pour la nouvelle consultation
-//   newConsultation: Historique = { medecin: '', etablissement: '', date: new Date(), heure: '' };
-
-//   constructor() {}
-
-//   ngOnInit(): void {
-//     console.log('Component initialized');
-//   }
-
-//   openModal(): void {
-//     this.isModalOpen = true;
-//   }
-
-//   closeModal(): void {
-//     this.isModalOpen = false;
-//   }
-
-//   addConsultation(): void {
-//     if (this.newConsultation.medecin && this.newConsultation.etablissement && this.newConsultation.date && this.newConsultation.heure) {
-//       // Ajouter la nouvelle consultation à la liste
-//       this.historiques.push({
-//         ...this.newConsultation,
-//         date: new Date(this.newConsultation.date) // S'assurer que la date est correctement formatée
-//       });
-
-//       // Réinitialiser le formulaire
-//       this.newConsultation = { medecin: '', etablissement: '', date: new Date(), heure: '' };
-//       this.closeModal();
-//     }
-//   }
-// }
-export class MedecinHistoriqueConsultationComponent {
-  historiques: Historique[] = [
-    { medecin: 'Dr. Dupont', etablissement: 'Clinique Saint-Martin', date: new Date('2024-12-20'), heure: '10:30' },
-    { medecin: 'Dr. Lefevre', etablissement: 'Hôpital Central', date: new Date('2024-12-22'), heure: '14:00' },
-    { medecin: 'Dr. Bernard', etablissement: 'Centre Médical Nord', date: new Date('2024-12-23'), heure: '09:15' },
-    { medecin: 'Dr. Martin', etablissement: 'Polyclinique Sud', date: new Date('2024-12-24'), heure: '16:45' }
-  ];
+export class MedecinHistoriqueConsultationComponent implements OnInit {
+  historiques: Historique[] = [ ];
 
   // Variables pour gérer le modal et les données de la consultation
   isModalOpen: boolean = false;
   newConsultation: { medecin: string, etablisement: string, date: string, heure: string } = { medecin: '', etablisement: '', date: '', heure: '' };
 
+
   constructor(
     private sharedService: SharedService,   // Injection du SharedService
-    private consultationService: ConsultationService // Injection du service de création de consultation
+    private consultationService: ConsultationService ,// Injection du service de création de consultation
+    private router: Router
   ) {}
+  ngOnInit(): void {
+    // Récupérer l'ID du patient et les consultations associées
+    this.sharedService.patientId$.subscribe(patientId => {
+      if (patientId !== null) {
+        this.consultationService.getConsultationsByDpi(patientId).subscribe({
+          next: (data) => {
+            this.historiques = data.map((item: any) => ({
+              id : item.id,
+              medecin: item.medecin.username, // Nom du médecin
+              etablissement: item.etablisement, // Établissement
+              date: new Date(item.la_date), // Date de la consultation
+              heure: '10:00' // Heure statique (par défaut)
+            }));
+          },
+          error: (err) => {
+            console.error('Erreur lors de la récupération des consultations :', err);
+          }
+        });
+      } else {
+        console.error('Aucun patient ID trouvé.');
+      }
+    });
+  }
 
   openModal(): void {
     this.isModalOpen = true;
@@ -98,10 +78,11 @@ export class MedecinHistoriqueConsultationComponent {
               console.log('Consultation ajoutée avec succès:', response);
               // Ajouter la consultation à l'historique
               this.historiques.push({
+                id : 9,
                 medecin: this.newConsultation.medecin,
                 etablissement: this.newConsultation.etablisement,
                 date: new Date(this.newConsultation.date),
-                heure: this.newConsultation.heure
+                heure: this.newConsultation.heure 
               });
               // Réinitialiser le formulaire et fermer le modal
               this.newConsultation = { medecin: '', etablisement: '', date: '', heure: '' };
@@ -117,4 +98,24 @@ export class MedecinHistoriqueConsultationComponent {
       });
     }
   }
+  
+  viewDetails(consultationId: number): void {
+    this.consultationService.getConsultationDetailsById(consultationId).subscribe({
+      next: (data) => {
+        // 'data' contient les détails de la consultation
+        console.log('Détails de la consultation récupérés :', data);
+        
+        // Partager les détails avec un composant enfant via un service (SharedService)
+        this.sharedService.setConsultationDetails(data);  // Par exemple, avec SharedService
+
+        // Optionnel : rediriger vers une page dédiée ou afficher les détails dans une modal
+        this.router.navigate(['/medecin', consultationId]); // Par exemple, rediriger vers /medecin/{id}
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des détails :', err);
+      }
+    });
+  }  
+  
+
 }

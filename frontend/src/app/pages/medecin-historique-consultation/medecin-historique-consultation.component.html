@@ -1,74 +1,13 @@
-<!-- <div class="w-full max-w-5xl rounded-[40px] shadow-md p-8 ml-28 mt-6">
-  <h1 class="text-4xl font-bold text-fonce mb-8 text-center">
-    Historique de vos consultations médicales
-  </h1>
-
-  <div class="overflow-hidden rounded-[40px] border border-fonce shadow-lg">
-    <table class="table-auto w-full text-left">
-  
-      <thead class="bg-fonce text-white">
-        <tr>
-          <th class="py-4 px-6 rounded-tl-[40px]">Médecin</th>
-          <th class="py-4 px-6">Établissement</th>
-          <th class="py-4 px-6">Date</th>
-          <th class="py-4 px-6">Heure</th>
-          <th class="py-4 px-6 rounded-tr-[40px] ">Details</th>
-        </tr>
-      </thead>
-    
-      <tbody>
-        <tr *ngFor="let item of historiques" class="group bg-clair hover:bg-white transition-all duration-200 cursor-pointer">
-          <td class="py-4 px-6">{{ item.medecin }}</td>
-          <td class="py-4 px-6">{{ item.etablissement }}</td>
-          <td class="py-4 px-6">{{ item.date | date: 'shortDate' }}</td>
-          <td class="py-4 px-6">{{ item.heure }}</td>
-          <td class="py-4 px-6">
-           
-            <a
-            routerLink="/medecin" class=" text-fonce font-semibold hover:underline">
-              Voir détails
-          </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-
-  <div class="w-[800px] mx-auto flex justify-end mt-4">
-    <button class="bg-clair text-fonce px-6 py-3 rounded-[40px] font-semibold shadow-md hover:bg-gray-200" (click)="openModal()">
-      Ajouter
-    </button>
-  </div>
-
-
-  <div *ngIf="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-    <div class="bg-white p-8 rounded-[40px] w-[400px]">
-      <h2 class="text-2xl font-bold text-fonce mb-6">Ajouter une consultation</h2>
-
-      <label for="medecin" class="block text-sm text-fonce font-semibold mb-2">Médecin</label>
-      <input [(ngModel)]="newConsultation.medecin" type="text" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" placeholder="Nom du médecin" required>
-
-      <label for="etablissement" class="block text-sm text-fonce  font-semibold mb-2">Établissement</label>
-      <input [(ngModel)]="newConsultation.etablissement" type="text" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" placeholder="Établissement" required>
-
-      <label for="date" class="block text-sm text-fonce font-semibold mb-2">Date</label>
-      <input [(ngModel)]="newConsultation.date" type="date" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" required>
-
-      <label for="heure" class="block text-sm text-fonce font-semibold mb-2">Heure</label>
-      <input [(ngModel)]="newConsultation.heure" type="time" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" required>
-
-      <div class="flex justify-between">
-        <button class="bg-gray-200 text-fonce px-6 py-3 rounded-[40px] font-semibold" (click)="closeModal()">Annuler</button>
-        <button class="bg-clair text-fonce px-6 py-3 rounded-[40px] font-semibold" (click)="addConsultation()">Ajouter</button>
-      </div>
-    </div>
-  </div>
-</div> -->
 <div class="w-full max-w-5xl rounded-[40px] shadow-md p-8 ml-28 mt-6">
   <h1 class="text-4xl font-bold text-fonce mb-8 text-center">Historique de vos consultations médicales</h1>
 
-  <div class="overflow-hidden rounded-[40px] border border-fonce shadow-lg">
+  <!-- Vérifier si l'historique est vide -->
+  <div *ngIf="historiques.length === 0" class="text-center text-gray-500 font-semibold">
+    Aucun historique de consultations trouvé.
+  </div>
+
+  <!-- Tableau des consultations -->
+  <div *ngIf="historiques.length > 0" class="overflow-hidden rounded-[40px] border border-fonce shadow-lg">
     <table class="table-auto w-full text-left">
       <thead class="bg-fonce text-white">
         <tr>
@@ -80,13 +19,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of historiques" class="group bg-clair hover:bg-white transition-all duration-200 cursor-pointer">
+        <tr
+          *ngFor="let item of historiques"
+          class="group bg-clair hover:bg-white transition-all duration-200 cursor-pointer"
+        >
           <td class="py-4 px-6">{{ item.medecin }}</td>
           <td class="py-4 px-6">{{ item.etablissement }}</td>
           <td class="py-4 px-6">{{ item.date | date: 'shortDate' }}</td>
           <td class="py-4 px-6">{{ item.heure }}</td>
           <td class="py-4 px-6">
-            <a routerLink="/medecin" class="text-fonce font-semibold hover:underline">Voir détails</a>
+            <a (click)="viewDetails(item.id)"  [routerLink]="['/medecin', item.id]" class="text-fonce font-semibold hover:underline">Voir détails</a>
           </td>
         </tr>
       </tbody>
@@ -95,7 +37,12 @@
 
   <!-- Bouton Ajouter -->
   <div class="w-[800px] mx-auto flex justify-end mt-4">
-    <button class="bg-clair text-fonce px-6 py-3 rounded-[40px] font-semibold shadow-md hover:bg-gray-200" (click)="openModal()">Ajouter</button>
+    <button
+      class="bg-clair text-fonce px-6 py-3 rounded-[40px] font-semibold shadow-md hover:bg-gray-200"
+      (click)="openModal()"
+    >
+      Ajouter
+    </button>
   </div>
 
   <!-- Modal Formulaire -->
@@ -104,22 +51,53 @@
       <h2 class="text-2xl font-bold text-fonce mb-6">Ajouter une consultation</h2>
 
       <label for="medecin" class="block text-sm text-fonce font-semibold mb-2">Médecin</label>
-      <input [(ngModel)]="newConsultation.medecin" type="text" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" placeholder="Nom du médecin" required>
+      <input
+        [(ngModel)]="newConsultation.medecin"
+        type="text"
+        class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4"
+        placeholder="Nom du médecin"
+        required
+      />
 
       <label for="etablissement" class="block text-sm text-fonce font-semibold mb-2">Établissement</label>
-      <input [(ngModel)]="newConsultation.etablisement" type="text" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" placeholder="Établissement" required>
+      <input
+        [(ngModel)]="newConsultation.etablisement"
+        type="text"
+        class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4"
+        placeholder="Établissement"
+        required
+      />
 
       <label for="date" class="block text-sm text-fonce font-semibold mb-2">Date</label>
-      <input [(ngModel)]="newConsultation.date" type="date" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" required>
+      <input
+        [(ngModel)]="newConsultation.date"
+        type="date"
+        class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4"
+        required
+      />
 
       <label for="heure" class="block text-sm text-fonce font-semibold mb-2">Heure</label>
-      <input [(ngModel)]="newConsultation.heure" type="time" class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4" required>
+      <input
+        [(ngModel)]="newConsultation.heure"
+        type="time"
+        class="w-full px-4 py-2 border border-fonce rounded-[40px] mb-4"
+        required
+      />
 
       <div class="flex justify-between">
-        <button class="bg-gray-200 text-fonce px-6 py-3 rounded-[40px] font-semibold" (click)="closeModal()">Annuler</button>
-        <button class="bg-clair text-fonce px-6 py-3 rounded-[40px] font-semibold" (click)="addConsultation()">Ajouter</button>
+        <button
+          class="bg-gray-200 text-fonce px-6 py-3 rounded-[40px] font-semibold"
+          (click)="closeModal()"
+        >
+          Annuler
+        </button>
+        <button
+          class="bg-clair text-fonce px-6 py-3 rounded-[40px] font-semibold"
+          (click)="addConsultation()"
+        >
+          Ajouter
+        </button>
       </div>
     </div>
   </div>
 </div>
-

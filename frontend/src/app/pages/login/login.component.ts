@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/patient']);
               break;
             case 'medecin':
-              this.router.navigate(['/medecin']);
+              this.router.navigate(['/rechercher']);
               break;
             case 'Infirmier':
               this.router.navigate(['/saisirsoin']);

@@ -11,31 +11,31 @@ import { FormsModule } from '@angular/forms';
 export class MedecinbilanbioComponent {
   title: string = 'Bilan Médical';
   isPopupOpen: boolean = false;
-  requestedTests: string[] = []; // Liste des tests ajoutés
-  nss: string = ''; // NSS du patient
-  laborantin: string = ''; // Nom du laborantin
+  requestedTests: string[] = []; 
+  nss: string = '';
+  laborantin: string = ''; 
 
   bioResults = [
     { test: 'Glucose', value: '5.6', unit: 'mmol/L', reference: '3.9 - 6.1' },
-    // Exemple de données
+   
   ];
 
-  // Ouvrir le popup
+  
   openPopup() {
     this.isPopupOpen = true;
   }
 
-  // Fermer le popup
+
   closePopup() {
     this.isPopupOpen = false;
   }
 
-  // Ajouter une ligne pour un nouveau test
+  
   addTest() {
     this.requestedTests.push('');
   }
 
-  // Enregistrer les données et fermer le popup
+  
   saveTests() {
     const requestData = {
       nss: this.nss,
@@ -44,8 +44,6 @@ export class MedecinbilanbioComponent {
     };
     console.log('Données enregistrées :', requestData);
     this.isPopupOpen = false;
-
-    // Envoyez les données au backend ici via un service HTTP
   }
 
 }

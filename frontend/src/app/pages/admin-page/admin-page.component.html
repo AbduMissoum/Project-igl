@@ -59,7 +59,7 @@
                     </div>
                     <div>
                         <label for="nss" class="block text-fonce mb-2 font-medium">NSS</label>
-                        <input [(ngModel)]="patientData.NSS" name="nss" type="text"  id="nss" class="bg-clair w-full p-3 rounded-[40px]">
+                        <input [(ngModel)]="patientData.NSS" name="nss" type="text" id="nss" class="bg-clair w-full p-3 rounded-[40px]">
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="adresse" class="block text-fonce mb-2 font-medium">Adresse</label>
-                        <input [(ngModel)]="patientData.adresse" name="adresse" type="text" id="adresse" class="bg-clair w-full p-3 rounded-[40px]">
+                        <input [(ngModel)]="patientData.adress" name="adresse" type="text" id="adresse" class="bg-clair w-full p-3 rounded-[40px]">
                     </div>
                     <div>
                         <label for="telephone" class="block text-fonce mb-2 font-medium">Téléphone</label>
@@ -88,27 +88,41 @@
                     </div>
                 </div>
 
+                <!-- Médecins traitants (Sélection multiple) -->
                 <div>
-                    <label for="medecin" class="block text-fonce mb-2 font-medium">Médecin Traitant</label>
+                    <label for="medecin" class="block text-fonce mb-2 font-medium">Médecins Traitant(s)</label>
                     <div class="relative">
-                      <input
-                        [(ngModel)]="patientData.medecin_traitant"
-                        (focus)="showList()"
-                        (blur)="hideList()"
-                        (input)="filterMedecins($event)"
-                        name="medecin"
-                        type="text"
-                        id="medecin"
-                        placeholder="Rechercher un médecin"
-                        class="bg-clair w-full p-3 rounded-[40px] border border-gray-300 focus:ring focus:ring-fonce"
-                      />
-                      <ul *ngIf="isListVisible && filteredMedecins.length" class="absolute z-10 bg-white border border-gray-300 rounded-lg mt-2 max-h-48 w-full overflow-y-auto">
-                        <li *ngFor="let medecin of filteredMedecins" class="px-4 py-2 hover:bg-clair cursor-pointer" (click)="selectMedecin(medecin)">
-                          {{ medecin.username }}
-                        </li>
-                      </ul>
+                        <!-- Liaison bidirectionnelle avec patientData.medecin_traitant -->
+                        <input
+                            [(ngModel)]="patientData.medecin_traitant"
+                            (focus)="showList()"
+                            (input)="filterMedecins($event)"
+                            name="medecin"
+                            type="text"
+                            id="medecin"
+                            placeholder="Rechercher un médecin"
+                            class="bg-clair w-full p-3 rounded-[40px] border border-gray-300 focus:ring focus:ring-fonce"
+                        />
+                        <ul *ngIf="isListVisible && filteredMedecins.length" class="absolute z-10 bg-white border border-gray-300 rounded-lg mt-2 max-h-48 w-full overflow-y-auto">
+                            <!-- Liste des médecins -->
+                            <li 
+                                *ngFor="let medecin of filteredMedecins" 
+                                class="px-4 py-2 hover:bg-clair cursor-pointer" 
+                                (click)="selectMedecin(medecin)">
+                                {{ medecin.username }}
+                            </li>
+                        </ul>
                     </div>
-                  </div>
+                    <!-- Affichage des médecins sélectionnés -->
+                    <div class="mt-4">
+                        <ul class="flex flex-wrap gap-2">
+                            <li *ngFor="let medecin of selectedMedecins; let i = index" class="bg-fonce text-white py-1 px-3 rounded-full">
+                                {{ medecin.username }}
+                                <button (click)="removeMedecin(i)" class="ml-2 text-white">×</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
                 <div class="text-center">
                     <button type="submit" class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold hover:bg-clair focus:ring focus:ring-fonce">

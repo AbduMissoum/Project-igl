@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class RadioDemndesComponent {
   radios = [
-    //A remplir shab l back
+    
     { medecin: 'Dr. Dupont', patient: 'Jean Martin', type: 'Radiographie thoracique', date: new Date('2024-12-20') },
     { medecin: 'Dr. Lefevre', patient: 'Marie Durand', type: 'Scanner abdominal', date: new Date('2024-12-22') },
     { medecin: 'Dr. Bernard', patient: 'Paul Leclerc', type: 'IRM cérébrale', date: new Date('2024-12-23') },

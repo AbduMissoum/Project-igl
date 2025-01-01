@@ -29,6 +29,28 @@ export class ConsultationService {
     };
     return this.http.post(this.baseUrl+'/consultations/', body, { headers ,withCredentials: true });
   }
+  getConsultationsByDpi(dpi: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.authService.getToken(),
+    });
+
+    return this.http.get(`${this.baseUrl}/consultations/by-dpi/${dpi}/`, { headers, withCredentials: true });
+  }
+  getConsultationDetailsById(consultationId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.authService.getToken(),
+    });
+  
+    return this.http.get(`${this.baseUrl}/consultations/${consultationId}/`, { headers, withCredentials: true });
+  }
+  updateConsultationResume(consultationId: number, resume: string): Observable<any> {
+    const body = { resume }; // Données à envoyer à l'API
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.authService.getToken(),
+    });
+  
+    return this.http.post(`${this.baseUrl}/consultations/${consultationId}/resume/`, body, { headers });
+  }
   
  
 }

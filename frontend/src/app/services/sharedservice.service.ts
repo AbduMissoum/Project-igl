@@ -11,4 +11,10 @@ export class SharedService {
   updatePatientId(id: number): void {
     this.patientIdSource.next(id);
   }
+  private consultationDetailsSubject = new BehaviorSubject<any>(null);
+  consultationDetails$ = this.consultationDetailsSubject.asObservable();
+
+  setConsultationDetails(details: any): void {
+    this.consultationDetailsSubject.next(details);
+  }
 }

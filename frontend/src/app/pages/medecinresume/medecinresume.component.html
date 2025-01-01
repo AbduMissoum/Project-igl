@@ -1,7 +1,17 @@
 <section class="mt-6 bg-white p-6 rounded-[40px] shadow-md">
-    <h2 class="text-lg font-bold text-fonce">{{ title }}</h2>
-    <div class="h-auto bg-clair p-6 mt-4 border-blue-300 rounded-[40px] flex items-center justify-center text-fonce font-bold">
-        <textarea placeholder="resume" class="w-full p-3 border h-80  border-foce bg-clair rounded-lg focus:outline-none focus:ring-2 focus:ring-fonce"></textarea>
-    </div>
+    <h2 class="text-lg font-bold text-fonce">Résumé de la consultation</h2>
+    <div *ngIf="consultationDetails" class="resume-container">
+        <textarea
+        [(ngModel)]="consultationDetails.resume"
+        class="w-full h-32 p-4 border border-fonce rounded-md mt-4"
+        placeholder="Modifier le résumé de la consultation"
+      ></textarea>
+      </div>
+      <button 
+    (click)="saveResume()" 
+    class="mt-4 bg-clair text-fonce px-6 py-3 rounded-md font-semibold"
+  >
+    Enregistrer
+  </button>
 </section>
   

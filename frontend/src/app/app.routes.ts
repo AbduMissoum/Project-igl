@@ -34,14 +34,14 @@ export const routes: Routes = [
       path: 'admin',
       component: AdminPageComponent, 
          },
-     {
+      {
             path: 'analysedemande',
             component: AnalyseDemandeComponent, 
-          },
+       },
        
           
        {
-        path: 'medecin',
+        path: 'medecin/:id',
         component: MedecinComponent, 
       },
       {
@@ -85,9 +85,5 @@ export const routes: Routes = [
         component: PatientresumeComponent, 
       },
       
-
-      
-
-
       ];
 
