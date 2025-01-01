@@ -6,11 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = "http://127.0.0.1:8000"
+  private baseUrl = "http://127.0.0.1:8000/";
   private apiUrl = this.baseUrl+'/auth/login/';
   private logouturl= this.baseUrl+'/auth/logout/';
   private role: string | null = null;
-  private csrftoken: string | null = null;
+  private token: string | null = null;
 
   constructor(private http: HttpClient) {}
 
@@ -22,8 +22,15 @@ export class AuthService {
     const body = { username, password };
   
     // Send the POST request to the backend with credentials included
-    return this.http.post(this.apiUrl, body, { withCredentials: true, });
+    return this.http.post(this.baseUrl + '/api/token/', body, { withCredentials: true, });
   }  
+  getInfo(username: string,password:string): Observable<any> {
+    const body = { username, password };
+   const headers = new HttpHeaders({
+    'Authorization': 'Bearer ' + this.getToken(), 
+   })
+    return this.http.post(this.baseUrl+`/auth/login/`, body, { headers,withCredentials: true, });
+  }
 
   logout(): Observable<any> {
     // Supprimer le token et le rôle à la déconnexion
@@ -36,10 +43,7 @@ export class AuthService {
     this.role = role;
     localStorage.setItem('userRole', role); // Enregistre le rôle dans localStorage
   }
-  setCsrfToken(csrftoken: string): void {
-    this.csrftoken = csrftoken;
-    localStorage.setItem('csrftoken', csrftoken); // Enregistre le rôle dans localStorage
-  }
+  
 
   getRole(): string | null {
     if (!this.role) {
@@ -64,10 +68,17 @@ export class AuthService {
 
   // Méthode pour rechercher un patient par NSS
   getPatientByNSS(nss: string): Observable<any> {
-    return this.http.get(this.baseUrl+`/patient?NSS=${nss}`, { params: { NSS: nss } });
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.getToken(), 
+     })
+
+    return this.http.get(this.baseUrl+`/patient?NSS=${nss}`, {headers, params: { NSS: nss } });
   }
 
   getPatientById(id: number): Observable<any> {
-    return this.http.get<any>(this.baseUrl+`/patient/${id}`);
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.getToken(), 
+     })
+    return this.http.get<any>(this.baseUrl+`/patient/${id}`,{headers});
   }
 }

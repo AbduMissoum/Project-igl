@@ -10,11 +10,35 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+
+
+
+
+
+
+
+SIMPLE_JWT = {
+    # Set the access token to last 1 week
+    'ACCESS_TOKEN_LIFETIME': timedelta(weeks=1),
+    
+    # Optionally, adjust the refresh token as well (e.g., 2 weeks)
+    'REFRESH_TOKEN_LIFETIME': timedelta(weeks=2),
+
+    # Keep other settings as default or customize as needed
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'SIGNING_KEY': 'your_secret_key_here',
+    'ALGORITHM': 'HS256',
+}
 
 
 # Quick-start development settings - unsuitable for production

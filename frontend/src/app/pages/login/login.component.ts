@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/authservice.service';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 
 
 @Component({
@@ -26,39 +27,42 @@ export class LoginComponent implements OnInit {
     }
 
     this.authService.login(this.username, this.password).subscribe({
-      next: (response) => {
-        console.log('Connexion réussie:', response);
-
-        // Définir le rôle utilisateur
-        const role = response.role;
-        const csrftoken = response.csrftoken;
-        this.authService.setCsrfToken(csrftoken); // Appeler setToken pour sauvegarder le token
-        this.authService.setRole(role); // Appeler setRole pour sauvegarder le rôle
-
-        // Redirection en fonction du rôle
-        switch (role) {
-          case 'admin':
-            this.router.navigate(['/admin']);
-            break;
-          case 'Patient':
-            this.router.navigate(['/patient']);
-            break;
-          case 'medecin':
-            this.router.navigate(['/medecin']);
-            break;
-          case 'Infirmier':
-            this.router.navigate(['/saisirsoin']);
-            break;
-          case 'Laborantin':
-            this.router.navigate(['/saisiranalyse']);
-            break;
-          case 'Radiologue':
-            this.router.navigate(['/saisirradio']);
-            break;
-          default:
-            console.error('Rôle utilisateur inconnu');
-            break;
+      next: (response) => { 
+       this.authService.setToken(response.access); // Appeler setToken pour sauvegarder le token
+      this.authService.getInfo(this.username,this.password).subscribe({
+        next:(response) => {
+          const role = response.role;
+          this.authService.setRole(role); // Appeler setRole pour sauvegarder le rôle
+  
+          // Redirection en fonction du rôle
+          switch (role) {
+            case 'admin':
+              this.router.navigate(['/admin']);
+              break;
+            case 'Patient':
+              this.router.navigate(['/patient']);
+              break;
+            case 'medecin':
+              this.router.navigate(['/medecin']);
+              break;
+            case 'Infirmier':
+              this.router.navigate(['/saisirsoin']);
+              break;
+            case 'Laborantin':
+              this.router.navigate(['/saisiranalyse']);
+              break;
+            case 'Radiologue':
+              this.router.navigate(['/saisirradio']);
+              break;
+            default:
+              console.error('Rôle utilisateur inconnu');
+              break;
+          }
         }
+      })
+       
+        // Définir le rôle utilisateur
+    
       },
       error: (err) => {
         if (err.status === 400 || err.status === 404) {

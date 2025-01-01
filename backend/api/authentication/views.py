@@ -25,6 +25,7 @@ def logUser(req):
         
     if(req.user.is_authenticated):
             print(req.user.id)
+            print("hhhhhhhh")
      
         
             return JsonResponse({"mesage":"User already authenticated","role":req.user.role,"id":req.user.id})
