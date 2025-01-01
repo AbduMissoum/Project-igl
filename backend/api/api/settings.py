@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+      'rest_framework_simplejwt',
     'drf_spectacular',
 
     'drf_yasg',
@@ -66,7 +66,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -168,6 +167,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
+         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',  # Token-based auth
         'rest_framework.authentication.SessionAuthentication',  # Session-based auth
     ],
@@ -197,9 +197,6 @@ CSRF_TRUSTED_ORIGINS = [
 
 ]
 # settings.py
-SESSION_COOKIE_AGE = 7 * 24 * 60 * 60  # 1 week in seconds
-# settings.py
-CSRF_COOKIE_AGE = 7 * 24 * 60 * 60  # 1 week in seconds
 
 # Enable CORS for all domains (for development)
 

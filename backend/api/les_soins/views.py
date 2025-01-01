@@ -28,6 +28,7 @@ def soins_list(request):
 
     elif request.method == 'POST':
       try: 
+        
         soin = Soins(infirmier=request.user , 
                     description=request.data['description'],
                  patient=Patient.objects.get(NSS=request.data['NSS']),
