@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
             case 'medecin':
               this.router.navigate(['/rechercher']);
               break;
-            case 'Infirmier':
+            case 'infirmier':
               this.router.navigate(['/saisirsoin']);
               break;
             case 'Laborantin':
@@ -60,8 +60,7 @@ export class LoginComponent implements OnInit {
           }
         }
       })
-       
-        // Définir le rôle utilisateur
+    
     
       },
       error: (err) => {

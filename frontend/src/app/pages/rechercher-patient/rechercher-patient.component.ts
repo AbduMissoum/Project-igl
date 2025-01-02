@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PatientService } from '../../services/patient.service'; 
 import { SharedService } from '../../services/sharedservice.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class RechercherPatientComponent {
 
   
 
-  constructor(private authService: AuthService , private sharedService: SharedService) {}
+  constructor(private authService: AuthService , private sharedService: SharedService , private router : Router) {}
 
   // Méthode pour rechercher un patient par NSS
   onSearchPatient(): void {
@@ -79,5 +80,8 @@ export class RechercherPatientComponent {
     // Logique pour obtenir l'ID du patient via NSS
     const patientId = 5; // Exemple : remplacez par l'ID réel après la recherche
     this.sharedService.updatePatientId(patientId);
+  }
+  goToDpiPage(): void {
+    this.router.navigate(['/patient']);
   }
 }
