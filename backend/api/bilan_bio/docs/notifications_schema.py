@@ -15,41 +15,59 @@ def notificaions_schema():
                 type=openapi.TYPE_OBJECT,
                 properties={
                     'message': openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="A success message indicating the records were fetched.",
-                        example="Non-assigned Bilan Biologique records retrieved successfully."
-                    ),
-                    'bilans': openapi.Schema(
                         type=openapi.TYPE_ARRAY,
-                        description="List of non-assigned Bilan Biologique records.",
+                        description="List of serialized Bilan Biologique records.",
                         items=openapi.Schema(
                             type=openapi.TYPE_OBJECT,
                             properties={
-                                'bilan_id': openapi.Schema(
+                                'id': openapi.Schema(
                                     type=openapi.TYPE_INTEGER,
                                     description="Unique ID of the Bilan Biologique record.",
-                                    example=101
+                                    example=1
                                 ),
-                                'consultation_id': openapi.Schema(
-                                    type=openapi.TYPE_INTEGER,
-                                    description="ID of the associated consultation.",
-                                    example=456
+                                'consultation': openapi.Schema(
+                                    type=openapi.TYPE_OBJECT,
+                                    description="Details of the associated consultation.",
+                                    properties={
+                                        'patient': openapi.Schema(
+                                            type=openapi.TYPE_OBJECT,
+                                            description="Details of the patient.",
+                                            properties={
+                                                'id': openapi.Schema(
+                                                    type=openapi.TYPE_INTEGER,
+                                                    description="Patient's unique ID.",
+                                                    example=101
+                                                ),
+                                                'nss': openapi.Schema(
+                                                    type=openapi.TYPE_STRING,
+                                                    description="Patient's NSS (National Social Security).",
+                                                    example="123456789"
+                                                )
+                                            }
+                                        ),
+                                        'medcin': openapi.Schema(
+                                            type=openapi.TYPE_OBJECT,
+                                            description="Details of the associated medcin.",
+                                            properties={
+                                                'id': openapi.Schema(
+                                                    type=openapi.TYPE_INTEGER,
+                                                    description="Medcin's unique ID.",
+                                                    example=201
+                                                ),
+                                                'name': openapi.Schema(
+                                                    type=openapi.TYPE_STRING,
+                                                    description="Name of the medcin.",
+                                                    example="Dr. Jane Smith"
+                                                )
+                                            }
+                                        )
+                                    }
                                 ),
-                                'tests': openapi.Schema(
-                                    type=openapi.TYPE_ARRAY,
-                                    items=openapi.Schema(type=openapi.TYPE_STRING),
-                                    description="List of test names in the Bilan Biologique record.",
-                                    example=["Complete Blood Count", "Liver Function Test"]
-                                ),
-                                'status': openapi.Schema(
+                                'date': openapi.Schema(
                                     type=openapi.TYPE_STRING,
-                                    description="Current status of the Bilan Biologique.",
-                                    example="Pending"
-                                ),
-                                'establishment_id': openapi.Schema(
-                                    type=openapi.TYPE_INTEGER,
-                                    description="ID of the establishment associated with the Bilan.",
-                                    example=789
+                                    format=openapi.FORMAT_DATE,
+                                    description="Date of the Bilan Biologique record.",
+                                    example="2024-12-30"
                                 )
                             }
                         )
@@ -65,20 +83,10 @@ def notificaions_schema():
                     'error': openapi.Schema(
                         type=openapi.TYPE_STRING,
                         description="Error message explaining why the request failed.",
-                        example="Invalid filter parameters."
+                        example="Laborantin not found or another issue occurred."
                     )
                 }
             )
-        ),
-        404: openapi.Response(
-            description="The requested resource was not found",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'status': openapi.Schema(type=openapi.TYPE_STRING),
-                    'message': openapi.Schema(type=openapi.TYPE_STRING)
-                }
-            )
-        ),
+        )
     }
 )
