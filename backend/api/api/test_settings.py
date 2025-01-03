@@ -128,15 +128,9 @@ AUTH_USER_MODEL = 'authentication.CustomUser'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mediumclone_igl4',
-        'USER': '367579_abdallah',
-        'PASSWORD': 'abdallah',
-        'HOST': 'mysql-mediumclone.alwaysdata.net',  # Or your MySQL server's IP/hostname
-        'PORT': '3306',  # Default MySQL port
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',  # In-memory database
     }
-
-
 }
 
 
