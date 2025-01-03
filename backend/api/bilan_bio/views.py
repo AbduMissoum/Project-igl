@@ -74,9 +74,12 @@ def get_demandes(request:Request)->Response:
         return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
 @get_bilan_consultation.bilan_details() 
 @api_view(['GET'])
-@permission_classes([IsMedecin() | IsPatient()])
 def get_bilan_by_consultation_id(request:Request,consultation_id:int)->Response:
+
     user_id = request.user.id
+    print("hhhhhhhhhhhhhhhhh")
+    print(consultation_id)
+    print(user_id)
     result = demand_bilan.check_bilan(consultation_id,user_id)
     if result['status']=='success':
         return Response(result['message'],status=status.HTTP_200_OK)
