@@ -63,13 +63,16 @@ class RemplirAPIView(APIView):
 
     @remplir_radio.bilan_radio_update_schema()
     def patch(self,request:Request,bilan_id:int,format=None)->Response:
-        self.check_object_permissions(self.request,BilanRadiologique.objects.get(id=bilan_id))
-        # print(request.data)
-        result = bilan_rad.remplissement_bilan(bilan_id,request.data)
-        if result['status']=='success':
-            return Response({"message":result['message']},status=status.HTTP_200_OK)
-        else:
-            return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            self.check_object_permissions(self.request,BilanRadiologique.objects.get(id=bilan_id))
+            # print(request.data)
+            result = bilan_rad.remplissement_bilan(bilan_id,request.data)
+            if result['status']=='success':
+                return Response({"message":result['message']},status=status.HTTP_200_OK)
+            else:
+                return Response({"error":result['message']}, status=status.HTTP_400_BAD_REQUEST)
+        except BilanRadiologique.DoesNotExist:
+            return Response({"error":f"Bilan with ID : {bilan_id} does not exist"},status=status.HTTP_404_NOT_FOUND)
 class ExamenImagerieByConsultationView(APIView):
     permission_classes = [IsPatient() | IsMedecin()]
     @get_bilan_by_cons_schema.bilan_detail()
