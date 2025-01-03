@@ -1,14 +1,12 @@
 <body class="bg-gradient-to-b from-[#D3E7E8] to-white min-h-[300vh] m-0">
-  
-
-  <div class="p-5  font-sans">
+  <div class="p-5 font-sans">
     <!-- Flexbox pour le titre et le bouton -->
     <div class="flex justify-between px-130 items-center mt-12">
       <!-- Titre aligné à gauche -->
       <h1 class="text-4xl font-bold text-fonce">Les Bilan biologique</h1>
 
       <!-- Bouton aligné à droite -->
-      <button id="buttona" class="bg-fonce   text-white font-semibold rounded-[40px] text-lg px-8 py-3 hover:bg-[#4b9ca3] focus:outline-none">
+      <button id="buttona" class="bg-fonce text-white font-semibold rounded-[40px] text-lg px-8 py-3 hover:bg-[#4b9ca3] focus:outline-none">
         Générer Graphique
       </button>
     </div>
@@ -28,15 +26,19 @@
               </tr>
             </thead>
             <tbody>
+              <!-- Boucle sur chaque analyse -->
               <tr *ngFor="let analyse of analyses" class="hover:bg-blue-100 transition-all duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
-                <td class="p-4 text-left bg-[#D3E7E8]">{{ analyse.nom }}</td>
+                <td class="p-4 text-left bg-[#D3E7E8]">{{ analyse.parametre }}</td>
                 <td class="p-4 text-left bg-[#D3E7E8]">
+                  <!-- Saisie du résultat -->
                   <input type="text" [(ngModel)]="analyse.resultat" placeholder="Résultat" class="bg-[#D3E7E8] w-full p-2 rounded-[5px] border border-[#5DA5B9]" />
                 </td>
                 <td class="p-4 text-left bg-[#D3E7E8]">
+                  <!-- Saisie de l'unité -->
                   <input type="text" [(ngModel)]="analyse.unite" placeholder="Unité" class="bg-[#D3E7E8] w-full p-2 rounded-[5px] border border-[#5DA5B9]" />
                 </td>
                 <td class="p-4 text-left bg-[#D3E7E8]">
+                  <!-- Valeur de référence -->
                   <input type="text" [(ngModel)]="analyse.valRef" placeholder="Valeur de Référence" class="bg-[#D3E7E8] w-full p-2 rounded-[5px] border border-[#5DA5B9]" />
                 </td>
               </tr>
@@ -59,12 +61,14 @@
       <button
         id="buttonb"
         class="bg-[#5DA5B9] text-white font-semibold rounded-[20px] text-lg px-8 py-3 hover:bg-[#4b9ca3]"
+        (click)="onSubmit()"
       >
         Envoyer
       </button>
       <button
         id="buttonc"
         class="bg-[#5DA5B9] text-white font-semibold rounded-[20px] text-lg px-8 py-3 hover:bg-[#4b9ca3]"
+        (click)="onRetour()"
       >
         Retour
       </button>

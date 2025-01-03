@@ -69,13 +69,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let test of requestedTests; let i = index">
-              <td class="px-5 py-1 text-fonce ">
-                <input 
-                  [(ngModel)]="requestedTests[i]" 
-                  class="w-full p-2 border rounded-[40px] focus:outline-none focus:ring-2 focus:ring-fonce" 
-                  placeholder="Nom du test" />
-              </td>
+            <tr *ngFor="let result of bioResults">
+              <td class="pl-20 py-1 text-fonce border-b border-fonce">{{ result.test }}</td>
+              <td class="px-20 py-1 text-fonce border-b border-fonce">{{ result.value }}</td>
+              <td class="px-20 py-1 text-fonce border-b border-fonce">{{ result.unit }}</td>
+              <td class="px-20 py-1 text-fonce border-b border-fonce">{{ result.reference }}</td>
             </tr>
           </tbody>
         </table>
