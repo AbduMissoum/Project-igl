@@ -41,7 +41,7 @@ def bilan_detail():
                     "examen_image": openapi.Schema(
                         type=openapi.TYPE_STRING, 
                         description="Image data",
-                        example="Image data returned successfully"
+                        example="Path to the image."
                     )
                 }
             )
@@ -55,6 +55,18 @@ def bilan_detail():
                         type=openapi.TYPE_STRING, 
                         description="Error message",
                         example="No bilan found for the given consultation_id"
+                    )
+                }
+            )
+        ),403: openapi.Response(
+            description="Forbiden - User does not have permission.",
+            schema=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    "detail": openapi.Schema(
+                        type=openapi.TYPE_STRING, 
+                        description="No permission",
+                        example="You don't have permissions to perform this action."
                     )
                 }
             )
