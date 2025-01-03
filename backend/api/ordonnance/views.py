@@ -7,13 +7,15 @@ from .serializers import MedicamentSerializer, OrdonnanceSerializer, TraitementS
 from .utils import (
     get_all_objects, get_object_or_404, create_object, update_object, delete_object, valider_ordonnance_util
 )
-
-from .docstrings import(ordonnance_list_schema,create_ordonnance_schema,ordonnance_detail_schema,valider_ordonnance_schema,update_ordonnance_schema,sup_ordonnance_schema,get_ordonnance_traitements_schema,post_ordonnance_traitements_schema,delete_traitement_schema,put_traitement_schema,traitement_detail_schema,post_traitement_schema,traitement_list_schema,post_medicament_schema,put_medicament_schema,delete_medicament_schema,medicament_detail_schema,medicament_list_schema)
+from .docstrings import(ordonnance_list_schema,create_ordonnance_schema,valider_ordonnance_schema,ordonnance_detail_schema,update_ordonnance_schema,sup_ordonnance_schema,delete_traitement_schema,put_traitement_schema,traitement_detail_schema,post_traitement_schema,traitement_list_schema,post_medicament_schema,put_medicament_schema,delete_medicament_schema,medicament_detail_schema,medicament_list_schema,ordonnances_by_consultation_schema)
 from rest_framework.parsers import JSONParser
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from consultation.models import Consultation
 
 @medicament_list_schema()
 @post_medicament_schema()
-
 @api_view(['GET', 'POST'])
 def medicament_list(request):
     if request.method == 'GET':
@@ -38,31 +40,52 @@ def medicament_detail(request, pk):
     elif request.method == 'DELETE':
         return delete_object(medicament)
 
-@ordonnance_list_schema()
 @create_ordonnance_schema()
-@api_view(['GET', 'POST'])
-def ordonnance_list(request):
-    if request.method == 'GET':
-        return get_all_objects(Ordonnance, OrdonnanceSerializer)
-    elif request.method == 'POST':
-        return create_object(request, OrdonnanceSerializer)
+@api_view(['POST'])
+def ordonnance_create(request):
+    """
+    API endpoint to create an Ordonnance with a list of Traitements.
+    """
+    if request.method == 'POST':
+        serializer = OrdonnanceSerializer(data=request.data)
+        if serializer.is_valid():
+            ordonnance = serializer.save()
+            return Response(
+                {"message": "Ordonnance created successfully", "data": serializer.data},
+                status=status.HTTP_201_CREATED
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @ordonnance_detail_schema()
 @update_ordonnance_schema()
 @sup_ordonnance_schema()
 @api_view(['GET', 'PUT', 'DELETE'])
 def ordonnance_detail(request, pk):
-    ordonnance = get_object_or_404(Ordonnance, pk, 'Ordonnance not found')
-    if isinstance(ordonnance, JsonResponse):  # Si c'est une erreur 404
-        return ordonnance
-
+    ordonnance = get_object_or_404(Ordonnance, pk=pk)
+    
     if request.method == 'GET':
+        # Si la méthode est GET, renvoyer les détails de l'ordonnance
         serializer = OrdonnanceSerializer(ordonnance)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
+
     elif request.method == 'PUT':
-        return update_object(request, ordonnance, OrdonnanceSerializer)
+        # Si la méthode est PUT, mettre à jour l'ordonnance existante
+        serializer = OrdonnanceSerializer(ordonnance, data=request.data)
+        if serializer.is_valid():
+            # Si les données sont valides, enregistrer les modifications
+            serializer.save()
+            # Retourner une réponse avec un message de succès
+            return Response({
+                'message': 'Ordonnance updated successfully!',
+                'data': serializer.data
+            })
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     elif request.method == 'DELETE':
-        return delete_object(ordonnance)
+        # Si la méthode est DELETE, supprimer l'ordonnance
+        ordonnance.delete()
+        return Response({'message': 'Consultation deleted successfully'}, status=status.HTTP_200_OK)
 
 @traitement_list_schema()
 @post_traitement_schema()
@@ -90,29 +113,6 @@ def traitement_detail(request, pk):
     elif request.method == 'DELETE':
         return delete_object(traitement)
 
-@get_ordonnance_traitements_schema()
-@post_ordonnance_traitements_schema()
-@api_view(['GET', 'POST'])
-def traitements_par_ordonnance(request, ordonnance_pk):
-    ordonnance = get_object_or_404(Ordonnance, ordonnance_pk, 'Ordonnance not found')
-    if isinstance(ordonnance, JsonResponse):  # Si c'est une erreur 404
-        return ordonnance
-
-    if request.method == 'GET':
-        traitements = Traitement.objects.filter(ordonnance=ordonnance)
-        serializer = TraitementSerializer(traitements, many=True)
-        return JsonResponse(serializer.data, safe=False)
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        if isinstance(data, list):
-            for traitement in data:
-                traitement['ordonnance'] = ordonnance.id
-            serializer = TraitementSerializer(data=data, many=True)
-            if serializer.is_valid():
-                serializer.save()
-                return JsonResponse(serializer.data, status=201, safe=False)
-            return JsonResponse(serializer.errors, status=400)
-        return JsonResponse({'error': 'Expected a list of treatments'}, status=400)
 
 @valider_ordonnance_schema()
 @api_view(['POST'])
@@ -127,6 +127,25 @@ def valider_ordonnance(request, pk):
     except ObjectDoesNotExist:
         return Response({"error": "Ordonnance not found"}, status=status.HTTP_404_NOT_FOUND)
 
+    # Sérialiser l'ordonnance validée pour la réponse
     serializer = OrdonnanceSerializer(ordonnance)
+    
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@ordonnances_by_consultation_schema()
+@api_view(['GET'])
+def ordonnances_by_consultation(request, consultation_id):
+    """
+    Get all ordonnances for a specific consultation.
+    """
+    try:
+        consultation = Consultation.objects.get(id=consultation_id)
+    except Consultation.DoesNotExist:
+        return Response({"message": "Consultation not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    # Filtrer les ordonnances associées à la consultation
+    ordonnances = Ordonnance.objects.filter(consultation=consultation)
+
+    # Sérialiser les ordonnances et renvoyer la réponse
+    serializer = OrdonnanceSerializer(ordonnances, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
