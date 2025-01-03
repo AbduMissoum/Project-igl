@@ -54,14 +54,14 @@ def bilan_radio_update_schema():
             )
         ),
         400: openapi.Response(
-            description="Bad Request - Invalid input data.",
+            description="Error like not finding examen imagerie instance",
             schema=openapi.Schema(
                 type=openapi.TYPE_OBJECT,
                 properties={
                     'error': openapi.Schema(
                         type=openapi.TYPE_STRING, 
-                        description="Error message detailing the issue with the request.",
-                        example="Missing required fields: compte_rendu."
+                        description="Error.",
+                        example="ExamenImagerie for this bilan does not exist"
                     )
                 }
             )
@@ -74,10 +74,24 @@ def bilan_radio_update_schema():
                     'detail': openapi.Schema(
                         type=openapi.TYPE_STRING, 
                         description="Detailed error message indicating insufficient permissions.",
-                        example="You do not have permission to update this radiological report."
+                        example="You do not have permission to perform this action."
+                    )
+                }
+            )
+        ),
+        404: openapi.Response(
+            description="Not Found - Bilan does not exist",
+            schema=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'error': openapi.Schema(
+                        type=openapi.TYPE_STRING, 
+                        description="Bilan does not exist.",
+                        example="Bilan with given ID does not exist"
                     )
                 }
             )
         )
+        
     },
 )

@@ -46,10 +46,17 @@ def delete_object(instance):
     return JsonResponse({'message': 'Deleted successfully'}, status=204)
 
 def valider_ordonnance_util(pk):
-    """Valide une ordonnance en fonction de son ID."""
-    ordonnance = get_object_or_404(Ordonnance, pk=pk, error_message="Ordonnance introuvable")
+    """
+    Fonction utilitaire pour valider une ordonnance.
+    """
+    try:
+        ordonnance = Ordonnance.objects.get(pk=pk)
+    except Ordonnance.DoesNotExist:
+        raise ObjectDoesNotExist("Ordonnance not found")
+
     if ordonnance.valide:
-        raise ValueError("Ordonnance is already validated")
+        raise ValueError("Ordonnance already validated")
+
     ordonnance.valide = True
     ordonnance.save()
     return ordonnance

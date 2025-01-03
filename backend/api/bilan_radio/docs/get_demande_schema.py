@@ -12,62 +12,70 @@ def get_demandes_schema():
         200: openapi.Response(
             description="Successfully fetched non-assigned Bilans.",
             schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'status': openapi.Schema(
-                        type=openapi.TYPE_STRING, 
-                        description="The status of the operation, typically 'success'.",
-                        example="success"
-                    ),
-                    'message': openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        description="A list of non-assigned Bilans.",
-                        items=openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'id': openapi.Schema(
+                            type=openapi.TYPE_INTEGER,
+                            description="Unique identifier of the Bilan Radiologique.",
+                            example=3
+                        ),
+                        'consultation': openapi.Schema(
                             type=openapi.TYPE_OBJECT,
                             properties={
-                                'bilan_id': openapi.Schema(
-                                    type=openapi.TYPE_INTEGER, 
-                                    description="Unique identifier of the Bilan.",
-                                    example=101
+                                'patient': openapi.Schema(
+                                    type=openapi.TYPE_OBJECT,
+                                    properties={
+                                        'NSS': openapi.Schema(
+                                            type=openapi.TYPE_STRING,
+                                            description="The National Social Security number of the patient.",
+                                            example="mllmLlmlk99922"
+                                        ),
+                                        'nom': openapi.Schema(
+                                            type=openapi.TYPE_STRING,
+                                            description="The last name of the patient.",
+                                            example="NIDAl"
+                                        ),
+                                        'prenom': openapi.Schema(
+                                            type=openapi.TYPE_STRING,
+                                            description="The first name of the patient.",
+                                            example="Johnn"
+                                        )
+                                    }
                                 ),
-                                'consultation_id': openapi.Schema(
-                                    type=openapi.TYPE_INTEGER, 
-                                    description="The ID of the consultation associated with the Bilan.",
-                                    example=1234
-                                ),
-                                'type': openapi.Schema(
-                                    type=openapi.TYPE_STRING, 
-                                    description="The type of the Bilan Radiologique.",
-                                    example="Radiological Examination"
-                                ),
-                                'created_at': openapi.Schema(
-                                    type=openapi.TYPE_STRING, 
-                                    format="date-time",
-                                    description="The date and time when the Bilan was created.",
-                                    example="2023-12-01T14:30:00Z"
+                                'medcin': openapi.Schema(
+                                    type=openapi.TYPE_OBJECT,
+                                    properties={
+                                        'username': openapi.Schema(
+                                            type=openapi.TYPE_STRING,
+                                            description="The username of the medcin.",
+                                            example="nidal"
+                                        ),
+                                        'email': openapi.Schema(
+                                            type=openapi.TYPE_STRING,
+                                            description="The email address of the medcin.",
+                                            example="nidhal@gmail.com"
+                                        )
+                                    }
                                 )
                             }
+                        ),
+                        'date': openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            format="date",
+                            description="The date associated with the Bilan Radiologique.",
+                            example="2025-01-03"
                         )
-                    )
-                }
+                    }
+                )
             )
         ),
         400: openapi.Response(
             description="Error occurred while fetching non-assigned Bilans.",
             schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'status': openapi.Schema(
-                        type=openapi.TYPE_STRING, 
-                        description="The status of the operation, typically 'error'.",
-                        example="error"
-                    ),
-                    'message': openapi.Schema(
-                        type=openapi.TYPE_STRING, 
-                        description="Details about the error that occurred.",
-                        example="No non-assigned Bilans found for the authenticated radiologue."
-                    )
-                }
+                type=openapi.TYPE_STRING,
+                example="CustomUser matching query does not exist."
             )
         )
     }
