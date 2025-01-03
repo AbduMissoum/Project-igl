@@ -38,26 +38,61 @@ def ordonnance_list_schema():
 
 def create_ordonnance_schema():
     """
-    Returns the OpenAPI schema for creating a new ordonnance.
+    Returns the OpenAPI schema for creating a new ordonnance, including consultation and traitements.
     """
+    # Schéma de la requête pour créer une ordonnance
     request_body = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
-            'valide': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=False),
+            'consultation': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),  # ID de la consultation
+            'traitements': openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'la_dose': openapi.Schema(type=openapi.TYPE_STRING, example="500mg"),  # Dose du médicament
+                        'la_durre': openapi.Schema(type=openapi.TYPE_STRING, example="7 jours"),  # Durée du traitement
+                        'medicament': openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={
+                                'nom': openapi.Schema(type=openapi.TYPE_STRING, example="Ibuprofène")  # Nom du médicament
+                            }
+                        ),
+                    }
+                )
+            ),
         }
     )
 
+    # Schéma de la réponse après la création de l'ordonnance
     response_schema = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
-            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'valide': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=False),
+            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),  # ID de l'ordonnance
+            'valide': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=False),  # Validité de l'ordonnance
+            'consultation': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),  # Consultation associée
+            'traitements': openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'la_dose': openapi.Schema(type=openapi.TYPE_STRING, example="500mg"),  # Dose du médicament
+                        'la_durre': openapi.Schema(type=openapi.TYPE_STRING, example="7 jours"),  # Durée du traitement
+                        'medicament': openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={
+                                'nom': openapi.Schema(type=openapi.TYPE_STRING, example="Ibuprofène")  # Nom du médicament
+                            }
+                        ),
+                    }
+                )
+            ),
         }
     )
 
     return swagger_auto_schema(
         method='POST',
-        operation_description="Create a new ordonnance",
+        operation_description="Create a new ordonnance, including consultation and treatments.",
         request_body=request_body,
         responses={
             201: openapi.Response(
@@ -87,146 +122,134 @@ def create_ordonnance_schema():
 
 def ordonnance_detail_schema():
     """
-    Returns the OpenAPI schema for retrieving an ordonnance by ID.
+    Schéma OpenAPI pour la méthode GET qui récupère les détails de l'ordonnance.
     """
-    ordonnance_schema = openapi.Schema(
+    response_schema = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
             'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            'valide': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=True),
+            'valide': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=False),
+            'consultation': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'traitements': openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'la_dose': openapi.Schema(type=openapi.TYPE_STRING, example="500mg"),
+                        'la_durre': openapi.Schema(type=openapi.TYPE_STRING, example="7 jours"),
+                        'medicament': openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={'nom': openapi.Schema(type=openapi.TYPE_STRING, example="Ibuprofène")}
+                        ),
+                    }
+                )
+            ),
         }
     )
 
     return swagger_auto_schema(
         method='GET',
-        operation_description="Retrieve an ordonnance by ID",
-        responses={
-            200: openapi.Response(
-                description="Successfully retrieved ordonnance details",
-                schema=ordonnance_schema,
-            ),
-            404: openapi.Response(
-                description="Ordonnance not found",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='Ordonnance not found.'),
-                    }
-                ),
-            ),
-            500: openapi.Response(
-                description="Internal Server Error",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.'),
-                    }
-                ),
-            ),
-        }
+        operation_description="Retrieve the details of an ordonnance.",
+        responses={200: openapi.Response(description="Successfully retrieved ordonnance", schema=response_schema)},
     )
 
 def valider_ordonnance_schema():
-    return swagger_auto_schema(
-    method='POST',
-    operation_description="Validate an ordonnance by ID",
-    responses={
-        200: openapi.Response(
-            description="Ordonnance validated successfully",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'message': openapi.Schema(type=openapi.TYPE_STRING, example='Ordonnance validated successfully'),
-                    'ordonnance': openapi.Schema(
-                        type=openapi.TYPE_OBJECT,
-                        properties={
-                            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-                            'valide': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=True),
-                        }
-                    ),
-                }
-            ),
-        ),
-        400: openapi.Response(
-            description="Bad Request",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={'message': openapi.Schema(type=openapi.TYPE_STRING, example='Ordonnance is already validated')}
-            ),
-        ),
-        404: openapi.Response(
-            description="Ordonnance not found",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={'error': openapi.Schema(type=openapi.TYPE_STRING, example='Ordonnance not found')}
-            ),
-        ),
-        500: openapi.Response(
-            description="Internal Server Error",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred')}
-            ),
-        ),
-    })
-
-def update_ordonnance_schema():
-    return swagger_auto_schema(
-    method='PUT',
-    operation_description="Update an ordonnance",
-    request_body=openapi.Schema(
+    """
+    Schéma OpenAPI pour la méthode POST qui valide une ordonnance.
+    """
+    response_schema = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
-            'valide': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=False),
-        }
-    ),
-    responses={
-        200: openapi.Response(
-            description="Ordonnance updated successfully",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-                    'valide': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=False),
-                }
-            ),
-        ),
-        400: openapi.Response(
-            description="Bad Request",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={'error': openapi.Schema(type=openapi.TYPE_STRING, example='Invalid data provided')}
-            ),
-        ),
-        404: openapi.Response(
-            description="Ordonnance not found",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={'error': openapi.Schema(type=openapi.TYPE_STRING, example='Ordonnance not found')}
-            ),
-        ),
-        500: openapi.Response(
-            description="Internal Server Error",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred')}
-            ),
-        ),
-    }
-    )
-def sup_ordonnance_schema():
-    return swagger_auto_schema(
-        method='DELETE',
-        operation_description="Delete an ordonnance",
-        responses={
-            204: openapi.Response(description="Ordonnance deleted successfully"),
-            404: openapi.Response(
-                description="Ordonnance not found",
-                schema=openapi.Schema(
+            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'valide': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=True),
+            'consultation': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'traitements': openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
                     type=openapi.TYPE_OBJECT,
-                    properties={'error': openapi.Schema(type=openapi.TYPE_STRING, example='Ordonnance not found')}
-                ),
+                    properties={
+                        'la_dose': openapi.Schema(type=openapi.TYPE_STRING, example="500mg"),
+                        'la_durre': openapi.Schema(type=openapi.TYPE_STRING, example="7 jours"),
+                        'medicament': openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={'nom': openapi.Schema(type=openapi.TYPE_STRING, example="Ibuprofène")}
+                        ),
+                    }
+                )
             ),
+        }
+    )
+
+    return swagger_auto_schema(
+        method='POST',
+        operation_description="Validate an ordonnance by setting its 'valide' status to True.",
+        responses={200: openapi.Response(description="Successfully validated ordonnance", schema=response_schema)},
+    )
+
+def update_ordonnance_schema():
+    """
+    Schéma OpenAPI pour la méthode PUT qui met à jour une ordonnance existante.
+    """
+    request_body = openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'consultation': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'traitements': openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'la_dose': openapi.Schema(type=openapi.TYPE_STRING, example="500mg"),
+                        'la_durre': openapi.Schema(type=openapi.TYPE_STRING, example="7 jours"),
+                        'medicament': openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={'nom': openapi.Schema(type=openapi.TYPE_STRING, example="Ibuprofène")}
+                        ),
+                    }
+                )
+            ),
+        }
+    )
+
+    response_schema = openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'valide': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=False),
+            'consultation': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'traitements': openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'la_dose': openapi.Schema(type=openapi.TYPE_STRING, example="500mg"),
+                        'la_durre': openapi.Schema(type=openapi.TYPE_STRING, example="7 jours"),
+                        'medicament': openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={'nom': openapi.Schema(type=openapi.TYPE_STRING, example="Ibuprofène")}
+                        ),
+                    }
+                )
+            ),
+        }
+    )
+
+    # Gestion des erreurs de validation du serializer
+    error_response_schema = openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'error': openapi.Schema(type=openapi.TYPE_STRING, example='Invalid data provided'),
+            'details': openapi.Schema(type=openapi.TYPE_OBJECT, example={'field_name': 'error_message'})
+        }
+    )
+
+    return swagger_auto_schema(
+        method='PUT',
+        operation_description="Update an existing ordonnance.",
+        request_body=request_body,
+        responses={
+            200: openapi.Response(description="Successfully updated ordonnance", schema=response_schema),
+            400: openapi.Response(description="Bad Request - Invalid data provided", schema=error_response_schema),
             500: openapi.Response(
                 description="Internal Server Error",
                 schema=openapi.Schema(
@@ -234,93 +257,24 @@ def sup_ordonnance_schema():
                     properties={'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred')}
                 ),
             ),
+        },
+    )
+def sup_ordonnance_schema():
+    """
+    Schéma OpenAPI pour la méthode DELETE qui supprime une ordonnance.
+    """
+    response_schema = openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'message': openapi.Schema(type=openapi.TYPE_STRING, example="Consultation deleted successfully"),
         }
     )
-def get_ordonnance_traitements_schema():
-    return swagger_auto_schema(
-    method='GET',
-    operation_description="Retrieve treatments by ordonnance ID",
-    responses={
-        200: openapi.Response(
-            description="Successfully retrieved treatments",
-            schema=openapi.Schema(
-                type=openapi.TYPE_ARRAY,
-                items=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-                        'la_dose': openapi.Schema(type=openapi.TYPE_STRING, example='100mg'),
-                        'la_durre': openapi.Schema(type=openapi.TYPE_STRING, example='2024-10-10'),
-                        'medicament': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-                        'ordonnance':openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-                    }
-                )
-            ),
-        ),
-        404: openapi.Response(
-            description="Ordonnance not found",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={'error': openapi.Schema(type=openapi.TYPE_STRING, example='Ordonnance not found')}
-            ),
-        ),
-        500: openapi.Response(
-            description="Internal Server Error",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred')}
-            ),
-        ),
-    })
 
-def post_ordonnance_traitements_schema():
     return swagger_auto_schema(
-    method='POST',
-    operation_description="Create treatments for an ordonnance",
-    request_body=openapi.Schema(
-        type=openapi.TYPE_ARRAY,
-        items=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties={
-                'la_dose': openapi.Schema(type=openapi.TYPE_STRING, example='100mg'),
-                'la_durre': openapi.Schema(type=openapi.TYPE_STRING, example='2024-10-10'),
-                'medicament': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-                'ordonnance':openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-            }
-        ),
-    ),
-    responses={
-        201: openapi.Response(
-            description="Treatments created successfully",
-            schema=openapi.Schema(
-                type=openapi.TYPE_ARRAY,
-                items=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-                        'la_dose': openapi.Schema(type=openapi.TYPE_STRING, example='100mg'),
-                        'la_durre': openapi.Schema(type=openapi.TYPE_STRING, example='2024-10-10'),
-                        'medicament': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-                        'ordonnance':openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
-                    }
-                ),
-            ),
-        ),
-        400: openapi.Response(
-            description="Bad Request",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={'error': openapi.Schema(type=openapi.TYPE_STRING, example='Invalid data provided')}
-            ),
-        ),
-        500: openapi.Response(
-            description="Internal Server Error",
-            schema=openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred')}
-            ),
-        ),
-    })
+        method='DELETE',
+        operation_description="Delete an ordonnance.",
+        responses={200: openapi.Response(description="Successfully deleted ordonnance", schema=response_schema)},
+    )
 
 def traitement_list_schema():
     """
@@ -834,6 +788,67 @@ def medicament_detail_schema():
                     type=openapi.TYPE_OBJECT,
                     properties={
                         'error': openapi.Schema(type=openapi.TYPE_STRING, example='An unexpected error occurred.'),
+                    }
+                ),
+            ),
+        }
+    )
+def ordonnances_by_consultation_schema():
+    """
+    Returns the OpenAPI schema for retrieving a list of ordonnances for a specific consultation.
+    """
+    ordonnance_schema = openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=5),
+            'valide': openapi.Schema(type=openapi.TYPE_BOOLEAN, example=False),
+            'consultation': openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+            'traitements': openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'la_dose': openapi.Schema(type=openapi.TYPE_STRING, example='500mg'),
+                        'la_durre': openapi.Schema(type=openapi.TYPE_STRING, example='7 jours'),
+                        'medicament': openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={
+                                'id': openapi.Schema(type=openapi.TYPE_INTEGER, example=3),
+                                'nom': openapi.Schema(type=openapi.TYPE_STRING, example='Doliprane')
+                            }
+                        ),
+                    }
+                )
+            ),
+        }
+    )
+
+    return swagger_auto_schema(
+        method='GET',
+        operation_description="Retrieve all ordonnances for a specific consultation",
+        responses={ 
+            200: openapi.Response(
+                description="Successfully retrieved ordonnances for the consultation",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=ordonnance_schema
+                ),
+            ),
+            404: openapi.Response(
+                description="Consultation not found",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'message': openapi.Schema(type=openapi.TYPE_STRING, example="Consultation not found")
+                    }
+                ),
+            ),
+            500: openapi.Response(
+                description="Internal Server Error",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, example="An unexpected error occurred.")
                     }
                 ),
             ),
