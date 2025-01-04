@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/analysedemande']);
               break;
             case 'radiologue':
-              this.router.navigate(['/saisirradio']);
+              this.router.navigate(['/radiodemande']);
               break;
             default:
               console.error('Rôle utilisateur inconnu');

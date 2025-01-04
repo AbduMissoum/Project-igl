@@ -213,6 +213,16 @@ CORS_ALLOW_METHODS = [
     'DELETE',
     'OPTIONS',
 ]
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-requested-with',
+    'accept',
+    'origin',
+    'accept-encoding',
+    'x-csrftoken',
+]
+
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:4200',  # Add your frontend's URL here

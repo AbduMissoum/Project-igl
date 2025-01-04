@@ -21,6 +21,8 @@ from drf_yasg import openapi
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenVerifyView
+from django.conf import settings
+from django.conf.urls.static import static
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -66,4 +68,4 @@ urlpatterns = [
     path('bilan-bio/',include('bilan_bio.urls')),
     path('bilan-radio/',include('bilan_radio.urls')),
     path('soins/',include('les_soins.urls')),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

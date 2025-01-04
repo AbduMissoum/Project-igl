@@ -23,7 +23,7 @@ class ConsulationListingField(serializers.RelatedField):
 class BilanRadiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = BilanRadiologique
-        fields = ['id','consultation','date']
+        fields = ['id','consultation','date' , 'type']
     consultation = ConsulationListingField(many=False,read_only=True)
 class BilanRadiologiqueSerializerAll(serializers.ModelSerializer):
     class Meta:
