@@ -50,7 +50,7 @@ SECRET_KEY = 'django-insecure-8spne5qdl*e(omlj@81d$u1#0iwr88k)qu-%#ki7#06!=6stz1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -128,15 +128,9 @@ AUTH_USER_MODEL = 'authentication.CustomUser'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mediumclone_igl5',
-        'USER': '367579_abdallah',
-        'PASSWORD': 'abdallah',
-        'HOST': 'mysql-mediumclone.alwaysdata.net',  # Or your MySQL server's IP/hostname
-        'PORT': '3306',  # Default MySQL port
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',  # In-memory database
     }
-
-
 }
 
 
@@ -213,16 +207,6 @@ CORS_ALLOW_METHODS = [
     'DELETE',
     'OPTIONS',
 ]
-CORS_ALLOW_HEADERS = [
-    'content-type',
-    'authorization',
-    'x-requested-with',
-    'accept',
-    'origin',
-    'accept-encoding',
-    'x-csrftoken',
-]
-
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:4200',  # Add your frontend's URL here

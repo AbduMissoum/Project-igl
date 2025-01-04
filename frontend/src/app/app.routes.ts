@@ -53,11 +53,11 @@ export const routes: Routes = [
         component: RadioDemndesComponent, 
       },
       {
-        path: 'saisiranalyse',
+        path: 'saisiranalyse/:id',
         component: SaisirAnalyseComponent, 
       },
       {
-        path: 'saisirradio',
+        path: 'saisirradio/:radioid',
         component: SaisirRadioComponent, 
       },
       {

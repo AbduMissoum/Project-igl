@@ -1,27 +1,34 @@
-// rechercher-patient.component.ts
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AuthService } from '../../services/authservice.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PatientService } from '../../services/patient.service'; 
 import { SharedService } from '../../services/sharedservice.service';
 import { Router } from '@angular/router';
-
+import { BarcodeFormat } from '@zxing/browser';
+import { ZXingScannerModule } from '@zxing/ngx-scanner'; // Import du module ZXingScannerModule
 
 @Component({
   selector: 'app-rechercher-patient',
-  imports : [FormsModule , CommonModule ],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ZXingScannerModule], // Ajout du ZXingScannerModule
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './rechercher-patient.component.html',
-  styleUrls: ['./rechercher-patient.component.css']
+  styleUrls: ['./rechercher-patient.component.css'],
 })
 export class RechercherPatientComponent {
   nss: string = ''; // Lier ce champ à l'input du NSS
   patient: any = null; // Stocke les données du patient
   errorMessage: string = ''; // Gère les messages d'erreur
+  isScanning: boolean = false; // Indique si le scanner QR est actif
+  torchEnabled: boolean = false; // Active/Désactive le flash de la caméra
+  allowedFormats = [BarcodeFormat.QR_CODE]; // Formats autorisés
+  scannerEnabled: boolean = false; // Pour vérifier si le scanner est bien initialisé
 
-  
-
-  constructor(private authService: AuthService , private sharedService: SharedService , private router : Router) {}
+  constructor(
+    private authService: AuthService,
+    private sharedService: SharedService,
+    private router: Router
+  ) {}
 
   // Méthode pour rechercher un patient par NSS
   onSearchPatient(): void {
@@ -30,24 +37,15 @@ export class RechercherPatientComponent {
       this.patient = null;
       return;
     }
-    
-    
 
-    // Appel au service pour obtenir les informations du patient
-    this.authService.getPatientByNSS(this.nss).subscribe({     
+    this.authService.getPatientByNSS(this.nss).subscribe({
       next: (response: any) => {
-        if (response  ) {
-          console.log(response);
-          this.patient = response[0]; 
-
-          console.log(this.patient);
-          console.log(this.patient.id);
+        if (response && response[0]) {
+          this.patient = response[0];
           this.errorMessage = '';
           this.getPatientDetails(this.patient.id);
           this.sharedService.updatePatientId(this.patient.id);
         } else {
-          
-          
           this.errorMessage = 'Aucun patient trouvé pour ce NSS.';
           this.patient = null;
         }
@@ -56,15 +54,16 @@ export class RechercherPatientComponent {
         console.error('Erreur lors de la recherche :', err);
         this.errorMessage = 'Une erreur est survenue lors de la recherche.';
         this.patient = null;
-      }
+      },
     });
-    
   }
+
+  // Méthode pour récupérer les détails du patient par ID
   getPatientDetails(id: number): void {
     this.authService.getPatientById(id).subscribe({
       next: (response: any) => {
         if (response) {
-          this.patient = response;  // Mettez à jour les données du patient
+          this.patient = response;
           console.log('Détails du patient récupérés:', this.patient);
         } else {
           this.errorMessage = 'Aucun détail trouvé pour ce patient.';
@@ -73,15 +72,47 @@ export class RechercherPatientComponent {
       error: (err) => {
         console.error('Erreur lors de la récupération des détails du patient :', err);
         this.errorMessage = 'Une erreur est survenue lors de la récupération des détails.';
-      }
+      },
     });
   }
-  rechercherPatient(): void {
-    // Logique pour obtenir l'ID du patient via NSS
-    const patientId = 5; // Exemple : remplacez par l'ID réel après la recherche
-    this.sharedService.updatePatientId(patientId);
-  }
+
+  // Navigation vers la page DPI
   goToDpiPage(): void {
     this.router.navigate(['/patient']);
+  }
+
+  // Ouvrir le scanner QR
+  openScanner(): void {
+    this.isScanning = true;
+  }
+
+  // Fermer le scanner QR
+  closeScanner(): void {
+    this.isScanning = false;
+  }
+
+  // Activer/Désactiver le flash
+  toggleTorch(): void {
+    this.torchEnabled = !this.torchEnabled;
+  }
+
+  // Gestion de l'événement de résultat du QR Code scanné
+  handleQrCodeResult(event: any): void {
+    const qrCodeResult: string = event?.text || '';
+    console.log('QR Code scanné :', qrCodeResult);
+    if (qrCodeResult) {
+      this.nss = qrCodeResult; // Mettre à jour le NSS avec le résultat du QR Code
+      this.isScanning = false; // Arrêter le scan après un résultat
+    }
+  }
+
+  // Démarrer le scan
+  startScanning(): void {
+    this.isScanning = true;
+  }
+
+  // Arrêter le scan
+  stopScanning(): void {
+    this.isScanning = false;
   }
 }

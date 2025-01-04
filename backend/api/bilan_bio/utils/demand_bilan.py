@@ -109,9 +109,15 @@ def fetch_non_assigned(id:int):
         return {"status":"error","message":str(e)}
 def check_bilan(consultation_id:int,user_id:int,user):
     try:
-        consultation = Consultation.objects.get(id=consultation_id)
-        bilan = BilanBiologique.objects.get(consultation=consultation)
-        print("hhhhhhhhhhhhhhhh")
+
+        print(consultation_id)
+        print(user_id)
+        consultation = Consultation.objects.get(id=int(consultation_id))
+        print(consultation)
+        bilan = BilanBiologique.object.get(consultation=consultation)
+        print(bilan)
+        user = CustomUser.objects.get(id=user_id)
+
         if user.role == 'medecin' and user!=consultation.medecin:
             raise PermissionError("You do not have permission to see this bilan")
         elif user.role == 'patient' and consultation.dpi.id.id !=user:

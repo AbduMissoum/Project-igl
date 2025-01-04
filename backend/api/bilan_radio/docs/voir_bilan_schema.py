@@ -19,16 +19,6 @@ def get_bilan_schema():
                         type=openapi.TYPE_STRING, 
                         description="Success message confirming the assignment.",
                         example="Bilan Radiologique assigned successfully."
-                    ),
-                    'bilan_id': openapi.Schema(
-                        type=openapi.TYPE_INTEGER, 
-                        description="ID of the Bilan Radiologique that was assigned.",
-                        example=101
-                    ),
-                    'assigned_radiologue_id': openapi.Schema(
-                        type=openapi.TYPE_INTEGER, 
-                        description="ID of the radiologue to whom the Bilan was assigned.",
-                        example=202
                     )
                 }
             )
@@ -42,6 +32,19 @@ def get_bilan_schema():
                         type=openapi.TYPE_STRING, 
                         description="Error message explaining why the request failed.",
                         example="Invalid Bilan ID or assignment failed."
+                    )
+                }
+            )
+        ),
+        403: openapi.Response(
+            description="No permission to see bilan.",
+            schema=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'detail': openapi.Schema(
+                        type=openapi.TYPE_STRING, 
+                        description="Error message indicating user has no permission.",
+                        example="You do not have permission to perform this action."
                     )
                 }
             )
