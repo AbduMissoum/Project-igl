@@ -112,7 +112,6 @@ def check_bilan(consultation_id:int,user_id:int):
         print(consultation_id)
         print(user_id)
         consultation = Consultation.objects.get(id=consultation_id)
-        consultation = Consultation.objects.get(id=20)
         print(consultation)
         bilan = BilanBiologique.objects.get(consultation=consultation)
         print(bilan)
