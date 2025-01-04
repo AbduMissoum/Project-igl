@@ -31,14 +31,7 @@
             class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fonce focus:outline-none"
           />
         </div>
-        <div>
-          <label for="time" class="block text-fonce font-semibold">Heure</label>
-          <input 
-            type="time" 
-            id="time" 
-            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-fonce focus:outline-none"
-          />
-        </div>
+       
         <div>
           <label for="soins" class="block text-fonce font-semibold">Soins</label>
           <textarea 
@@ -50,6 +43,7 @@
         </div>
         <button 
           type="submit" 
+          (click)="onSubmit()"
           class="w-40 bg-fonce ml-60 text-white py-2 rounded-lg hover:bg-opacity-90">
           Envoyer
         </button>
