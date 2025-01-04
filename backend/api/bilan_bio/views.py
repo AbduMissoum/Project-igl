@@ -77,10 +77,13 @@ def get_demandes(request:Request)->Response:
 def get_bilan_by_consultation_id(request:Request,consultation_id:int)->Response:
 
     user_id = request.user.id
+    demand_bilan.check_bilan(consultation_id,user_id,request.user)
+
     print("hhhhhhhhhhhhhhhhh")
     print(consultation_id)
     print(user_id)
     result = demand_bilan.check_bilan(consultation_id,user_id)
+
     if result['status']=='success':
         return Response(result['message'],status=status.HTTP_200_OK)
     else:

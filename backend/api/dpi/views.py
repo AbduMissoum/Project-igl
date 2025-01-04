@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from dpi.utils import createPatient as createPatient,searchDpi as search,mailService
@@ -9,7 +9,7 @@ from .models import Patient
 from authentication.models import CustomUser
 from .docstrings.docPatient import patient_detail_schema,patient_list_by_nss_schema,create_patient_schema,medecin_list_schema
 
-
+from rest_framework.permissions import IsAuthenticated,AllowAny
 
 
 
@@ -84,6 +84,7 @@ def MedcinList(request):
     return Response(res.data)
    except Exception as e:
     return Response({"error": f"{e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+@permission_classes([AllowAny])
 @api_view(["GET"])
 def creer_role(req):
   try:
@@ -92,26 +93,26 @@ def creer_role(req):
     #                                         password="patient",
     #                                         role="patient")
     
-    # user =  CustomUser.objects.create_user(username="admine",
-    #                                        email="admine@esi.dz",
+    # user =  CustomUser.objects.create_user(username="admin",
+    #                                        email="admin@esi.dz",
     #                                         password="admine",
     #                                         role="admin")
-    # user =  CustomUser.objects.create_user(username="infirmier",
-    #                                        email="infirmier@esi.dz",
-    #                                         password="infirmier",
-    #                                         role="infirmier")
-    # user =  CustomUser.objects.create_user(username="radiologue",
-    #                                        email="radiologue@esi.dz",
-    #                                         password="radiologue",
-    #                                         role="radiologue")
-    # user =  CustomUser.objects.create_user(username="laborantin",
-    #                                        email="laborantin@esi.dz",
-    #                                         password="laborantin",
-    #                                         role="laborantin")
-    # user =  CustomUser.objects.create_user(username="medecin",
-    #                                        email="medecin@esi.dz",
-    #                                         password="medecin",
-    #                                         role="medecin")
+    user =  CustomUser.objects.create_user(username="infirmier",
+                                           email="infirmier@esi.dz",
+                                            password="infirmier",
+                                            role="infirmier")
+    user =  CustomUser.objects.create_user(username="radiologue",
+                                           email="radiologue@esi.dz",
+                                            password="radiologue",
+                                            role="radiologue")
+    user =  CustomUser.objects.create_user(username="laborantin",
+                                           email="laborantin@esi.dz",
+                                            password="laborantin",
+                                            role="laborantin")
+    user =  CustomUser.objects.create_user(username="medecin",
+                                           email="medecin@esi.dz",
+                                            password="medecin",
+                                            role="medecin")
     return Response({"message": "Role created successfully"}, status=status.HTTP_201_CREATED)
   except Exception as e:
     return Response({"error": f"{e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
