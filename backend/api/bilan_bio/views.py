@@ -77,7 +77,7 @@ def get_demandes(request:Request)->Response:
 @permission_classes([IsMedecin() | IsPatient()])
 def get_bilan_by_consultation_id(request:Request,consultation_id:int)->Response:
     user_id = request.user.id
-    result = demand_bilan.check_bilan(consultation_id,user_id)
+    result = demand_bilan.check_bilan(consultation_id,user_id,request.user)
     if result['status']=='success':
         return Response(result['message'],status=status.HTTP_200_OK)
     else:
