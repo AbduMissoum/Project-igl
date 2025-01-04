@@ -18,7 +18,7 @@ interface Historique {
 @Component({
   selector: 'app-medecin-historique-consultation',
   standalone: true,
-  imports: [CommonModule , FormsModule , RouterLink , ],
+  imports: [CommonModule , FormsModule ,  ],
   templateUrl: './medecin-historique-consultation.component.html',
   styleUrls: ['./medecin-historique-consultation.component.css']
 })
@@ -106,7 +106,8 @@ export class MedecinHistoriqueConsultationComponent implements OnInit {
         console.log('Détails de la consultation récupérés :', data);
         
         // Partager les détails avec un composant enfant via un service (SharedService)
-        this.sharedService.setConsultationDetails(data);  // Par exemple, avec SharedService
+        this.sharedService.setConsultationDetails(data); 
+         // Par exemple, avec SharedService
 
         // Optionnel : rediriger vers une page dédiée ou afficher les détails dans une modal
         this.router.navigate(['/medecin', consultationId]); // Par exemple, rediriger vers /medecin/{id}

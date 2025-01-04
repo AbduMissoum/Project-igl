@@ -8,7 +8,7 @@
 </head>
 <body class="min-h-screen bg-gradient-to-b from-clair to-white text-gray-800">
    
-   <main class="w-full max-w-5xl rounded-[40px] shadow-md p-8 ml-28 mt-6">
+   <main class="w-full max-w-5xl rounded-[40px] shadow-md p-8 mx-6 mt-6 sm:ml-28">
     <h1 class="text-4xl font-bold text-fonce text-center mb-6">Rechercher un patient !</h1>
     <p class="text-lg text-fonce text-center mb-6">
       Accédez rapidement aux informations d’un patient grâce à son Numéro de Sécurité Sociale (NSS) ou à son Code QR unique.
@@ -21,38 +21,38 @@
       Cette page vous offre une solution rapide et intuitive pour retrouver les dossiers médicaux avec précision et efficacité.
     </p>
 
-    <div class="mb-8 mx-32">
+    <div class="mb-8 mx-6 sm:mx-32">
       <label for="nss" class="block text-lg text-fonce font-semibold mb-2">Entrez le Numéro de sécurité sociale du patient :</label>
-      <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+      <div class="flex flex-col sm:flex-row items-center border border-gray-300 rounded-lg overflow-hidden shadow-sm">
         <input
           type="text"
           id="nss"
           placeholder="Numéro de sécurité sociale"
           [(ngModel)]="nss" 
-          class="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fonce"
+          class="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-fonce sm:mr-4"
         />
-        <button (click)="onSearchPatient()" class="bg-clair text-white px-4 py-2">
+        <button (click)="onSearchPatient()" class="bg-clair text-white px-4 py-2 mt-2 sm:mt-0">
           <img src="assets/images/search.png" class="h-6 w-3">
         </button>
       </div>
     </div>
 
     <!-- Affichage des informations du patient après recherche -->
-    <button *ngIf="patient" (click)="goToDpiPage()" class="flex items-center justify-between w-auto bg-clair text-fonce mx-32 p-6 shadow-md p-4 rounded-[40px] cursor-pointer hover:bg-white">
-      <div class="flex">
-        <span class="mx-12">Nom : {{ patient.nom }}</span>
-        <span class="mr-12">Prenom : {{ patient.prenom }}</span>
-        <span class="mr-12">Téléphone : {{ patient.tel }}</span>
-        <span class="mr-8">ID : {{ patient.id }}</span>
+    <button *ngIf="patient" (click)="goToDpiPage()" class="flex items-center justify-between w-auto bg-clair text-fonce mx-6 sm:mx-32 p-6 shadow-md p-4 rounded-[40px] cursor-pointer hover:bg-white">
+      <div class="flex flex-col sm:flex-row">
+        <span class="mx-2 sm:mx-12">Nom : {{ patient.nom }}</span>
+        <span class="mx-2 sm:mr-12">Prenom : {{ patient.prenom }}</span>
+        <span class="mx-2 sm:mr-12">Téléphone : {{ patient.tel }}</span>
+        <span class="mx-2 sm:mr-8">ID : {{ patient.id }}</span>
       </div>
     </button>
 
     <!-- Bouton pour démarrer le scan -->
-     <div class="flex justify-between items-center px-16">
-       <button *ngIf="isScanning" (click)="stopScanning()" class="mt-4 bg-gray-500 text-white px-6 py-3 rounded-[40px]">
+     <div class="flex justify-end items-center px-8 sm:px-16">
+       <button *ngIf="isScanning" (click)="stopScanning()" class="my-8 mr-8 bg-gray-200 text-white px-6 py-3 rounded-[40px]">
          Arrêter le Scan
        </button>
-    <button (click)="startScanning()" class="bg-clair text-white px-6 py-3 rounded-[40px] shadow-md">
+    <button (click)="startScanning()" class="my-8 bg-clair text-fonce px-6 py-3 rounded-[40px] shadow-md">
       Rechercher par Code QR
     </button>
   </div>
@@ -63,7 +63,7 @@
       [formats]="allowedFormats"
       (scanSuccess)="handleQrCodeResult($event)"
       [torch]="torchEnabled"
-      class="w-full h-64 mt-4"
+      class="w-full h-64 my-8"
     ></zxing-scanner>
   
     <!-- Bouton pour arrêter le scan -->

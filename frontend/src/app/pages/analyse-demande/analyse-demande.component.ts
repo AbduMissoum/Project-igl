@@ -44,4 +44,5 @@ export class AnalyseDemandeComponent implements OnInit {
   onRowClick(bilanId: string): void {
     this.router.navigate(['/saisiranalyse', bilanId]); // Navigation vers la page de détails
   }
+  
 }

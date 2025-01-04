@@ -44,10 +44,10 @@
             <!-- Soins data -->
             <ng-container *ngFor="let soin of soins">
               <tr
-                class="group bg-clair hover:bg-white transition-all duration-200 cursor-pointer"
-                (mouseenter)="hovered = soin"
-                (mouseleave)="hovered = null"
-              >
+  class="group bg-clair hover:bg-white transition-all transition-background-color duration-1000 cursor-pointer"
+  (mouseenter)="hovered = soin"
+  (mouseleave)="hovered = null"
+>
                 <td class="py-4 px-6">{{ soin.infirmier }}</td>
                 <td class="py-4 px-6">{{ soin.etablissement }}</td>
                 <td class="py-4 px-6">{{ soin.date | date: 'shortDate' }}</td>
