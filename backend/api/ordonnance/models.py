@@ -13,7 +13,7 @@ class Medicament(models.Model):
 class Ordonnance(models.Model):
     id = models.AutoField(primary_key=True)
     valide = models.BooleanField(default=False)
-    consultation = models.ForeignKey(Consultation, on_delete=models.CASCADE, default=None)
+    consultation= models.ForeignKey(Consultation, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return f"Ordonnance {self.id} - {'Valid' if self.valide else 'Invalid'}"

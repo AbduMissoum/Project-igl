@@ -22,6 +22,7 @@ export class PatientDPIComponent implements OnInit {
 
   ngOnInit(): void {
     this.sharedService.patientId$.subscribe((id: number | null) => {
+      console.log(id);
       if (id !== null) {
         this.patientId = id;
         this.loadPatientData();

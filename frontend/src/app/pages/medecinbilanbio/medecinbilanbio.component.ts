@@ -16,18 +16,14 @@ import { AuthService } from '../../services/authservice.service';
 export class MedecinbilanbioComponent implements OnInit {
   title: string = 'Bilan Médical';
   isPopupOpen: boolean = false;
-  requestedTests: string[] = [];
-  nss: string = '';
-  laborantin: string = '';
-
+  requestedTests: string[] = []; // Liste des tests demandés
+  nss: string = ''; // NSS du patient
+  laborantin: string = ''; // Nom du laborantin
   bioResults = [
     { test: '', value: '', unit: '', reference: '' },
   ];
 
-  // Variable pour stocker les détails de la consultation
   consultationDetails: any = null;
-  
-  // Initialiser la subscription à null pour éviter l'erreur
   private consultationSubscription: Subscription | null = null;
 
   constructor(
@@ -37,47 +33,35 @@ export class MedecinbilanbioComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // S'abonner aux détails de la consultation
-    this.consultationSubscription = this.sharedService.consultationDetails$.subscribe(details => {
+    this.consultationSubscription = this.sharedService.consultationDetails$.subscribe((details) => {
       this.consultationDetails = details;
-      if (this.consultationDetails && this.consultationDetails.id) {
-        this.fetchBilanBiologique(this.consultationDetails.id); // Récupérer le bilan biologique
-      }
-    });
-  }
-  fetchBilanBiologique(consultationId: number): void {
-    console.log('Consultation ID:', consultationId);
-    const headers = new HttpHeaders({
-      'Authorization': 'Bearer ' + this.authService.getToken(),
-    });
-  
-    this.http.get(`http://localhost:8000/bilan-bio/details-bilan/${consultationId}/`, { headers }).subscribe({
-      next: (response: any) => {
-        if (response ) {
-          this.bioResults = response.map((param: any) => ({
-            test: param.parameter || 'Inconnu',
-            value: param.valeur || 'Non disponible',
-            unit: param.unite || 'Non spécifié',
-            reference: param.valeur_reference || 'Non défini'
-          }));
-        } else {
-          console.error('Données invalides ou bilan manquant pour cette consultation');
-          // Afficher un message plus explicite à l'utilisateur, si nécessaire
-        }
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération du bilan biologique :', error);
-        // Gestion de l'erreur, par exemple afficher un message à l'utilisateur
-        alert('Erreur lors de la récupération du bilan biologique. Veuillez vérifier la consultation.');
+      if (this.consultationDetails?.id) {
+        this.fetchBilanBiologique(this.consultationDetails.id);
       }
     });
   }
 
-  ngOnDestroy() {
-    // Désabonnement lorsque le composant est détruit pour éviter les fuites de mémoire
-    if (this.consultationSubscription) {
-      this.consultationSubscription.unsubscribe();
-    }
+  fetchBilanBiologique(consultationId: number): void {
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.authService.getToken(),
+    });
+
+    this.http
+      .get(`http://localhost:8000/bilan-bio/details-bilan/${consultationId}/`, { headers })
+      .subscribe({
+        next: (response: any) => {
+          this.bioResults = response.map((param: any) => ({
+            test: param.parameter || 'Inconnu',
+            value: param.valeur || 'Non disponible',
+            unit: param.unite || 'Non spécifié',
+            reference: param.valeur_reference || 'Non défini',
+          }));
+        },
+        error: (error) => {
+          console.error('Erreur lors de la récupération du bilan biologique :', error);
+          alert('Erreur lors de la récupération du bilan biologique.');
+        },
+      });
   }
 
   openPopup() {
@@ -92,35 +76,50 @@ export class MedecinbilanbioComponent implements OnInit {
     this.requestedTests.push('');
   }
 
+  removeTest(index: number) {
+    this.requestedTests.splice(index, 1);
+  }
+
   saveTests() {
-    // Vérifier si consultationDetails est disponible
-    if (!this.consultationDetails || !this.consultationDetails.id) {
-      console.error('ID de consultation manquante');
+    if (!this.nss || !this.laborantin) {
+      alert('Veuillez remplir les champs NSS et Laborantin.');
       return;
     }
 
     if (this.requestedTests.length === 0) {
-      console.error('Liste de tests vide');
+      alert('Ajoutez au moins un test.');
       return;
     }
 
     const requestData = {
-      tests: this.requestedTests,
-      consultation_id: this.consultationDetails.id,
+      tests: this.requestedTests.filter((test) => test.trim() !== ''), // Supprime les champs vides
+      consultation_id: this.consultationDetails?.id || 0,
+      nss: this.nss,
+      laborantin: this.laborantin,
     };
-     const headers = new HttpHeaders({
-          'Authorization': 'Bearer ' + this.authService.getToken(),
-        });
-    // Appel à l'API pour enregistrer la demande de bilan biologique
-    this.http.post('http://localhost:8000/bilan-bio/demande', requestData , { headers }).subscribe({
-      next: (response: any) => {
-        console.log('Réponse de l\'API :', response);
+
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.authService.getToken(),
+    });
+
+    this.http.post('http://localhost:8000/bilan-bio/demande', requestData, { headers }).subscribe({
+      next: (response) => {
+        alert('Demande de bilan enregistrée avec succès.');
         this.isPopupOpen = false;
+        this.requestedTests = [];
+        this.nss = '';
+        this.laborantin = '';
       },
       error: (error) => {
         console.error('Erreur lors de l\'enregistrement du bilan :', error);
+        alert('Erreur lors de l\'enregistrement de la demande de bilan.');
       },
     });
   }
-}
 
+  ngOnDestroy() {
+    if (this.consultationSubscription) {
+      this.consultationSubscription.unsubscribe();
+    }
+  }
+}
