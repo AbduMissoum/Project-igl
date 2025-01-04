@@ -1,41 +1,65 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule ,} from '@angular/common';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SharedService } from '../../services/sharedservice.service';
+import { SoinsService } from '../../services/soinsService.sevice';
+import { Subscription } from 'rxjs';
+import { SoinListForPatient } from '../../interfaces/soinsInterfaces';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-patient-soin',
+  imports :[FormsModule , CommonModule   ],
   templateUrl: './patient-soin.component.html',
-  imports :[CommonModule],
-  styleUrl: './patient-soin.component.css'
+  styleUrls: ['./patient-soin.component.css']
 })
-export class PatientSoinComponent {
-  soins = [
-    {
-      infirmier: 'Jean Dupont',
-      etablissement: 'Clinique Sainte-Marie',
-      date: '2024-12-27',
-      heure: '10:30',
-      details: 'Injection d\'antibiotiques pour traiter une infection respiratoire.',
-    },
-    {
-      infirmier: 'Sophie Martin',
-      etablissement: 'Hôpital Général',
-      date: '2024-12-26',
-      heure: '14:00',
-      details: 'Pansement appliqué sur une plaie chirurgicale suite à une opération.',
-    },
-    {
-      infirmier: 'Paul Leroy',
-      etablissement: 'Centre Médical',
-      date: '2024-12-25',
-      heure: '09:00',
-      details: 'Suivi post-opératoire et vérification des signes vitaux du patient.',
-    },
-  ];
+export class PatientSoinComponent implements OnInit, OnDestroy {
+  soins: SoinListForPatient[] = [];
+  hovered: number | null = null;
+  private patientId: number = 0;
+  private subscription: Subscription | null = null;
 
-  hovered: any = null; // Stocke le soin survolé
-  constructor() { }
+  constructor(
+    private sharedService: SharedService,
+    private soinsService: SoinsService
+  ) {}
 
   ngOnInit(): void {
-    console.log('Component initialized');}
+    this.subscription = this.sharedService.patientId$.subscribe({
+      next: (id: number | null) => {
+        if (id !== null) {
+          this.patientId = id;
+          this.loadSoins();
+        }
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération de l\'ID du patient:', error);
+      }
+    });
+  }
 
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  loadSoins(): void {
+    this.soins = []; // Reset soins before loading new data
+    this.soinsService.getSoinsByPatient(this.patientId).subscribe({
+      next: (data:SoinListForPatient[]) => {
+        this.soins = data.map((item: SoinListForPatient) => ({
+          id: item.id,
+          la_date: item.la_date,
+          infirmier: item.infirmier,
+          description: item.description,
+          patient_id: item.patient_id,
+        }));
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des soins:', err);
+        // You might want to add error handling here, such as showing an error message to the user
+      }
+    });
+  }
 }

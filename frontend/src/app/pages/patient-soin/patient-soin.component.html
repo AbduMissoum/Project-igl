@@ -6,10 +6,10 @@
   <title>Historique des Soins</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-gradient-to-b from-clair to-white text-gray-800">
+<body class="min-h-screen bg-gradient-to-b from-clair to-white text-gray-800"> 
 
  
-  <!-- Main Section -->
+  
   <main class="container mx-auto mt-12 px-4">
     <!-- Title -->
     <section class="text-center mb-10">
@@ -35,28 +35,26 @@
           <thead class="bg-fonce text-white">
             <tr>
               <th class="py-4 px-6">Infirmier</th>
-              <th class="py-4 px-6">Établissement</th>
               <th class="py-4 px-6">Date</th>
-              <th class="py-4 px-6">Heure</th>
             </tr>
           </thead>
           <tbody>
             <!-- Soins data -->
             <ng-container *ngFor="let soin of soins">
               <tr
-  class="group bg-clair hover:bg-white transition-all transition-background-color duration-1000 cursor-pointer"
-  (mouseenter)="hovered = soin"
-  (mouseleave)="hovered = null"
->
-                <td class="py-4 px-6">{{ soin.infirmier }}</td>
-                <td class="py-4 px-6">{{ soin.etablissement }}</td>
-                <td class="py-4 px-6">{{ soin.date | date: 'shortDate' }}</td>
-                <td class="py-4 px-6">{{ soin.heure }}</td>
+
+                class="group bg-clair hover:bg-white transition-all duration-200 cursor-pointer"
+                (mouseenter)="hovered = soin"
+                (mouseleave)="hovered = null"
+              >
+                <td class="py-4 px-6">{{ soin.infirmier.username }}</td>
+                <td class="py-4 px-6">{{ soin.la_date | date: 'shortDate' }}</td>
+
               </tr>
               <!-- Ligne des détails -->
               <tr *ngIf="hovered === soin">
                 <td colspan="4" class="py-4 px-6 text-fonce bg-white">
-                  <span>{{ soin.details }}</span>
+                  <span>{{ soin.description }}</span>
                 </td>
               </tr>
             </ng-container>
@@ -67,4 +65,4 @@
   </main>
 
 </body>
-</html>
+</html>  
