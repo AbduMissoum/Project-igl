@@ -1,32 +1,73 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-
+import { Router } from '@angular/router';
+import { ConsultationService } from '../../services/consultation.service';
+import { FormsModule } from '@angular/forms';
 
 interface Historique {
+  id: number;
   medecin: string;
   etablissement: string;
   date: Date;
   heure: string;
 }
+
 @Component({
   selector: 'app-patient-consultation-historique',
-  imports: [ CommonModule , RouterLink ],
+  imports: [CommonModule , FormsModule],
   templateUrl: './patient-consultation-historique.component.html',
-  styleUrl: './patient-consultation-historique.component.css'
+  styleUrls: ['./patient-consultation-historique.component.css']
 })
-export class PatientConsultationHistoriqueComponent {
+export class PatientConsultationHistoriqueComponent implements OnInit {
+  historiques: Historique[] = [];
 
-  historiques: Historique[] = [
-    { medecin: 'Dr. Dupont', etablissement: 'Clinique Saint-Martin', date: new Date('2024-12-20'), heure: '10:30' },
-    { medecin: 'Dr. Lefevre', etablissement: 'Hôpital Central', date: new Date('2024-12-22'), heure: '14:00' },
-    { medecin: 'Dr. Bernard', etablissement: 'Centre Médical Nord', date: new Date('2024-12-23'), heure: '09:15' },
-    { medecin: 'Dr. Martin', etablissement: 'Polyclinique Sud', date: new Date('2024-12-24'), heure: '16:45' }
-  ];
-
-  constructor() { }
+  constructor(
+    private consultationService: ConsultationService, // Injection du service de création de consultation
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    console.log('Component initialized');}
+    // Récupérer l'ID du patient depuis le localStorage
+    const patientIdString = localStorage.getItem('patient_id');
+    if (patientIdString) {
+      const patientId = parseInt(patientIdString, 10);
+      if (!isNaN(patientId)) {
+        console.log(patientId);
+        // Appeler le service pour récupérer les consultations
+        this.consultationService.getConsultationsByDpi(patientId).subscribe({
+          next: (data) => {
+            this.historiques = data.map((item: any) => ({
+              id: item.id,
+              medecin: item.medecin.username, // Nom du médecin
+              etablissement: item.etablisement, // Établissement
+              date: new Date(item.la_date), // Date de la consultation
+              heure: '10:00' // Heure statique (par défaut)
+            }));
+          },
+          error: (err) => {
+            console.error('Erreur lors de la récupération des consultations :', err);
+          }
+        });
+      } else {
+        console.error("L'ID du patient n'est pas un entier valide.");
+      }
+    } else {
+      console.error('Aucun ID du patient trouvé dans le localStorage.');
+    }
+  }
 
+  viewDetails(consultationId: number): void {
+    this.consultationService.getConsultationDetailsById(consultationId).subscribe({
+      next: (data) => {
+        // 'data' contient les détails de la consultation
+        console.log('Détails de la consultation récupérés :', data);
+
+        // Optionnel : rediriger vers une page dédiée ou afficher les détails dans une modal
+        this.router.navigate(['/patientcons', consultationId]); // Par exemple, rediriger vers /medecin/{id}
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des détails :', err);
+      }
+    });
+  }
 }

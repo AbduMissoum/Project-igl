@@ -38,7 +38,9 @@ export class MedecinHistoriqueConsultationComponent implements OnInit {
   ngOnInit(): void {
     // Récupérer l'ID du patient et les consultations associées
     this.sharedService.patientId$.subscribe(patientId => {
+      console.log(patientId);
       if (patientId !== null) {
+        console.log(patientId);
         this.consultationService.getConsultationsByDpi(patientId).subscribe({
           next: (data) => {
             this.historiques = data.map((item: any) => ({

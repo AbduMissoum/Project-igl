@@ -100,7 +100,6 @@ export class AdminPageComponent implements OnInit {
             ...this.patientData,
             // medecin_traitant est déjà un tableau d'IDs
           };
-
           this.http.post('http://127.0.0.1:8000/patient/', patientDataToSubmit)
             .subscribe(
               response => {

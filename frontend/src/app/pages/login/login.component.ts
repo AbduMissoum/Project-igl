@@ -31,6 +31,9 @@ export class LoginComponent implements OnInit {
        this.authService.setToken(response.access); // Appeler setToken pour sauvegarder le token
       this.authService.getInfo(this.username,this.password).subscribe({
         next:(response) => {
+          console.log(response);
+          const patient_id = response.id;
+          this.authService.setid(patient_id);
           const role = response.role;
           this.authService.setRole(role); // Appeler setRole pour sauvegarder le rôle
   

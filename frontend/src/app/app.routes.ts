@@ -81,7 +81,7 @@ export const routes: Routes = [
         component: PatientSoinComponent, 
       },
       {
-        path: 'patientcons',
+        path: 'patientcons/:id',
         component: PatientresumeComponent, 
       },
       

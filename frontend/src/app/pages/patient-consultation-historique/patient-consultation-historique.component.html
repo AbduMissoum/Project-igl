@@ -1,56 +1,37 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patient Consultation Historique</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="min-h-screen bg-gradient-to-b from-clair to-white text-gray-800">
+<div class="w-full max-w-5xl rounded-[40px] shadow-md p-8 mx-6 sm:ml-28 mt-6">
+  <h1 class="text-4xl font-bold text-fonce mb-8 text-center">Historique de vos consultations médicales</h1>
 
- <!-- Content -->
- <main class="w-full  max-w-5xl rounded-[40px]  shadow-md p-8 ml-28 mt-6">
+  <!-- Vérifier si l'historique est vide -->
+  <div *ngIf="historiques.length === 0" class="text-center text-gray-500 font-semibold">
+    Aucun historique de consultations trouvé.
+  </div>
 
-  <h1 class="text-4xl font-bold text-fonce  mb-8 text-center">
-      Historique de vos consultations médicales 
-  </h1>
-
-  <div class="overflow-hidden rounded-[40px] border border-fonce shadow-lg">
+  <!-- Tableau des consultations -->
+  <div *ngIf="historiques.length > 0" class="overflow-hidden rounded-[40px] border border-fonce shadow-lg">
     <table class="table-auto w-full text-left">
-      <!-- En-tête du tableau -->
       <thead class="bg-fonce text-white">
         <tr>
-          <th class="py-4 px-6 rounded-tl-[40px]">Infirmier</th>
+          <th class="py-4 px-6 rounded-tl-[40px]">Médecin</th>
           <th class="py-4 px-6">Établissement</th>
           <th class="py-4 px-6">Date</th>
-          <th class="py-4 px-6 ">Heure</th>
-          <th class="py-4 px-6 rounded-tr-[40px]">Details</th>
+          <th class="py-4 px-6">Heure</th>
+          <!-- <th class="py-4 px-6 rounded-tr-[40px]">Détails</th> -->
         </tr>
       </thead>
-      <!-- Corps du tableau -->
       <tbody>
-        <!-- Itération des données -->
-        <ng-container *ngFor="let item of historiques">
-          <tr
-            class="group bg-clair hover:bg-white transition-all duration-200 cursor-pointer"
-          >
-            <td class="py-4 px-6">{{ item.medecin }}</td>
-            <td class="py-4 px-6">{{ item.etablissement }}</td>
-            <td class="py-4 px-6">{{ item.date | date: 'shortDate' }}</td>
-            <td class="py-4 px-6">{{ item.heure }}</td>
-            <td class="py-4 px-6">
-              <a
-              routerLink="/patientcons" class=" text-fonce font-semibold hover:underline">
-                Voir détails
-            </a>
-            </td>
-          </tr>
-        </ng-container>
+        <tr
+          *ngFor="let item of historiques"
+          (click)="viewDetails(item.id)"
+          class="group bg-clair hover:bg-white transition-all duration-200 cursor-pointer"
+        >
+          <td class="py-4 px-6">{{ item.medecin }}</td>
+          <td class="py-4 px-6">{{ item.etablissement }}</td>
+          <td class="py-4 px-6">{{ item.date | date: 'shortDate' }}</td>
+          <td class="py-4 px-6">{{ item.heure }}</td>
+        </tr>
       </tbody>
     </table>
   </div>
 
-  </main>
-
-</body></html>
-
+  
+</div>

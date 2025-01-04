@@ -6,10 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = "http://127.0.0.1:8000/";
+  private baseUrl = "http://127.0.0.1:8000";
   private apiUrl = this.baseUrl+'/auth/login/';
   private logouturl= this.baseUrl+'/auth/logout/';
   private role: string | null = null;
+  private patient_id: number | null = null;
   private token: string | null = null;
 
   constructor(private http: HttpClient) {}
@@ -42,6 +43,20 @@ export class AuthService {
   setRole(role: string): void {
     this.role = role;
     localStorage.setItem('userRole', role); // Enregistre le rôle dans localStorage
+  }
+  setid(id: number): void {
+    this.patient_id = id;
+    localStorage.setItem('patient_id', id.toString());
+  }
+
+  getid(): number | null {
+    if (!this.patient_id) {
+      const idString = localStorage.getItem('patient_id'); // Récupère l'ID stocké en tant que chaîne
+      if (idString) {
+        this.patient_id = parseInt(idString, 10); // Convertit la chaîne en un entier
+      }
+    }
+    return this.patient_id || null; // Retourne l'ID converti ou null si non défini
   }
   
 

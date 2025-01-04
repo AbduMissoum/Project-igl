@@ -15,7 +15,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class PatientSoinComponent implements OnInit, OnDestroy {
   soins: SoinListForPatient[] = [];
-  hovered: number | null = null;
+  hovered: SoinListForPatient | null = null;
+
   private patientId: number = 0;
   private subscription: Subscription | null = null;
 

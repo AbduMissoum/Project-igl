@@ -52,7 +52,7 @@
 
               </tr>
               <!-- Ligne des détails -->
-              <tr *ngIf="hovered === soin">
+              <tr *ngIf="hovered?.id === soin.id">
                 <td colspan="4" class="py-4 px-6 text-fonce bg-white">
                   <span>{{ soin.description }}</span>
                 </td>
