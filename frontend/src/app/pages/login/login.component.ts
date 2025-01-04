@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
             case 'admin':
               this.router.navigate(['/admin']);
               break;
-            case 'Patient':
+            case 'patient':
               this.router.navigate(['/patient']);
               break;
             case 'medecin':
@@ -48,11 +48,11 @@ export class LoginComponent implements OnInit {
             case 'infirmier':
               this.router.navigate(['/saisirsoin']);
               break;
-            case 'Laborantin':
-              this.router.navigate(['/saisiranalyse']);
+            case 'laborantin':
+              this.router.navigate(['/analysedemande']);
               break;
-            case 'Radiologue':
-              this.router.navigate(['/saisirradio']);
+            case 'radiologue':
+              this.router.navigate(['/radiodemande']);
               break;
             default:
               console.error('Rôle utilisateur inconnu');

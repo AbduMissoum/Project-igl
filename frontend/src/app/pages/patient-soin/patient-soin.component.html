@@ -42,12 +42,14 @@
             <!-- Soins data -->
             <ng-container *ngFor="let soin of soins">
               <tr
+
                 class="group bg-clair hover:bg-white transition-all duration-200 cursor-pointer"
                 (mouseenter)="hovered = soin"
                 (mouseleave)="hovered = null"
               >
                 <td class="py-4 px-6">{{ soin.infirmier.username }}</td>
                 <td class="py-4 px-6">{{ soin.la_date | date: 'shortDate' }}</td>
+
               </tr>
               <!-- Ligne des détails -->
               <tr *ngIf="hovered === soin">

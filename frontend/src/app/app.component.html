@@ -12,7 +12,7 @@
           <a routerLink="/admin" class="text-2xl text-fonce font-semibold hover:underline">DPI</a>
           <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
         </ng-container>
-            <ng-container *ngIf="userRole === 'Patient'">
+            <ng-container *ngIf="userRole === 'patient'">
             <a routerLink="/patient" class="text-2xl text-fonce font-semibold hover:underline">DPI</a>
             <a routerLink="/patientconsultation" class="text-2xl text-fonce font-semibold hover:underline">Consultation</a>
             <a routerLink="/patientsoin" class="text-2xl text-fonce font-semibold hover:underline">Soins</a>
@@ -25,16 +25,16 @@
             <a routerLink="/patientsoin" class="text-2xl text-fonce font-semibold hover:underline">Soins</a>
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
           </ng-container>
-          <ng-container *ngIf="userRole === 'Infirmier'">
+          <ng-container *ngIf="userRole === 'infirmier'">
             <a routerLink="/saisirsoin" class="text-2xl text-fonce font-semibold hover:underline">Soins</a>
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
           </ng-container>
-          <ng-container *ngIf="userRole === 'Laborantin'">
+          <ng-container *ngIf="userRole === 'laborantin'">
             <a routerLink="/analysedemande" class="text-2xl text-fonce font-semibold hover:underline">Notifications</a>
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
           </ng-container>
-          <ng-container *ngIf="userRole === 'Radiologue'">
-            <a routerLink="/saisirradio" class="text-2xl text-fonce font-semibold hover:underline">Notifications</a>
+          <ng-container *ngIf="userRole === 'radiologue'">
+            <a routerLink="/radiodemande" class="text-2xl text-fonce font-semibold hover:underline">Notifications</a>
             <a routerLink="/contactus" class="text-2xl text-fonce font-semibold hover:underline">Contactus</a>
           </ng-container>
       </nav>

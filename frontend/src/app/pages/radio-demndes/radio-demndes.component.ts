@@ -1,37 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { BilanRadioService } from '../../services/bilanradio.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
 
 
 @Component({
   selector: 'app-radio-demndes',
-  imports: [CommonModule ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './radio-demndes.component.html',
-  styleUrl: './radio-demndes.component.css'
+  styleUrls: ['./radio-demndes.component.css'],
 })
-export class RadioDemndesComponent {
-  radios = [
-    
-    { medecin: 'Dr. Dupont', patient: 'Jean Martin', type: 'Radiographie thoracique', date: new Date('2024-12-20') },
-    { medecin: 'Dr. Lefevre', patient: 'Marie Durand', type: 'Scanner abdominal', date: new Date('2024-12-22') },
-    { medecin: 'Dr. Bernard', patient: 'Paul Leclerc', type: 'IRM cérébrale', date: new Date('2024-12-23') },
-    { medecin: 'Dr. Martin', patient: 'Sophie Dubois', type: 'Radiographie dentaire', date: new Date('2024-12-24') },
-    { medecin: 'Dr. Lefevre', patient: 'Marie Durand', type: 'Scanner abdominal', date: new Date('2024-12-22') },
-    { medecin: 'Dr. Bernard', patient: 'Paul Leclerc', type: 'IRM cérébrale', date: new Date('2024-12-23') },
-    { medecin: 'Dr. Martin', patient: 'Sophie Dubois', type: 'Radiographie dentaire', date: new Date('2024-12-24') }
+export class RadioDemndesComponent implements OnInit {
+  radios: any[] = []; // Tableau pour stocker les bilans radiologiques récupérés
 
-  ];
+  constructor(private bilanRadioService: BilanRadioService , private router : Router) {}
 
-  constructor(private router: Router) {}
-
-  redirectToDetails(id: number): void {
-    this.router.navigate(['/detailed-view', id]);
-  }
   ngOnInit(): void {
+    // Récupérer les bilans radiologiques depuis l'API
+    this.bilanRadioService.getBilanRadios().subscribe({
+      next: (data) => {
+        this.radios = data;
+        console.log('Données des bilans récupérées :', this.radios); // Pour déboguer
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des bilans radiologiques:', error);
+      },
+    });
   }
 
+  onRowClick(radioid: string): void {
+    this.router.navigate(['/saisirradio', radioid]); // Navigation vers la page de détails
+  }
 }
-
-
-
