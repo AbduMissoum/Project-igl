@@ -111,9 +111,9 @@ def check_bilan(consultation_id:int,user_id:int):
     try:
         print(consultation_id)
         print(user_id)
-        consultation = Consultation.objects.get(id=int(consultation_id))
+        consultation = Consultation.objects.get(id=consultation_id)
         print(consultation)
-        bilan = BilanBiologique.object.get(consultation=consultation)
+        bilan = BilanBiologique.objects.get(consultation=consultation)
         print(bilan)
         user = CustomUser.objects.get(id=user_id)
         if user.role == 'medecin' and user!=consultation.medecin:

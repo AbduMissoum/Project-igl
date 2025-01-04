@@ -27,9 +27,11 @@ export class MedecinbilanradioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('mkach id')
     // Récupérer les détails de la consultation via SharedService
     this.sharedService.consultationDetails$.subscribe((data) => {
       this.consultationDetails = data;
+   
       console.log('Détails de la consultation dans Medecinbilanradio:', this.consultationDetails);
       if (this.consultationDetails?.id) {
         this.loadBilanData(this.consultationDetails.id);

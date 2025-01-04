@@ -20,7 +20,7 @@ export class MedecinbilanbioComponent implements OnInit {
   nss: string = ''; // NSS du patient
   laborantin: string = ''; // Nom du laborantin
   bioResults = [
-    { test: '', value: '', unit: '', reference: '' },
+    { test: '', value:  2, unit: '', reference: '' },
   ];
 
   consultationDetails: any = null;
@@ -33,31 +33,39 @@ export class MedecinbilanbioComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log('mkach id1');
     this.consultationSubscription = this.sharedService.consultationDetails$.subscribe((details) => {
       this.consultationDetails = details;
-      if (this.consultationDetails?.id) {
+      console.log('mkach id2');
+      if (this.consultationDetails && this.consultationDetails.id) {
+        console.log(this.consultationDetails.id);
         this.fetchBilanBiologique(this.consultationDetails.id);
+      } else {
+        console.error('Consultation details are missing or invalid');
       }
     });
   }
-
+  
   fetchBilanBiologique(consultationId: number): void {
+    console.log('ih', consultationId);
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + this.authService.getToken(),
     });
-
+    
     this.http
       .get(`http://localhost:8000/bilan-bio/details-bilan/${consultationId}/`, { headers })
       .subscribe({
         next: (response: any) => {
+          console.log('ih3', response);
           this.bioResults = response.map((param: any) => ({
-            test: param.parameter || 'Inconnu',
+            test: param.parametre || 'Inconnu',
             value: param.valeur || 'Non disponible',
             unit: param.unite || 'Non spécifié',
             reference: param.valeur_reference || 'Non défini',
           }));
         },
         error: (error) => {
+          console.log('ih4', consultationId);
           console.error('Erreur lors de la récupération du bilan biologique :', error);
           alert('Erreur lors de la récupération du bilan biologique.');
         },
