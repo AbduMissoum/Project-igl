@@ -36,7 +36,7 @@
         </section>
 
         <!-- Form Section -->
-        <section class="shadow-md rounded-lg px-40 pb-8 mb-20">
+        <section class="shadow-md rounded-[40px] px-40 pb-8 mb-20">
             <h2 class="text-4xl font-bold text-center text-fonce mb-6">Créer votre Dossier !</h2>
             <form (ngSubmit)="onSubmit()" class="space-y-6">
                 <!-- Ligne 1 -->
@@ -103,7 +103,7 @@
                             placeholder="Rechercher un médecin"
                             class="bg-clair w-full p-3 rounded-[40px] border border-gray-300 focus:ring focus:ring-fonce"
                         />
-                        <ul *ngIf="isListVisible && filteredMedecins.length" class="absolute z-10 bg-white border border-gray-300 rounded-lg mt-2 max-h-48 w-full overflow-y-auto">
+                        <ul *ngIf="isListVisible && filteredMedecins.length" class="absolute z-10 bg-white border border-gray-300 rounded-[40px] mt-2 max-h-48 w-full overflow-y-auto">
                             <!-- Liste des médecins -->
                             <li 
                                 *ngFor="let medecin of filteredMedecins" 

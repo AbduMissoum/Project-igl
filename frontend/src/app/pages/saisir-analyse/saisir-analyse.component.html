@@ -1,11 +1,11 @@
 <div class="min-h-screen bg-gradient-to-b from-clair to-white flex flex-col items-center px-6 pb-8">
-  <main class="w-full max-w-5xl rounded-lg shadow-md p-8 mt-6">
+  <main class="w-full max-w-5xl rounded-[40px] shadow-md p-8 mt-6">
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-4xl font-bold text-fonce">Le bilan biologique</h1>
     </div>
     <div class="flex justify-end items-center mr-20 mb-4">
       <button
-        class="bg-fonce text-white px-4 py-2 rounded-lg hover:bg-opacity-90"
+        class="bg-fonce text-white px-4 py-2 rounded-[40px] hover:bg-opacity-90"
         (click)="generateGraph()"
       >
         Générer graphe
@@ -13,7 +13,7 @@
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Tableau -->
-      <div class="overflow-hidden rounded-lg border border-gray-300">
+      <div class="overflow-hidden rounded-[40px] border border-gray-300">
         <table class="w-full border-collapse text-left">
           <thead>
             <tr class="bg-clair">
@@ -63,7 +63,7 @@
         <img
           src="assets/Rectangle 85.png"
           alt="Illustration scientifique"
-          class="w-full max-w-xs rounded-lg shadow-md"
+          class="w-full max-w-xs rounded-[40px] shadow-md"
         />
       </div>
     </div>

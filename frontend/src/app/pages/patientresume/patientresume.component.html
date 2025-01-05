@@ -8,29 +8,27 @@
 </head>
 <body class="min-h-screen bg-gradient-to-b from-clair to-white text-gray-800">
 
- 
-
   <!-- Main Content -->
   <main class="max-w-5xl mx-auto p-6">
     <!-- Title -->
     <div class="text-center">
-      <h1 class="text-3xl font-bold text-fonce">Détails de la consultation – [Nom de l’établissement]</h1>
+      <h1 class="text-3xl font-bold text-fonce">Détails de la consultation – {{ title.toUpperCase() }}</h1>
       <p class="text-fonce text-lg font-medium mt-2">
-        Date de la consultation : <span class="font-semibold">[Date sélectionnée]</span>
+        Date de la consultation : <span class="font-semibold">{{ date }}</span>
       </p>
     </div>
 
     <!-- Consultation Summary -->
-    <div class="flex flex-col md:flex-row items-center  p-6 rounded-lg mt-8 space-y-6 md:space-y-0 md:space-x-6">
+    <div class="flex flex-col md:flex-row items-center  p-6 rounded-[40px] mt-8 space-y-6 md:space-y-0 md:space-x-6">
         <!-- Texte aligné à gauche -->
         <div class="flex flex-col space-y-4 md:w-2/3">
           <p class="text-fonce text-lg">
             Bienvenue sur la page dédiée à votre consultation réalisée à
-            <strong>[Nom de l’établissement]</strong>.
+            <strong>{{ title }}</strong>.
           </p>
           <p class="text-fonce text-lg">
             Date de la consultation :
-            <strong>[Date sélectionnée]</strong>.
+            <strong>{{ date }}</strong>.
           </p>
           <p class="text-fonce text-lg">
             Nous sommes heureux de vous fournir tous les détails nécessaires.
@@ -48,7 +46,7 @@
       
         <!-- Image alignée à droite -->
         <div class="md:w-1/3 flex justify-center">
-          <img src="assets/images/Consultation.png" alt="Consultation" class="w-80 h-80 object-contain rounded-[40px] ">
+          <img src="assets/images/Consultation.png" alt="Consultation" class="w-80 h-80 object-contain rounded-[40px] " />
         </div>
       </div>
       
