@@ -17,6 +17,8 @@ export class AdminPageComponent implements OnInit {
   selectedMedecins: any[] = []; // Tableau pour stocker les médecins sélectionnés
   isListVisible: boolean = false;
 
+  
+
   patientData = {
     NSS: '',
     nom: '',
@@ -27,6 +29,15 @@ export class AdminPageComponent implements OnInit {
     mutuelle: '',
     email: '',
     medecin_traitant: [] as number[],  // Tableau pour les IDs des médecins sélectionnés
+  };
+
+  swalOptions = {
+    customClass: {
+      popup: 'rounded-[40px] shadow-lg bg-clair p-6 text-center', // Style du popup
+      title: 'text-2xl font-bold text-fonce', // Style du titre
+      confirmButton: 'bg-fonce text-white w-auto px-8 rounded-[40px]', // Style du bouton de confirmation
+      cancelButton: 'bg-gray-200 text-fonce px-8 rounded-[40px]', // Style du bouton d'annulation
+    },
   };
 
   constructor(private http: HttpClient) {}
@@ -84,36 +95,49 @@ export class AdminPageComponent implements OnInit {
   // Fonction pour envoyer les données du patient
   onSubmit() {
     Swal.fire({
+      ...this.swalOptions, // Ajout du style global
       title: 'Êtes-vous sûr ?',
       text: "Vous êtes sur le point de valider les informations du patient.",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#5DA5B9',
-      cancelButtonColor: '#D3E7E8',
-      confirmButtonText: 'Oui, valider',
-      cancelButtonText: 'Annuler',
+      confirmButtonText: 'Oui, envoyer !',
     }).then((result) => {
       if (result.isConfirmed) {
         // Soumission des données
         if (this.patientData.medecin_traitant.length > 0) {
           const patientDataToSubmit = {
             ...this.patientData,
-            // medecin_traitant est déjà un tableau d'IDs
           };
           this.http.post('http://127.0.0.1:8000/patient/', patientDataToSubmit)
             .subscribe(
               response => {
-                Swal.fire('Succès', 'Dossier patient créé avec succès', 'success');
+                Swal.fire({
+                  ...this.swalOptions,  // Ajout du style global
+                  title: 'Succès',
+                  text: 'Dossier patient créé avec succès',
+                  icon: 'success',
+                });
               },
               error => {
                 console.error('Erreur lors de la création :', error);
-                Swal.fire('Erreur', 'Une erreur est survenue lors de la création du dossier', 'error');
+                Swal.fire({
+                  ...this.swalOptions,  // Ajout du style global
+                  title: 'Erreur',
+                  text: 'Une erreur est survenue lors de la création du dossier',
+                  icon: 'error',
+                });
               }
             );
         } else {
-          Swal.fire('Attention', 'Veuillez sélectionner au moins un médecin', 'warning');
+          Swal.fire({
+            ...this.swalOptions,  // Ajout du style global
+            title: 'Attention',
+            text: 'Veuillez sélectionner au moins un médecin',
+            icon: 'warning',
+          });
         }
       }
     });
   }
+  
 }

@@ -58,35 +58,24 @@
     *ngIf="isPopupOpen"
     class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
   >
-    <div class="bg-white rounded-[40px] p-6 w-3/4">
-      <h3 class="text-lg font-bold mb-4">Demander un bilan</h3>
+    <div class="bg-clair rounded-[40px] mx-80 p-6 w-3/4">
+      <div class="flex justify-between items-center">
+      <h3 class="text-lg text-fonce font-bold mb-4">Demander un bilan</h3>
+      <button
+          (click)="addTest()"
+          class="bg-fonce text-white px-4 py-2 rounded-[40px] font-semibold"
+        >
+          + Ajouter un test
+        </button>
+      </div>
 
       <!-- Informations NSS et Laborantin -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <div>
-          <label for="nss" class="text-fonce font-semibold">NSS du patient</label>
-          <input
-            [(ngModel)]="nss"
-            id="nss"
-            type="text"
-            class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-fonce"
-            placeholder="Ex: 123456789012345"
-          />
-        </div>
-        <div>
-          <label for="laborantin" class="text-fonce font-semibold">Laborantin</label>
-          <input
-            [(ngModel)]="laborantin"
-            id="laborantin"
-            type="text"
-            class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-fonce"
-            placeholder="Nom du laborantin"
-          />
-        </div>
+       
       </div>
 
       <!-- Tableau pour les tests -->
-      <table class="w-full border-collapse mb-4">
+      <table class="w-full  mb-4">
         <thead>
           <tr>
             <th class="px-5 py-1 text-3xl text-fonce">Tests demandés</th>
@@ -94,9 +83,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let test of requestedTests; let i = index">
-            <td class="pl-20 py-1 text-fonce border-b border-fonce">
+            <td class="px-20 py-1 text-fonce ">
               <input
-                [(ngModel)]="requestedTests[i]"
+                [(ngModel)]="requestedTests[i].name"
                 type="text"
                 class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-fonce"
                 placeholder="Nom du test"
@@ -109,22 +98,23 @@
       <!-- Boutons d'action -->
       <div class="flex justify-between">
         <button
-          (click)="addTest()"
-          class="bg-fonce text-white px-4 py-2 rounded-lg font-semibold"
+          (click)="closePopup()"
+          class="bg-gray-400 text-white px-4 py-2 rounded-[40px] font-semibold"
         >
-          + Ajouter un test
+          Annuler
         </button>
+        <button
+          (click)="supprimer()"
+          class="bg-red-400 text-white px-4 py-2 rounded-[40px] font-semibold"
+        >
+          Supprimer
+        </button>
+        
         <button
           (click)="saveTests()"
           class="bg-fonce text-white px-4 py-2 rounded-[40px] font-semibold"
         >
           Enregistrer
-        </button>
-        <button
-          (click)="closePopup()"
-          class="bg-gray-400 text-white px-4 py-2 rounded-[40px] font-semibold"
-        >
-          Annuler
         </button>
       </div>
     </div>

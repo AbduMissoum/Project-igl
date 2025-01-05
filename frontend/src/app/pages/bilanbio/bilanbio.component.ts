@@ -29,7 +29,7 @@
     nss: string = '';
     laborantin: string = '';
     bioResults = [
-      { test: '', value: 2, unit: '', reference: '' },
+      { test: 'No test', value: 0, unit: 'No Unité', reference: 'No reference' },
     ];
   
     consultationDetails: any = null;

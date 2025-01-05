@@ -14,6 +14,7 @@ import { AuthService } from '../../services/authservice.service';
   styleUrls: ['./medecinbilanbio.component.css'],
 })
 export class MedecinbilanbioComponent implements OnInit {
+
   // Variables pour gérer le graphique
   @ViewChild('myBarChart') myBarChart: ElementRef | undefined;
   chartRendered: boolean = false;
@@ -22,11 +23,12 @@ export class MedecinbilanbioComponent implements OnInit {
   // Autres variables
   title: string = 'Bilan Médical';
   isPopupOpen: boolean = false;
-  requestedTests: string[] = [];
+  requestedTests: { name: string }[] = [{ name: 'Nom du test' }];
+
   nss: string = '';
   laborantin: string = '';
   bioResults = [
-    { test: '', value: 2, unit: '', reference: '' },
+    { test: 'No test', value: 0, unit: 'No Unité', reference: 'No reference' },
   ];
 
   consultationDetails: any = null;
@@ -48,6 +50,14 @@ export class MedecinbilanbioComponent implements OnInit {
       }
     });
   }
+  supprimer() {
+    if (this.requestedTests.length > 1) {
+      this.requestedTests.pop(); // Supprime le dernier élément du tableau
+    } else {
+      alert('Il doit y avoir au moins un test dans la liste.');
+    }
+  }
+  
 
   // Fetch des résultats de bilan biologique
   fetchBilanBiologique(consultationId: number): void {
@@ -68,24 +78,24 @@ export class MedecinbilanbioComponent implements OnInit {
         },
         error: (error) => {
           console.error('Erreur lors de la récupération du bilan biologique :', error);
-          alert('Erreur lors de la récupération du bilan biologique.');
         },
       });
   }
+
   generateGraph() {
     const labels = this.bioResults.map((result) => result.test);
     const data = this.bioResults.map((result) => result.value);
-  
+
     // Convertir les valeurs de référence en nombres
     const referenceData = this.bioResults.map((result) => {
       const referenceValue = parseFloat(result.reference);
       return isNaN(referenceValue) ? 0 : referenceValue; // Si la valeur n'est pas un nombre, on la remplace par 0
     });
-  
+
     if (this.chart) {
-      this.chart.destroy();  // Détruit l'ancien graphique si existe
+      this.chart.destroy(); // Détruit l'ancien graphique si existe
     }
-  
+
     this.chart = new Chart(this.myBarChart?.nativeElement, {
       type: 'bar', // Type de graphique : barres
       data: {
@@ -116,10 +126,10 @@ export class MedecinbilanbioComponent implements OnInit {
         },
       },
     });
-  
+
     this.chartRendered = true;
   }
-  
+
   openPopup() {
     this.isPopupOpen = true;
   }
@@ -129,7 +139,7 @@ export class MedecinbilanbioComponent implements OnInit {
   }
 
   addTest() {
-    this.requestedTests.push('');
+    this.requestedTests.push({ name: '' });
   }
 
   removeTest(index: number) {
@@ -137,18 +147,16 @@ export class MedecinbilanbioComponent implements OnInit {
   }
 
   saveTests() {
-    if (!this.nss || !this.laborantin) {
-      alert('Veuillez remplir les champs NSS et Laborantin.');
-      return;
-    }
+    const tests = this.requestedTests.map((test) => test.name.trim()).filter((name) => name !== '');
+   
 
-    if (this.requestedTests.length === 0) {
+    if (tests.length === 0) {
       alert('Ajoutez au moins un test.');
       return;
     }
 
     const requestData = {
-      tests: this.requestedTests.filter((test) => test.trim() !== ''),
+      tests,
       consultation_id: this.consultationDetails?.id || 0,
       nss: this.nss,
       laborantin: this.laborantin,
