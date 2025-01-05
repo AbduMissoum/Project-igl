@@ -1,0 +1,26 @@
+<!-- Patient Information Section -->
+<section class="bg-clair rounded-[40px] shadow-lg p-8 w-full max-w-4xl mx-auto">
+    <h2 class="text-2xl font-bold text-fonce mb-6">Information Personnel</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    
+      <div class="space-y-8">
+        <p class="text-lg font-semibold text-fonce">Nom : <span class="text-gray-700">{{ patientData?.nom || 'Non disponible' }}</span></p>
+        <p class="text-lg font-semibold text-fonce">Prénom : <span class="text-gray-700">{{ patientData?.prenom || 'Non disponible' }}</span></p>
+        <p class="text-lg font-semibold text-fonce">Date de naissance : <span class="text-gray-700">{{ patientData?.date_naissance || 'Non disponible' }}</span></p>
+        <p class="text-lg font-semibold text-fonce">Téléphone : <span class="text-gray-700">{{ patientData?.tel || 'Non disponible' }}</span></p>
+        <p class="text-lg font-semibold text-fonce">Adresse : <span class="text-gray-700">{{ patientData?.adress || 'Non disponible' }}</span></p>
+        <p class="text-lg font-semibold text-fonce">Mutuelle : <span class="text-gray-700">{{ patientData?.mutuelle || 'Non disponible' }}</span></p>
+        <p class="text-lg font-semibold text-fonce">E-mail : <span class="text-gray-700">{{ patientData?.email || 'Non disponible' }}</span></p>
+        <p class="text-lg font-semibold text-fonce">NSS : <span class="text-gray-700">{{ patientData?.NSS || 'Non disponible' }}</span></p>
+      </div>
+      <div class="flex items-center justify-center">
+        <img src="assets/images/DPI.png" alt="Patient Illustration" class="w-100 h-120">
+      </div>
+    </div>
+  
+    <!-- QR Code -->
+    <div class="w-10 h-10 bg-clair mx-80 mt-12 mb-20 flex items-center justify-center rounded-md">
+      <qrcode [qrdata]="nss" class="w-full h-full" [errorCorrectionLevel]="'M'"></qrcode>
+    </div>
+  </section>
+  

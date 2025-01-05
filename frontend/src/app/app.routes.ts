@@ -15,6 +15,7 @@ import { PatientConsultationHistoriqueComponent } from './pages/patient-consulta
 import { MedecinHistoriqueConsultationComponent } from './pages/medecin-historique-consultation/medecin-historique-consultation.component';
 import { PatientDPIComponent } from './pages/patient-dpi/patient-dpi.component';
 import { PatientSoinComponent } from './pages/patient-soin/patient-soin.component';
+import { DpiComponent } from './pages/dpi/dpi.component';
 
 export const routes: Routes = [ 
     {
@@ -84,6 +85,12 @@ export const routes: Routes = [
         path: 'patientcons/:id',
         component: PatientresumeComponent, 
       },
+
+      {
+        path: 'DPI',
+        component: DpiComponent, 
+      },
+      
       
       ];
 
