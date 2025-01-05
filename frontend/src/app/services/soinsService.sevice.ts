@@ -37,7 +37,10 @@ export class SoinsService {
 
   // Create a new soin
   createSoin(soin: Omit<SoinsCreateRequestBody, 'id'>): Observable<Soins> {
-    return this.http.post<Soins>(`${this.apiUrl}/soins`, soin)
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.authService.getToken(), 
+     })
+    return this.http.post<Soins>(`${this.apiUrl}/soins/`, soin,{headers})
       .pipe(
         catchError(this.handleError)
       );
