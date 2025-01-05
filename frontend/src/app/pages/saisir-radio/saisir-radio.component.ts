@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../services/authservice.service';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   imports: [FormsModule, CommonModule],
@@ -17,6 +18,16 @@ export class SaisirRadioComponent implements OnInit {
   selectedFile: File | null = null; // Fichier de l'examen image
   radioid: string = ''; // ID du bilan (extraction de l'URL)
   isLoading: boolean = false; // Indicateur de chargement
+
+  // Style mémorisé pour les alertes SweetAlert2
+  swalOptions = {
+    customClass: {
+      popup: 'rounded-[40px] shadow-lg bg-clair p-6 text-center', // Style du popup
+      title: 'text-2xl font-bold text-fonce', // Style du titre
+      confirmButton: 'bg-fonce text-white w-auto px-8 rounded-[40px]', // Style du bouton de confirmation
+      cancelButton: 'bg-gray-200 text-fonce px-8 rounded-[40px]', // Style du bouton d'annulation
+    },
+  };
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -36,7 +47,12 @@ export class SaisirRadioComponent implements OnInit {
   // Récupération des détails du bilan
   fetchBilanDetails(): void {
     if (!this.radioid) {
-      alert('ID du bilan manquant.');
+      Swal.fire({
+        title: 'Erreur',
+        text: 'ID du bilan manquant.',
+        icon: 'error',
+        ...this.swalOptions // Appliquer le style mémorisé
+      });
       return;
     }
 
@@ -45,7 +61,12 @@ export class SaisirRadioComponent implements OnInit {
     // Ajouter le token d'authentification dans les en-têtes
     const token = this.authService.getToken();
     if (!token) {
-      alert('Token d\'authentification manquant.');
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Token d\'authentification manquant.',
+        icon: 'error',
+        ...this.swalOptions // Appliquer le style mémorisé
+      });
       return;
     }
 
@@ -63,7 +84,12 @@ export class SaisirRadioComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          alert('Erreur lors de la récupération des détails du bilan.');
+          Swal.fire({
+            title: 'Erreur',
+            text: 'Erreur lors de la récupération des détails du bilan.',
+            icon: 'error',
+            ...this.swalOptions // Appliquer le style mémorisé
+          });
           console.error('Erreur GET :', error);
         },
       });
@@ -80,12 +106,22 @@ export class SaisirRadioComponent implements OnInit {
   // Soumettre le rapport avec le compte rendu et l'image
   submitReport(): void {
     if (!this.compteRendu) {
-      alert('Veuillez saisir le compte rendu.');
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Veuillez saisir le compte rendu.',
+        icon: 'error',
+        ...this.swalOptions // Appliquer le style mémorisé
+      });
       return;
     }
 
     if (!this.selectedFile) {
-      alert('Veuillez télécharger une image.');
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Veuillez télécharger une image.',
+        icon: 'error',
+        ...this.swalOptions // Appliquer le style mémorisé
+      });
       return;
     }
 
@@ -97,7 +133,12 @@ export class SaisirRadioComponent implements OnInit {
     // Ajouter le token d'authentification dans l'en-tête
     const token = this.authService.getToken();
     if (!token) {
-      alert('Token d\'authentification manquant.');
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Token d\'authentification manquant.',
+        icon: 'error',
+        ...this.swalOptions // Appliquer le style mémorisé
+      });
       return;
     }
 
@@ -111,11 +152,21 @@ export class SaisirRadioComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          alert('Bilan mis à jour avec succès!');
+          Swal.fire({
+            title: 'Succès',
+            text: 'Bilan mis à jour avec succès!',
+            icon: 'success',
+            ...this.swalOptions // Appliquer le style mémorisé
+          });
           console.log('Réponse PATCH :', response);
         },
         error: (error) => {
-          alert('Une erreur est survenue lors de la mise à jour du bilan.');
+          Swal.fire({
+            title: 'Erreur',
+            text: 'Une erreur est survenue lors de la mise à jour du bilan.',
+            icon: 'error',
+            ...this.swalOptions // Appliquer le style mémorisé
+          });
           console.error('Erreur PATCH :', error);
         },
       });
