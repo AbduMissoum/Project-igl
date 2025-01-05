@@ -1,5 +1,6 @@
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Chart } from 'chart.js';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SharedService } from '../../services/sharedservice.service';
@@ -12,15 +13,20 @@ import { AuthService } from '../../services/authservice.service';
   templateUrl: './medecinbilanbio.component.html',
   styleUrls: ['./medecinbilanbio.component.css'],
 })
-
 export class MedecinbilanbioComponent implements OnInit {
+  // Variables pour gérer le graphique
+  @ViewChild('myBarChart') myBarChart: ElementRef | undefined;
+  chartRendered: boolean = false;
+  chart: any;
+
+  // Autres variables
   title: string = 'Bilan Médical';
   isPopupOpen: boolean = false;
-  requestedTests: string[] = []; // Liste des tests demandés
-  nss: string = ''; // NSS du patient
-  laborantin: string = ''; // Nom du laborantin
+  requestedTests: string[] = [];
+  nss: string = '';
+  laborantin: string = '';
   bioResults = [
-    { test: '', value:  2, unit: '', reference: '' },
+    { test: '', value: 2, unit: '', reference: '' },
   ];
 
   consultationDetails: any = null;
@@ -33,30 +39,26 @@ export class MedecinbilanbioComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('mkach id1');
     this.consultationSubscription = this.sharedService.consultationDetails$.subscribe((details) => {
       this.consultationDetails = details;
-      console.log('mkach id2');
       if (this.consultationDetails && this.consultationDetails.id) {
-        console.log(this.consultationDetails.id);
         this.fetchBilanBiologique(this.consultationDetails.id);
       } else {
         console.error('Consultation details are missing or invalid');
       }
     });
   }
-  
+
+  // Fetch des résultats de bilan biologique
   fetchBilanBiologique(consultationId: number): void {
-    console.log('ih', consultationId);
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + this.authService.getToken(),
     });
-    
+
     this.http
       .get(`http://localhost:8000/bilan-bio/details-bilan/${consultationId}/`, { headers })
       .subscribe({
         next: (response: any) => {
-          console.log('ih3', response);
           this.bioResults = response.map((param: any) => ({
             test: param.parametre || 'Inconnu',
             value: param.valeur || 'Non disponible',
@@ -65,11 +67,46 @@ export class MedecinbilanbioComponent implements OnInit {
           }));
         },
         error: (error) => {
-          console.log('ih4', consultationId);
           console.error('Erreur lors de la récupération du bilan biologique :', error);
           alert('Erreur lors de la récupération du bilan biologique.');
         },
       });
+  }
+
+  // Fonction pour afficher le graphique
+  generateGraph() {
+    const labels = this.bioResults.map((result) => result.test);
+    const data = this.bioResults.map((result) => result.value);
+
+    if (this.chart) {
+      this.chart.destroy();  // Détruit l'ancien graphique si existe
+    }
+
+    this.chart = new Chart(this.myBarChart?.nativeElement, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Résultats des tests biologiques',
+            data: data,
+            backgroundColor: 'rgba(93, 165, 185, 0.5)',
+            borderColor: 'rgba(93, 165, 185, 1)',
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+
+    this.chartRendered = true;
   }
 
   openPopup() {
@@ -100,7 +137,7 @@ export class MedecinbilanbioComponent implements OnInit {
     }
 
     const requestData = {
-      tests: this.requestedTests.filter((test) => test.trim() !== ''), // Supprime les champs vides
+      tests: this.requestedTests.filter((test) => test.trim() !== ''),
       consultation_id: this.consultationDetails?.id || 0,
       nss: this.nss,
       laborantin: this.laborantin,
