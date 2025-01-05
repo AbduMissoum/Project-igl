@@ -13,13 +13,14 @@
       <p class="text-lg font-semibold text-fonce">E-mail : <span class="text-gray-700">{{ patientData?.email || 'Non disponible' }}</span></p>
       <p class="text-lg font-semibold text-fonce">NSS : <span class="text-gray-700">{{ patientData?.NSS || 'Non disponible' }}</span></p>
     </div>
-    <div class="flex items-center justify-center">
-      <img src="assets/images/DPI.png" alt="Patient Illustration" class="w-100 h-120">
+    <div class="flex items-center  justify-center  ">
+      <img src="assets/images/DPI.png" alt="Patient Illustration" class=" w-100 h-120 ">
+      
     </div>
   </div>
 
   <!-- QR Code -->
-  <div class="w-10 h-10 bg-clair mx-80 mt-12 mb-20 flex items-center justify-center rounded-md">
-    <qrcode [qrdata]="nss" class="w-full h-full" [errorCorrectionLevel]="'M'"></qrcode>
+  <div *ngIf="this.qrCodeData" class="w-10 h-10 bg-clair mx-80 mt-12 mb-20 flex items-center justify-center rounded-md">
+    <qrcode [qrdata]="this.qrCodeData" class="w-full h-full" [errorCorrectionLevel]="'M'"></qrcode>
   </div>
 </section>
