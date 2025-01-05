@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SharedService } from '../../services/sharedservice.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/authservice.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-medecinbilanbio',
@@ -50,14 +51,24 @@ export class MedecinbilanbioComponent implements OnInit {
       }
     });
   }
+
   supprimer() {
     if (this.requestedTests.length > 1) {
       this.requestedTests.pop(); // Supprime le dernier élément du tableau
     } else {
-      alert('Il doit y avoir au moins un test dans la liste.');
+      Swal.fire({
+        title: 'Attention',
+        text: 'Il doit y avoir au moins un test dans la liste.',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        customClass: {
+          popup: 'rounded-[40px] shadow-lg bg-clair p-6 text-center',
+          title: 'text-2xl font-bold text-fonce',
+          confirmButton: 'bg-fonce text-white w-auto px-8 rounded-[40px]',
+        },
+      });
     }
   }
-  
 
   // Fetch des résultats de bilan biologique
   fetchBilanBiologique(consultationId: number): void {
@@ -78,6 +89,17 @@ export class MedecinbilanbioComponent implements OnInit {
         },
         error: (error) => {
           console.error('Erreur lors de la récupération du bilan biologique :', error);
+          Swal.fire({
+            title: 'Erreur',
+            text: 'Impossible de récupérer les détails du bilan biologique.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            customClass: {
+              popup: 'rounded-[40px] shadow-lg bg-clair p-6 text-center',
+              title: 'text-2xl font-bold text-fonce',
+              confirmButton: 'bg-fonce text-white w-auto px-8 rounded-[40px]',
+            },
+          });
         },
       });
   }
@@ -148,10 +170,19 @@ export class MedecinbilanbioComponent implements OnInit {
 
   saveTests() {
     const tests = this.requestedTests.map((test) => test.name.trim()).filter((name) => name !== '');
-   
 
     if (tests.length === 0) {
-      alert('Ajoutez au moins un test.');
+      Swal.fire({
+        title: 'Attention',
+        text: 'Ajoutez au moins un test.',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        customClass: {
+          popup: 'rounded-[40px] shadow-lg bg-clair p-6 text-center',
+          title: 'text-2xl font-bold text-fonce',
+          confirmButton: 'bg-fonce text-white w-auto px-8 rounded-[40px]',
+        },
+      });
       return;
     }
 
@@ -168,7 +199,17 @@ export class MedecinbilanbioComponent implements OnInit {
 
     this.http.post('http://localhost:8000/bilan-bio/demande', requestData, { headers }).subscribe({
       next: (response) => {
-        alert('Demande de bilan enregistrée avec succès.');
+        Swal.fire({
+          title: 'Succès',
+          text: 'Demande de bilan enregistrée avec succès.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'rounded-[40px] shadow-lg bg-clair p-6 text-center',
+            title: 'text-2xl font-bold text-fonce',
+            confirmButton: 'bg-fonce text-white w-auto px-8 rounded-[40px]',
+          },
+        });
         this.isPopupOpen = false;
         this.requestedTests = [];
         this.nss = '';
@@ -176,7 +217,17 @@ export class MedecinbilanbioComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erreur lors de l\'enregistrement du bilan :', error);
-        alert('Erreur lors de l\'enregistrement de la demande de bilan.');
+        Swal.fire({
+          title: 'Erreur',
+          text: 'Erreur lors de l\'enregistrement de la demande de bilan.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          customClass: {
+            popup: 'rounded-[40px] shadow-lg bg-clair p-6 text-center',
+            title: 'text-2xl font-bold text-fonce',
+            confirmButton: 'bg-fonce text-white w-auto px-8 rounded-[40px]',
+          },
+        });
       },
     });
   }
