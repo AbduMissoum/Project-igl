@@ -19,7 +19,7 @@ export class BilanbioComponent {
    nss: string = ''; // NSS du patient
    laborantin: string = ''; // Nom du laborantin
    bioResults = [
-     { test: '', value:  2, unit: '', reference: '' },
+     { test: '', value : null, unit: '', reference: '' },
    ];
  
    consultationDetails: any = null;

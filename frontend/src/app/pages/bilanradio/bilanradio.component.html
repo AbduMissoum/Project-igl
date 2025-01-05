@@ -4,4 +4,30 @@
     <h2 class="text-lg font-bold text-fonce">{{ title }}</h2>
     
   </div>
+  <!-- Section pour afficher les résultats de l'examen -->
+<div *ngIf="compteRendu || examenImage" class="mt-6 bg-white p-6 rounded-[40px] shadow-md">
+  <h3 class="text-lg font-bold text-fonce">Détails de l'Examen</h3>
+
+  <!-- Affichage du compte rendu -->
+  <div class="mt-4">
+    <h4 class="text-md font-semibold text-gray-700">Compte Rendu</h4>
+    <p class="mt-2 text-gray-600">{{ compteRendu || 'Aucun compte rendu disponible.' }}</p>
+  </div>
+
+  <!-- Affichage de l'image de l'examen -->
+  <div class="mt-6">
+    <h4 class="text-md font-semibold text-gray-700">Image de l'Examen</h4>
+    <div class="mt-4">
+      <img
+        *ngIf="examenImage"
+        [src]="examenImage"
+       
+        alt="Image de l'examen"
+        class="w-full rounded-[20px] border border-gray-300"
+      />
+      <p *ngIf="!examenImage" class="text-gray-600">Aucune image disponible.</p>
+    </div>
+  </div>
+</div>
+
 </section>
