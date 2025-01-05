@@ -72,26 +72,37 @@ export class MedecinbilanbioComponent implements OnInit {
         },
       });
   }
-
-  // Fonction pour afficher le graphique
   generateGraph() {
     const labels = this.bioResults.map((result) => result.test);
     const data = this.bioResults.map((result) => result.value);
-
+  
+    // Convertir les valeurs de référence en nombres
+    const referenceData = this.bioResults.map((result) => {
+      const referenceValue = parseFloat(result.reference);
+      return isNaN(referenceValue) ? 0 : referenceValue; // Si la valeur n'est pas un nombre, on la remplace par 0
+    });
+  
     if (this.chart) {
       this.chart.destroy();  // Détruit l'ancien graphique si existe
     }
-
+  
     this.chart = new Chart(this.myBarChart?.nativeElement, {
-      type: 'bar',
+      type: 'bar', // Type de graphique : barres
       data: {
         labels: labels,
         datasets: [
           {
             label: 'Résultats des tests biologiques',
             data: data,
-            backgroundColor: 'rgba(93, 165, 185, 0.5)',
+            backgroundColor: 'rgba(93, 165, 185, 0.5)', // Couleur pour les résultats
             borderColor: 'rgba(93, 165, 185, 1)',
+            borderWidth: 1,
+          },
+          {
+            label: 'Valeur de référence',
+            data: referenceData,
+            backgroundColor: 'rgba(255, 99, 132, 0.5)', // Couleur pour les valeurs de référence
+            borderColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1,
           },
         ],
@@ -105,10 +116,10 @@ export class MedecinbilanbioComponent implements OnInit {
         },
       },
     });
-
+  
     this.chartRendered = true;
   }
-
+  
   openPopup() {
     this.isPopupOpen = true;
   }

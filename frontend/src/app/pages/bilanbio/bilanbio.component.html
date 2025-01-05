@@ -29,4 +29,21 @@
         </table>
       </div>
     </div>
+     <!-- Bouton pour afficher le graphique -->
+  <div class="flex justify-center mt-4">
+    <button
+      type="button"
+      (click)="generateGraph()"
+      class="bg-fonce text-white px-6 py-3 rounded-[40px] font-semibold focus:ring focus:ring-fonce"
+    >
+      Afficher le graphe
+    </button>
+  </div>
+
+  <!-- Graphique -->
+  <div *ngIf="chartRendered" class="flex justify-center items-center mt-8">
+    <div class="bg-clair rounded-[40px] p-6 text-center text-fonce shadow-inner">
+      <canvas #myBarChart width="800" height="400" class="bg-clair rounded-[40px] p-6 text-center text-fonce shadow-inner"></canvas>
+    </div>
+  </div>
  
