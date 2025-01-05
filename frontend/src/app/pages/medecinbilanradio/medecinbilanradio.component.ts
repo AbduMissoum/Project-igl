@@ -27,7 +27,7 @@ export class MedecinbilanradioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('mkach id')
+    
     // Récupérer les détails de la consultation via SharedService
     this.sharedService.consultationDetails$.subscribe((data) => {
       this.consultationDetails = data;
@@ -97,7 +97,7 @@ export class MedecinbilanradioComponent implements OnInit {
         },
         error: (err) => {
           console.error('Erreur lors de la récupération des données:', err);
-          Swal.fire('Erreur', 'Impossible de charger les données de l\'examen.', 'error');
+         
         },
       });
   }
