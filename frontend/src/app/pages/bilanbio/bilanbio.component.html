@@ -1,30 +1,32 @@
-<section class="mt-6 bg-white p-6 rounded-[40px] shadow-md">
-  <!-- Header avec le titre et le bouton -->
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-lg font-bold text-fonce">{{ title }}</h2>
-  
-  </div>
 
-  <!-- Tableau des résultats -->
-  <div class="p-4 m-10 bg-clair rounded-[40px] shadow-md">
-    <div class="overflow-hidden rounded-[40px] border border-fonce m-4">
-      <table class="w-full border-collapse">
-        <thead>
-          <tr>
-            <th class="px-5 py-1 text-fonce border-b border-fonce">Test</th>
-            <th class="px-5 py-1 text-fonce border-b border-fonce">Résultat</th>
-            <th class="px-5 py-1 text-fonce border-b border-fonce">Unité</th>
-            <th class="px-5 py-1 text-fonce border-b border-fonce">Valeur de référence</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let result of bioResults">
-            <td class="pl-20 py-1 text-fonce border-b border-fonce">{{ result.test }}</td>
-            <td class="px-20 py-1 text-fonce border-b border-fonce">{{ result.value }}</td>
-            <td class="px-20 py-1 text-fonce border-b border-fonce">{{ result.unit }}</td>
-            <td class="px-20 py-1 text-fonce border-b border-fonce">{{ result.reference }}</td>
-          </tr>
-        </tbody>
-      </table>
+  <section class="mt-6 bg-white p-6 rounded-[40px] shadow-md">
+  
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-bold text-fonce">{{ title }}</h2>
+    
     </div>
-  </div>
+  
+   
+    <div class="p-4 m-10 bg-clair rounded-[40px] shadow-md">
+      <div class="overflow-hidden rounded-[40px] border border-fonce m-4">
+        <table class="w-full border-collapse">
+          <thead>
+            <tr>
+              <th class="px-5 py-1 text-fonce border-b border-fonce">Test</th>
+              <th class="px-5 py-1 text-fonce border-b border-fonce">Résultat</th>
+              <th class="px-5 py-1 text-fonce border-b border-fonce">Unité</th>
+              <th class="px-5 py-1 text-fonce border-b border-fonce">Valeur de référence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let result of bioResults">
+              <td class="pl-20 py-1 text-fonce border-b border-fonce">{{ result.test }}</td>
+              <td class="px-20 py-1 text-fonce border-b border-fonce">{{ result.value }}</td>
+              <td class="px-20 py-1 text-fonce border-b border-fonce">{{ result.unit }}</td>
+              <td class="px-20 py-1 text-fonce border-b border-fonce">{{ result.reference }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+ 
