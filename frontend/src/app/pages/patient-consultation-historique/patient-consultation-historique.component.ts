@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ConsultationService } from '../../services/consultation.service';
 import { FormsModule } from '@angular/forms';
+import { SharedService } from '../../services/sharedservice.service';
 
 interface Historique {
   id: number;
@@ -22,6 +23,7 @@ export class PatientConsultationHistoriqueComponent implements OnInit {
   historiques: Historique[] = [];
 
   constructor(
+    private sharedService : SharedService,
     private consultationService: ConsultationService, // Injection du service de création de consultation
     private router: Router
   ) {}
@@ -59,11 +61,13 @@ export class PatientConsultationHistoriqueComponent implements OnInit {
   viewDetails(consultationId: number): void {
     this.consultationService.getConsultationDetailsById(consultationId).subscribe({
       next: (data) => {
-        // 'data' contient les détails de la consultation
         console.log('Détails de la consultation récupérés :', data);
 
-        // Optionnel : rediriger vers une page dédiée ou afficher les détails dans une modal
-        this.router.navigate(['/patientcons', consultationId]); // Par exemple, rediriger vers /medecin/{id}
+        // Sauvegarder les détails de la consultation dans le SharedService
+        this.sharedService.setConsultationDetails(data);
+
+        // Rediriger vers la page dédiée
+        this.router.navigate(['/patientcons', consultationId]);
       },
       error: (err) => {
         console.error('Erreur lors de la récupération des détails :', err);
