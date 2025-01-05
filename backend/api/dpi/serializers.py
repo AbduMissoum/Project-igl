@@ -34,7 +34,7 @@ class UserListingField(serializers.RelatedField):
         fields = ['username' ,'email']
     
 class PatientSerializerWithId(serializers.ModelSerializer):
-    
+    email = serializers.EmailField(source='id.email', read_only=True)
     class Meta:
         model = Patient
         fields = '__all__'

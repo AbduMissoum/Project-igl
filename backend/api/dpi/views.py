@@ -61,6 +61,7 @@ def PatientDetail(request, id):
         # Fetch the patient object by primary key (id)
         patient = Patient.objects.get(id=id)
         serializer = PatientSerializerWithId(patient)
+        
       
         return Response(serializer.data, status=status.HTTP_200_OK)
     
