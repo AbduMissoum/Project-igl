@@ -34,7 +34,6 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    // Supprimer le token et le rôle à la déconnexion
     localStorage.removeItem('authToken');
     localStorage.removeItem('userRole');
     return this.http.post(this.logouturl, {withCredentials: true,});
@@ -47,6 +46,10 @@ export class AuthService {
   setid(id: number): void {
     this.patient_id = id;
     localStorage.setItem('patient_id', id.toString());
+  }
+  clearid(): void {
+    this.patient_id = null;
+    localStorage.removeItem('patient_id'); // Supprime le rôle de localStorage
   }
 
   getid(): number | null {
@@ -75,6 +78,9 @@ export class AuthService {
   // Ajouter le token d'authentification
   setToken(token: string): void {
     localStorage.setItem('authToken', token); // Sauvegarde le token dans localStorage
+  }
+  clearToken(): void {
+    localStorage.removeItem('authToken'); // Sauvegarde le token dans localStorage
   }
 
   getToken(): string | null {
