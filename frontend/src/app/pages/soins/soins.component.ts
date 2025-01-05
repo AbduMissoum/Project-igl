@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SharedService } from '../../services/sharedservice.service';
 import { SoinsService } from '../../services/soinsService.sevice';
 import { SoinListForPatient } from '../../interfaces/soinsInterfaces';
 import { Subscription } from 'rxjs';
@@ -20,23 +19,22 @@ export class SoinsComponent implements OnInit, OnDestroy {
   private patientId: number | null = null;
   private subscription: Subscription | null = null;
 
-  constructor(
-    private sharedService: SharedService,
-    private soinsService: SoinsService
-  ) {}
+  constructor(private soinsService: SoinsService) {}
 
   ngOnInit(): void {
-    this.subscription = this.sharedService.patientId$.subscribe({
-      next: (id: number | null) => {
-        if (id !== null) {
-          this.patientId = id;
-          this.loadSoins();
-        }
-      },
-      error: (error) => {
-        console.error("Erreur lors de la récupération de l'ID du patient :", error);
+    // Récupérer l'ID du patient depuis localStorage
+    const patientIdString = localStorage.getItem('patient_id');
+    if (patientIdString) {
+      const patientId = parseInt(patientIdString, 10);
+      if (!isNaN(patientId)) {
+        this.patientId = patientId;
+        this.loadSoins();
+      } else {
+        console.error("L'ID du patient n'est pas valide.");
       }
-    });
+    } else {
+      console.error('Aucun ID patient trouvé dans localStorage.');
+    }
   }
 
   ngOnDestroy(): void {
