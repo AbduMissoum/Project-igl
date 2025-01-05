@@ -1,9 +1,32 @@
 <section class="mt-6 bg-white p-6 rounded-[40px] shadow-md">
-    <h2 class="text-lg font-bold text-fonce">{{ title }}</h2>
-    <div class="h-auto bg-clair p-6 mt-4 border-blue-300 rounded-[40px] flex items-center justify-center text-fonce font-bold">
-    <ul class="mt-2 list-disc pl-6">
-      <li  *ngFor="let prescription of prescriptions">{{ prescription }}</li>
-    </ul>
-    </div>
-</section>
+  <h2 class="text-lg font-bold text-fonce">{{ title }}</h2>
+  <div class="h-auto bg-clair p-6 mt-4 border-blue-300 rounded-[40px]">
+      <table class="w-full table-auto">
+          <thead>
+              <tr>
+                  <th class="px-4 text-fonce py-2 border">Médicament</th>
+                  <th class="px-4 text-fonce py-2 border">Dose</th>
+                  <th class="px-4 text-fonce py-2 border">Durée</th>
+               
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let traitement of traitements; let i = index">
+                  <td class="px-4 py-2 border">
+                      <input [(ngModel)]="traitement.medicament.nom" type="text" placeholder="Nom du médicament" class="w-full p-2 border  rounded-[40px]" readonly />
+                  </td>
+                  <td class="px-4 py-2 border">
+                      <input [(ngModel)]="traitement.la_dose" type="text" placeholder="Dose" class="w-full p-2 border rounded-[40px]" readonly />
+                  </td>
+                  <td class="px-4 py-2 border">
+                      <input [(ngModel)]="traitement.la_durre" type="text" placeholder="Durée" class="w-full p-2 border rounded-[40px]" readonly />
+                  </td>
+                  
+              </tr>
+          </tbody>
+      </table>
+     
+  </div>
+
   
+</section>

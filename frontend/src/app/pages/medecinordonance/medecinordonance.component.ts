@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SharedService } from '../../services/sharedservice.service';
-import { ConsultationService } from '../../services/consultation.service';
 import { AuthService } from '../../services/authservice.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
@@ -9,15 +8,17 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-medecinordonance',
-  imports: [CommonModule , FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './medecinordonance.component.html',
-  styleUrls: ['./medecinordonance.component.css']
+  styleUrls: ['./medecinordonance.component.css'],
 })
 export class MedecinordonanceComponent implements OnInit {
   title = 'Ordonnance';
-  consultationId: number = 0;  // ID de la consultation
-  consultationDetails: any;  // Détails de la consultation
-  traitements = [{ la_dose: '', la_durre: '', medicament: { nom: '' } }]; // Liste des traitements
+  consultationId: number = 0; // ID de la consultation
+  consultationDetails: any; // Détails de la consultation
+  traitements = [
+    { la_dose: '', la_durre: '', medicament: { nom: '' } },
+  ]; // Liste des traitements
 
   // Style mémorisé pour les alertes SweetAlert2
   swalOptions = {
@@ -32,8 +33,7 @@ export class MedecinordonanceComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private sharedService: SharedService,
-    private authService: AuthService,
-    private consultationService: ConsultationService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +42,9 @@ export class MedecinordonanceComponent implements OnInit {
       this.consultationDetails = data;
       this.consultationId = data?.id; // Récupérer l'ID de la consultation
       console.log('Détails de la consultation dans OrdonnanceComponent :', this.consultationDetails);
+
+      // Récupérer les ordonnances pour cette consultation
+      this.getOrdonnancesForConsultation(this.consultationId);
     });
   }
 
@@ -57,7 +60,7 @@ export class MedecinordonanceComponent implements OnInit {
 
   // Soumettre l'ordonnance
   submit(): void {
-    if (this.traitements.some(t => !t.la_dose || !t.la_durre || !t.medicament.nom)) {
+    if (this.traitements.some((t) => !t.la_dose || !t.la_durre || !t.medicament.nom)) {
       Swal.fire({
         title: 'Erreur',
         text: 'Tous les champs doivent être remplis.',
@@ -66,7 +69,6 @@ export class MedecinordonanceComponent implements OnInit {
       });
       return;
     }
-    console.log(this.consultationId);
 
     // Créer le corps de la requête
     const data = {
@@ -89,7 +91,8 @@ export class MedecinordonanceComponent implements OnInit {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     // Envoyer la requête POST
-    this.http.post('http://localhost:8000/ordonnances/', data, { headers })
+    this.http
+      .post('http://localhost:8000/ordonnances/', data, { headers })
       .subscribe({
         next: (response) => {
           Swal.fire({
@@ -108,7 +111,45 @@ export class MedecinordonanceComponent implements OnInit {
             ...this.swalOptions,
           });
           console.error('Erreur POST :', error);
-        }
+        },
+      });
+  }
+
+  // Méthode pour récupérer les ordonnances de la consultation
+  getOrdonnancesForConsultation(consultationId: number): void {
+    const token = this.authService.getToken();
+    if (!token) {
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Token d\'authentification manquant.',
+        icon: 'error',
+        ...this.swalOptions,
+      });
+      return;
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.get(`http://localhost:8000/ordonnances/consultation/${consultationId}/`, { headers })
+      .subscribe({
+        next: (response: any) => {
+          if (response && Array.isArray(response)) {
+            this.traitements = response.map((ordonnance) => ({
+              la_dose: ordonnance.traitements[0]?.la_dose || '',
+              la_durre: ordonnance.traitements[0]?.la_durre || '',
+              medicament: { nom: ordonnance.traitements[0]?.medicament?.nom || '' },
+            }));
+          }
+        },
+        error: (error) => {
+          Swal.fire({
+            title: 'Erreur',
+            text: 'Impossible de récupérer les ordonnances.',
+            icon: 'error',
+            ...this.swalOptions,
+          });
+          console.error('Erreur GET :', error);
+        },
       });
   }
 }
