@@ -97,7 +97,7 @@ export class BilanradioComponent implements OnInit {
          },
          error: (err) => {
            console.error('Erreur lors de la récupération des données:', err);
-           Swal.fire('Erreur', 'Impossible de charger les données de l\'examen.', 'error');
+
          },
        });
    }
