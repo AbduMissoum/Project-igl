@@ -32,8 +32,8 @@ export class AppComponent implements OnInit {
       next: (response) => {
         console.log(response.message); // Message de succès
         this.authService.clearRole(); // Supprime le rôle
-        this.authService.clearid();
-        this.authService.clearToken();
+        // this.authService.clearid();
+        // this.authService.clearToken();
         this.router.navigate(['/login']); // Redirige vers la page de login
       },
       error: (err) => {

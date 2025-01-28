@@ -1,51 +1,47 @@
-<div class="flex justify-center items-center w-full h-screen px-4 sm:px-0">
-  <div class="flex flex-col sm:flex-row w-full max-w-4xl bg-white rounded-[40px] shadow-lg overflow-hidden">
-    <!-- Image Section -->
-    <div class="hidden sm:block w-1/2">
+<div class="flex justify-center items-center w-full h-screen">
+    <div class="flex w-full max-w-4xl bg-white rounded-[40px] shadow-lg">
       <img
-        class="w-full h-full object-cover rounded-l-[40px]"
+        class="w-1/2 h-full object-cover rounded-l-[40px]"
         src="assets/images/Login.gif"
         alt="rectangle"
       />
-    </div>
-
-    <!-- Form Section -->
-    <div class="flex flex-col py-6 items-center justify-center w-full sm:w-1/2">
-      <div class="flex flex-col items-center justify-center">
-        <a class="text-center rounded-full">
-          <img
-            src="assets/images/logo.png"
-            alt="logo"
-            class="w-16 h-16 sm:w-20 sm:h-20 object-contain"
-          />
-        </a>
-        <h1 class="text-fonce font-bold text-xl sm:text-2xl mt-4">Bienvenue sur votre espace !</h1>
-        <h1 class="text-fonce mt-2">Veuillez entrer vos données</h1>
+      <div class="flex flex-col py-3 items-center justify-center w-1/2">
+        <div class="flex flex-col -mt-4 items-center justify-center">
+          <a class="text-center rounded-full">
+            <img
+              src="assets/images/logo.png"
+              alt="logo"
+              class="w-20 h-20  object-contain"
+            />
+          </a>
+          <h1 class="text-fonce mt-4  font-bold text-2xl"> Bienvenue sur votre espace !</h1>
+          <h1 class="text-fonce  "> veuillez entrer vos données</h1>
+        </div>
+  
+        <input
+          type="text"
+          id="username"
+          [(ngModel)]="username"
+          placeholder="Username"
+          class="mt-4 border-t border-fonce border-2  p-5  w-48 h-8 text-fonce rounded-[40px] transition duration-500"
+        />
+  
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          placeholder="Password"
+          class="mt-4 p-5 border-t border-fonce border-2 w-48 h-8 text-fonce rounded-[40px] transition duration-500"
+        />
+  
+        <button
+          (click)="onLogin()"
+          type="submit"
+          class="bg-fonce text-white px-6 py-3 mt-4 rounded-[40px] font-semibold focus:ring focus:ring-fonce"
+        >
+          Connecter
+        </button>
       </div>
-
-      <input
-        type="text"
-        id="username"
-        [(ngModel)]="username"
-        placeholder="Username"
-        class="mt-6 border-t border-fonce border-2 px-4 py-2 w-3/4 sm:w-48 text-fonce rounded-[40px] transition duration-500"
-      />
-
-      <input
-        type="password"
-        id="password"
-        [(ngModel)]="password"
-        placeholder="Password"
-        class="mt-4 border-t border-fonce border-2 px-4 py-2 w-3/4 sm:w-48 text-fonce rounded-[40px] transition duration-500"
-      />
-
-      <button
-        (click)="onLogin()"
-        type="submit"
-        class="bg-fonce text-white px-6 py-3 mt-6 rounded-[40px] font-semibold focus:ring focus:ring-fonce"
-      >
-        Connecter
-      </button>
     </div>
   </div>
-</div>
+  

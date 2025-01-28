@@ -79,9 +79,7 @@ export class AuthService {
   setToken(token: string): void {
     localStorage.setItem('authToken', token); // Sauvegarde le token dans localStorage
   }
-  clearToken(): void {
-    localStorage.removeItem('authToken'); // Sauvegarde le token dans localStorage
-  }
+ 
 
   getToken(): string | null {
     return localStorage.getItem('authToken'); // Récupère le token depuis localStorage

@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.webdriver.common.action_chains import ActionChains
 
-driver_path = r'C:\Users\RAM COM\chromedriver-win64\chromedriver.exe'  #A changer
+driver_path = r'C:\Users\pc\Desktop\WebDriver\chromedriver-win64\chromedriver.exe'  #A changer
 
 service = Service(driver_path)
 
@@ -16,10 +16,10 @@ driver = webdriver.Chrome(service=service)
 driver.get('http://localhost:4200')
 
 username_field = driver.find_element(By.ID, 'username')
-username_field.send_keys('Admine')  
+username_field.send_keys('Admin')  
 
 password_field = driver.find_element(By.ID, 'password')
-password_field.send_keys('admine')  
+password_field.send_keys('admin')  
 
 connect_button = driver.find_element(By.XPATH, "//button[contains(text(),'Connecter')]")
 connect_button.click()
